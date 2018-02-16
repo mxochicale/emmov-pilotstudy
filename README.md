@@ -1,4 +1,4 @@
-Pilot Study to investigate emotion variability
+EMotion and MOvement Variabilily: a PILOT STUDY (emmov-pilotstudy)
 ---
 
 ## Pilot Study Description
