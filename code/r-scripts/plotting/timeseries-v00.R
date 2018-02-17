@@ -1,7 +1,7 @@
 
 ###############################################################################	
 #
-# Time series plots for the dataset how well you move.
+# Time series plots for the openface landmarks 
 # 
 #
 #
@@ -16,7 +16,12 @@
 	# OUTLINE:
 	# (0) Loading libraries and functions
  	# (1) Definifing paths and Reading data
-
+	# (2) Data Filtering
+		# (2.1) Windowing
+	# (3) Plotting
+		# (3.1) Creating and changing plotting paths
+		# (3.2) Plots features
+		# (3.3) Plots data from openface
 
 
 #################
@@ -157,12 +162,12 @@ xdata <- datable[,.SD[windowframe],by=.(participant,trial)];
 
 
 ################################################################################
-# (5) Plotting
+# (3) Plotting
 #
 
 
 ################################################################################
-# (5.0) Creating  and Changing to PlotPath
+# (3.1) Creating  and Changing to PlotPath
 #
 plot_path <- paste(outcomes_path,"/plots_timeseries",sep="")
 if (file.exists(plot_path)){
@@ -176,7 +181,7 @@ if (file.exists(plot_path)){
 
 
 #################
-# Plots Features
+# (3.2) Plots Features
 sensortag <- 'plot'
 plotlinewidtg <- 0.7
 image_width <- 1208
@@ -184,6 +189,9 @@ image_height <- 2480
 image_dpi <- 300
 image_bg <- "transparent"
 
+
+#####################
+## (3.3) Plots Data from OpenFace
 
 #Plot <- ggplot(xdata)+geom_line( aes(x=frame,y=pose_Tx, color=trial), size=1.5)+facet_grid(participant~trial);Plot
 
@@ -193,7 +201,6 @@ image_bg <- "transparent"
 #	geom_line( aes(x=frame,y=success), size=1.5)+
 #	facet_grid(participant ~ . )
 #Plot
-
 
 
 
