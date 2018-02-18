@@ -1,16 +1,7 @@
 Description of OpenFace Data [:link:](https://github.com/TadasBaltrusaitis/OpenFace/wiki)
 ---
 
-
-
-
-
-
-
-
-
-
-# Headers of `default.txt`
+Headers of `default.txt` file
 
 
 ```

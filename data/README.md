@@ -55,7 +55,7 @@ specifically for
 
 ## Razor data 
 
-`~/data/razor_data_path`
+`~/data/razor_imu`
 ```
 .
 ├── p01gMa20_20170909_0944
