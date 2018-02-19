@@ -11,4 +11,3 @@ and [video to get face landmarks with OpenFace](https://github.com/mxochicale/em
 
 
 
-
