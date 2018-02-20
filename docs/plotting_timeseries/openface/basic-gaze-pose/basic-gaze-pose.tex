@@ -1,0 +1,126 @@
+\documentclass[a4paper,12pt]{article}
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+
+
+%% Sets page size and margins
+%\usepackage[a4paper,top=1cm,bottom=4mm,left=3cm,right=0mm,marginparwidth=1.75cm]{geometry}
+%\usepackage[a4paper,top=0cm,bottom=3mm,left=3mm,right=0mm,marginparwidth=0cm]{geometry}
+\usepackage{geometry} % for \newgeometry{} and \restoregeometry
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{url}%for \path{}
+\usepackage{lscape}
+\pagenumbering{gobble}%no numbers in the webpage
+
+%\usepackage[counterclockwise]{rotating} %sidewaysfigure
+
+
+
+
+
+\graphicspath{{/home/map479/mxochicale/github/DataSets/emmov/plots_timeseries/}}
+
+\title{Gaze and Pose Estimation}
+\author{Miguel P Xochicale \\
+School of Engineering\\
+University of Birmingham, UK}
+
+
+\begin{document}
+
+
+\newgeometry{top=20mm,bottom=20mm,left=20mm,right=20mm}
+\maketitle
+
+%\begin{abstract}
+%
+%\end{abstract}
+
+
+\section{Description}
+
+
+confidence how confident is the tracker in current landmark detection estimage.
+
+success is the track successful (is there a face in the frame or do we think we tracked it well).
+
+gaze\_0\_x, gaze\_0\_y, gaze\_0\_z Eye gaze direction vector in world coordinates for eye 0 (normalized), eye 0 is the leftmost eye in the image.
+
+gaze\_1\_x, gaze\_1\_y, gaze\_1\_z Eye gaze direction vector in world coordinates for eye 1 (normalized), eye 1 is the rightmost eye in the image.
+
+
+pose\_Tx, pose\_Ty, pose\_Tz the location of the head with respect to camera in millimetre (positive Z is away from the camera)
+
+pose\_Rx, pose\_Ry, pose\_Rz Rotation is in radians around X,Y,Z axes with the convention R = Rx * Ry * Rz, left-handed positive sign. This can be seen as pitch (Rx), yaw (Ry), and roll (Rz). The rotation is in world coordinates with camera being the origin.
+
+\cite{baltrusaitis2016}.
+
+
+\section{r-scripts and data paths}
+\path{~/github/emmov-pilotstudy/code/r-scripts/plotting} \\
+\path{timeseries-openface.R}
+is used to generate the plots which are saved at: \\
+\path{~/github/DataSets/emmov/plots_timeseries/*}
+
+
+
+The data is available in \cite{mxochicale2018}.
+
+
+
+\bibliographystyle{apalike}
+\bibliography{references}
+
+%\newpage
+
+%\newgeometry{top=0cm,bottom=3mm,left=3mm,right=0mm,marginparwidth=0cm}
+%\restoregeometry
+
+
+
+
+\begin{figure}
+\centering
+\includegraphics{openface-timeseries_confidence_success}
+\caption{Cofidence and success variables}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{openface-timeseries_gaze_0_xyz}
+\caption{Eye gaze direction vector in the world coordinates for eye 0.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{openface-timeseries_gaze_1_xyz}
+\caption{Eye gaze direction vector in the world coordinates for eye 1.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{openface-timeseries_pose_RxRyRz}
+\caption{Rotation in radians. This can be seen as pitch (Rx), yaw (Ry), and roll (Rz).}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{openface-timeseries_pose_TxTy}
+\caption{Pose Tx and Ty location of the head with respect to camera in milimetre.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{openface-timeseries_pose_Tz}
+\caption{Pose Tz location of the head with respect to camera in milimetre.}
+\end{figure}
+
+
+%
+\end{document}

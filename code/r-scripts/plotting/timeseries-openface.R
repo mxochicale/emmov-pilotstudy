@@ -1,4 +1,3 @@
-
 ###############################################################################	
 #
 # Time series plots for the openface landmarks 
@@ -223,7 +222,7 @@ plot <- ggplot(xdata, aes(x=frame) ) +
 	labs(colour = 'Feature')
 
 
-png(filename= paste(tag,"_gaze0_xyz.png",sep=''),
+png(filename= paste(tag,"_gaze_0_xyz.png",sep=''),
    width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
 print(plot)
 dev.off()
@@ -714,12 +713,335 @@ dev.off()
 
 
 
+##X_0,...X_16, 
+plot <-	ggplot(xdata, aes(x=frame) ) +	
+ 	geom_line( aes(y=X_0, col='X_00'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_1, col='X_01'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_2, col='X_02'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_3, col='X_03'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_4, col='X_04'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_5, col='X_05'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_6, col='X_06'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_7, col='X_07'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_8, col='X_08'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_9, col='X_09'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_10, col='X_10'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_11, col='X_11'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_12, col='X_12'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_13, col='X_13'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_14, col='X_14'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_15, col='X_15'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_16, col='X_16'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_17, col='X_17'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_18, col='X_18'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_19, col='X_19'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_20, col='X_20'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_21, col='X_21'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_22, col='X_22'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_23, col='X_23'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_24, col='X_24'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_25, col='X_25'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_26, col='X_26'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_27, col='X_27'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_28, col='X_28'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_29, col='X_29'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_30, col='X_30'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_31, col='X_31'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_32, col='X_32'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_33, col='X_33'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_34, col='X_34'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_35, col='X_35'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_36, col='X_36'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_37, col='X_37'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_38, col='X_38'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_39, col='X_39'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_40, col='X_40'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_41, col='X_41'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_42, col='X_42'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_43, col='X_43'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_44, col='X_44'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_45, col='X_45'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_46, col='X_46'), size=plotlinewidth)+
+	geom_line( aes(y=X_47, col='X_47'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_48, col='X_48'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_49, col='X_49'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_50, col='X_50'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_51, col='X_51'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_52, col='X_52'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_53, col='X_53'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_54, col='X_54'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_55, col='X_55'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_56, col='X_56'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_57, col='X_57'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_58, col='X_58'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_59, col='X_59'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_60, col='X_60'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_61, col='X_61'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_62, col='X_62'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_63, col='X_63'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_64, col='X_64'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_65, col='X_65'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_66, col='X_66'), size=plotlinewidth)+
+ 	geom_line( aes(y=X_67, col='X_67'), size=plotlinewidth)+
 
 
+
+	coord_cartesian(xlim=NULL, ylim=NULL)+
+	facet_grid(participant ~ . )+
+	ylab('Landmarks Location in 3D [Milimetres]') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+
+png(filename= paste(tag,"_X_all.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+
+##Y_0,...Y_16, 
+plot <-	ggplot(xdata, aes(x=frame) ) +	
+ 	geom_line( aes(y=Y_0, col='Y_00'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_1, col='Y_01'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_2, col='Y_02'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_3, col='Y_03'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_4, col='Y_04'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_5, col='Y_05'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_6, col='Y_06'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_7, col='Y_07'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_8, col='Y_08'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_9, col='Y_09'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_10, col='Y_10'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_11, col='Y_11'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_12, col='Y_12'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_13, col='Y_13'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_14, col='Y_14'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_15, col='Y_15'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_16, col='Y_16'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_17, col='Y_17'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_18, col='Y_18'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_19, col='Y_19'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_20, col='Y_20'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_21, col='Y_21'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_22, col='Y_22'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_23, col='Y_23'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_24, col='Y_24'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_25, col='Y_25'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_26, col='Y_26'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_27, col='Y_27'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_28, col='Y_28'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_29, col='Y_29'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_30, col='Y_30'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_31, col='Y_31'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_32, col='Y_32'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_33, col='Y_33'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_34, col='Y_34'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_35, col='Y_35'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_36, col='Y_36'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_37, col='Y_37'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_38, col='Y_38'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_39, col='Y_39'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_40, col='Y_40'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_41, col='Y_41'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_42, col='Y_42'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_43, col='Y_43'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_44, col='Y_44'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_45, col='Y_45'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_46, col='Y_46'), size=plotlinewidth)+
+	geom_line( aes(y=Y_47, col='Y_47'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_48, col='Y_48'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_49, col='Y_49'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_50, col='Y_50'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_51, col='Y_51'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_52, col='Y_52'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_53, col='Y_53'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_54, col='Y_54'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_55, col='Y_55'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_56, col='Y_56'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_57, col='Y_57'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_58, col='Y_58'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_59, col='Y_59'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_60, col='Y_60'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_61, col='Y_61'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_62, col='Y_62'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_63, col='Y_63'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_64, col='Y_64'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_65, col='Y_65'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_66, col='Y_66'), size=plotlinewidth)+
+ 	geom_line( aes(y=Y_67, col='Y_67'), size=plotlinewidth)+
+
+
+
+	coord_cartesian(xlim=NULL, ylim=NULL)+
+	facet_grid(participant ~ . )+
+	ylab('Landmarks Location in 3D [Milimetres]') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+
+png(filename= paste(tag,"_Y_all.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+
+
+##Z_0,...Z_16, 
+plot <-	ggplot(xdata, aes(x=frame) ) +	
+ 	geom_line( aes(y=Z_0, col='Z_00'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_1, col='Z_01'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_2, col='Z_02'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_3, col='Z_03'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_4, col='Z_04'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_5, col='Z_05'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_6, col='Z_06'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_7, col='Z_07'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_8, col='Z_08'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_9, col='Z_09'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_10, col='Z_10'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_11, col='Z_11'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_12, col='Z_12'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_13, col='Z_13'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_14, col='Z_14'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_15, col='Z_15'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_16, col='Z_16'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_17, col='Z_17'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_18, col='Z_18'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_19, col='Z_19'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_20, col='Z_20'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_21, col='Z_21'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_22, col='Z_22'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_23, col='Z_23'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_24, col='Z_24'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_25, col='Z_25'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_26, col='Z_26'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_27, col='Z_27'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_28, col='Z_28'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_29, col='Z_29'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_30, col='Z_30'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_31, col='Z_31'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_32, col='Z_32'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_33, col='Z_33'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_34, col='Z_34'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_35, col='Z_35'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_36, col='Z_36'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_37, col='Z_37'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_38, col='Z_38'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_39, col='Z_39'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_40, col='Z_40'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_41, col='Z_41'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_42, col='Z_42'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_43, col='Z_43'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_44, col='Z_44'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_45, col='Z_45'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_46, col='Z_46'), size=plotlinewidth)+
+	geom_line( aes(y=Z_47, col='Z_47'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_48, col='Z_48'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_49, col='Z_49'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_50, col='Z_50'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_51, col='Z_51'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_52, col='Z_52'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_53, col='Z_53'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_54, col='Z_54'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_55, col='Z_55'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_56, col='Z_56'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_57, col='Z_57'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_58, col='Z_58'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_59, col='Z_59'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_60, col='Z_60'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_61, col='Z_61'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_62, col='Z_62'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_63, col='Z_63'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_64, col='Z_64'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_65, col='Z_65'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_66, col='Z_66'), size=plotlinewidth)+
+ 	geom_line( aes(y=Z_67, col='Z_67'), size=plotlinewidth)+
+
+
+
+	coord_cartesian(xlim=NULL, ylim=NULL)+
+	facet_grid(participant ~ . )+
+	ylab('Landmarks Location in 3D [Milimetres]') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+
+png(filename= paste(tag,"_Z_all.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
 
 
 
  
+#p_0, p_1, p_2, p_3, p_4, p_5, p_6, p_7, p_8, p_9, p_10, p_11, p_12, p_13, p_14, p_15, p_16, 
+plot <-	ggplot(xdata, aes(x=frame) ) +	
+  geom_line( aes(y=p_0, col='p_00'), size=plotlinewidth)+
+  geom_line( aes(y=p_1, col='p_01'), size=plotlinewidth)+
+  geom_line( aes(y=p_2, col='p_02'), size=plotlinewidth)+
+  geom_line( aes(y=p_3, col='p_03'), size=plotlinewidth)+
+  geom_line( aes(y=p_4, col='p_04'), size=plotlinewidth)+
+  geom_line( aes(y=p_5, col='p_05'), size=plotlinewidth)+
+  geom_line( aes(y=p_6, col='p_06'), size=plotlinewidth)+
+  geom_line( aes(y=p_7, col='p_07'), size=plotlinewidth)+
+  geom_line( aes(y=p_8, col='p_08'), size=plotlinewidth)+
+  geom_line( aes(y=p_9, col='p_09'), size=plotlinewidth)+
+  geom_line( aes(y=p_10, col='p_10'), size=plotlinewidth)+
+  geom_line( aes(y=p_11, col='p_11'), size=plotlinewidth)+
+  geom_line( aes(y=p_12, col='p_12'), size=plotlinewidth)+
+  geom_line( aes(y=p_13, col='p_13'), size=plotlinewidth)+
+  geom_line( aes(y=p_14, col='p_14'), size=plotlinewidth)+
+  geom_line( aes(y=p_15, col='p_15'), size=plotlinewidth)+
+  geom_line( aes(y=p_16, col='p_16'), size=plotlinewidth)+
+
+	coord_cartesian(xlim=NULL, ylim=NULL)+
+	facet_grid(participant ~ . )+
+	ylab('non-rigid shape parameters') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+
+png(filename= paste(tag,"_p0top16_nonrigidparameters.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+
+
+#p_17, p_18, p_19, p_20, p_21, p_22, p_23, p_24, p_25, p_26, p_27, p_28, p_29, p_30, p_31, p_32, p_33, 
+plot <-	ggplot(xdata, aes(x=frame) ) +	
+  geom_line( aes(y=p_17, col='p_17'), size=plotlinewidth)+
+  geom_line( aes(y=p_18, col='p_18'), size=plotlinewidth)+
+  geom_line( aes(y=p_19, col='p_19'), size=plotlinewidth)+
+  geom_line( aes(y=p_20, col='p_20'), size=plotlinewidth)+
+  geom_line( aes(y=p_21, col='p_21'), size=plotlinewidth)+
+  geom_line( aes(y=p_22, col='p_22'), size=plotlinewidth)+
+  geom_line( aes(y=p_23, col='p_23'), size=plotlinewidth)+
+  geom_line( aes(y=p_24, col='p_24'), size=plotlinewidth)+
+  geom_line( aes(y=p_25, col='p_25'), size=plotlinewidth)+
+  geom_line( aes(y=p_26, col='p_26'), size=plotlinewidth)+
+  geom_line( aes(y=p_27, col='p_27'), size=plotlinewidth)+
+  geom_line( aes(y=p_28, col='p_28'), size=plotlinewidth)+
+  geom_line( aes(y=p_29, col='p_29'), size=plotlinewidth)+
+  geom_line( aes(y=p_30, col='p_30'), size=plotlinewidth)+
+  geom_line( aes(y=p_31, col='p_31'), size=plotlinewidth)+
+  geom_line( aes(y=p_32, col='p_32'), size=plotlinewidth)+
+  geom_line( aes(y=p_33, col='p_33'), size=plotlinewidth)+
+ 
+	coord_cartesian(xlim=NULL, ylim=NULL)+
+	facet_grid(participant ~ . )+
+	ylab('non-rigid shape parameters') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+
+png(filename= paste(tag,"_p17top33_nonrigidparameters.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+
+
 
 #p_0, p_1, p_2, p_3, p_4, p_5, p_6, p_7, p_8, p_9, p_10, p_11, p_12, p_13, p_14, p_15, p_16, p_17, p_18, p_19, p_20, p_21, p_22, p_23, p_24, p_25, p_26, p_27, p_28, p_29, p_30, p_31, p_32, p_33, 
 plot <-	ggplot(xdata, aes(x=frame) ) +	
@@ -772,26 +1094,44 @@ dev.off()
 
 
 
-##p_scale, p_rx, p_ry, p_rz, p_tx, p_ty, 
+##p_tx, p_ty, 
 plot <-	ggplot(xdata, aes(x=frame) ) +	
-  geom_line( aes(y=p_scale, col='p_scale'), size=plotlinewidth)+
-  geom_line( aes(y=p_rx, col='p_rx'), size=plotlinewidth)+
-  geom_line( aes(y=p_ry, col='p_ry'), size=plotlinewidth)+
-  geom_line( aes(y=p_rz, col='p_rz'), size=plotlinewidth)+
   geom_line( aes(y=p_tx, col='p_tx'), size=plotlinewidth)+
   geom_line( aes(y=p_ty, col='p_ty'), size=plotlinewidth)+
  
 	coord_cartesian(xlim=NULL, ylim=NULL)+
 	facet_grid(participant ~ . )+
-	ylab('scale, rotation and translation terms of the Point Distrubution Model') + 
+	ylab('Translation terms of the Point Distrubution Model') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
 
 
-png(filename= paste(tag,"_pscalerxyztxy_pdm.png",sep=''),
+png(filename= paste(tag,"_ptxy_pdm.png",sep=''),
    width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
 print(plot)
 dev.off()
+
+
+##p_scale, p_rx, p_ry, p_rz 
+plot <-	ggplot(xdata, aes(x=frame) ) +	
+  geom_line( aes(y=p_scale, col='p_scale'), size=plotlinewidth)+
+  geom_line( aes(y=p_rx, col='p_rx'), size=plotlinewidth)+
+  geom_line( aes(y=p_ry, col='p_ry'), size=plotlinewidth)+
+  geom_line( aes(y=p_rz, col='p_rz'), size=plotlinewidth)+
+ 
+	coord_cartesian(xlim=NULL, ylim=NULL)+
+	facet_grid(participant ~ . )+
+	ylab('scale and rotation terms of the Point Distrubution Model') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+
+png(filename= paste(tag,"_pscalerxyz_pdm.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+
 
 
 
@@ -875,8 +1215,337 @@ dev.off()
 
 
 
+######################################
+plot <-	ggplot(xdata, aes(x=frame) ) +	
+  geom_line( aes(y=AU01_c, col='AU01_c'), size=plotlinewidth)+
+  geom_line( aes(y=AU01_r, col='AU01_r'), size=plotlinewidth)+
+  
+
+	coord_cartesian(xlim=NULL, ylim=NULL )+ 
+	facet_grid(participant ~ . )+
+	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
 
 
+
+png(filename= paste(tag,"_AU01_cr.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+
+
+######################################
+plot <-	ggplot(xdata, aes(x=frame) ) +	
+  geom_line( aes(y=AU02_c, col='AU02_c'), size=plotlinewidth)+
+  geom_line( aes(y=AU02_r, col='AU02_r'), size=plotlinewidth)+
+  
+
+	coord_cartesian(xlim=NULL, ylim=NULL )+ 
+	facet_grid(participant ~ . )+
+	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+
+
+png(filename= paste(tag,"_AU02_cr.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+######################################
+plot <-	ggplot(xdata, aes(x=frame) ) +	
+  geom_line( aes(y=AU04_c, col='AU04_c'), size=plotlinewidth)+
+  geom_line( aes(y=AU04_r, col='AU04_r'), size=plotlinewidth)+
+  
+
+	coord_cartesian(xlim=NULL, ylim=NULL )+ 
+	facet_grid(participant ~ . )+
+	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+
+
+png(filename= paste(tag,"_AU04_cr.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+######################################
+plot <-	ggplot(xdata, aes(x=frame) ) +	
+  geom_line( aes(y=AU05_c, col='AU05_c'), size=plotlinewidth)+
+  geom_line( aes(y=AU05_r, col='AU05_r'), size=plotlinewidth)+
+  
+
+	coord_cartesian(xlim=NULL, ylim=NULL )+ 
+	facet_grid(participant ~ . )+
+	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+
+
+png(filename= paste(tag,"_AU05_cr.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+
+######################################
+plot <-	ggplot(xdata, aes(x=frame) ) +	
+  geom_line( aes(y=AU06_c, col='AU06_c'), size=plotlinewidth)+
+  geom_line( aes(y=AU06_r, col='AU06_r'), size=plotlinewidth)+
+  
+
+	coord_cartesian(xlim=NULL, ylim=NULL )+ 
+	facet_grid(participant ~ . )+
+	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+
+
+png(filename= paste(tag,"_AU06_cr.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+######################################
+plot <-	ggplot(xdata, aes(x=frame) ) +	
+  geom_line( aes(y=AU07_c, col='AU07_c'), size=plotlinewidth)+
+  geom_line( aes(y=AU07_r, col='AU07_r'), size=plotlinewidth)+
+  
+
+	coord_cartesian(xlim=NULL, ylim=NULL )+ 
+	facet_grid(participant ~ . )+
+	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+
+
+png(filename= paste(tag,"_AU07_cr.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+######################################
+plot <-	ggplot(xdata, aes(x=frame) ) +	
+  geom_line( aes(y=AU09_c, col='AU09_c'), size=plotlinewidth)+
+  geom_line( aes(y=AU09_r, col='AU09_r'), size=plotlinewidth)+
+  
+
+	coord_cartesian(xlim=NULL, ylim=NULL )+ 
+	facet_grid(participant ~ . )+
+	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+
+
+png(filename= paste(tag,"_AU09_cr.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+
+######################################
+plot <-	ggplot(xdata, aes(x=frame) ) +	
+  geom_line( aes(y=AU10_c, col='AU10_c'), size=plotlinewidth)+
+  geom_line( aes(y=AU10_r, col='AU10_r'), size=plotlinewidth)+
+  
+
+	coord_cartesian(xlim=NULL, ylim=NULL )+ 
+	facet_grid(participant ~ . )+
+	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+
+
+png(filename= paste(tag,"_AU10_cr.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+
+######################################
+plot <-	ggplot(xdata, aes(x=frame) ) +	
+  geom_line( aes(y=AU12_c, col='AU12_c'), size=plotlinewidth)+
+  geom_line( aes(y=AU12_r, col='AU12_r'), size=plotlinewidth)+
+  
+
+	coord_cartesian(xlim=NULL, ylim=NULL )+ 
+	facet_grid(participant ~ . )+
+	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+
+
+png(filename= paste(tag,"_AU12_cr.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+
+
+######################################
+plot <-	ggplot(xdata, aes(x=frame) ) +	
+  geom_line( aes(y=AU14_c, col='AU14_c'), size=plotlinewidth)+
+  geom_line( aes(y=AU14_r, col='AU14_r'), size=plotlinewidth)+
+  
+
+	coord_cartesian(xlim=NULL, ylim=NULL )+ 
+	facet_grid(participant ~ . )+
+	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+
+
+png(filename= paste(tag,"_AU14_cr.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+
+######################################
+plot <-	ggplot(xdata, aes(x=frame) ) +	
+  geom_line( aes(y=AU15_c, col='AU15_c'), size=plotlinewidth)+
+  geom_line( aes(y=AU15_r, col='AU15_r'), size=plotlinewidth)+
+  
+
+	coord_cartesian(xlim=NULL, ylim=NULL )+ 
+	facet_grid(participant ~ . )+
+	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+
+
+png(filename= paste(tag,"_AU15_cr.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+######################################
+plot <-	ggplot(xdata, aes(x=frame) ) +	
+  geom_line( aes(y=AU17_c, col='AU17_c'), size=plotlinewidth)+
+  geom_line( aes(y=AU17_r, col='AU17_r'), size=plotlinewidth)+
+  
+
+	coord_cartesian(xlim=NULL, ylim=NULL )+ 
+	facet_grid(participant ~ . )+
+	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+
+
+png(filename= paste(tag,"_AU17_cr.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+######################################
+plot <-	ggplot(xdata, aes(x=frame) ) +	
+  geom_line( aes(y=AU20_c, col='AU20_c'), size=plotlinewidth)+
+  geom_line( aes(y=AU20_r, col='AU20_r'), size=plotlinewidth)+
+  
+
+	coord_cartesian(xlim=NULL, ylim=NULL )+ 
+	facet_grid(participant ~ . )+
+	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+
+
+png(filename= paste(tag,"_AU20_cr.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+######################################
+plot <-	ggplot(xdata, aes(x=frame) ) +	
+  geom_line( aes(y=AU23_c, col='AU23_c'), size=plotlinewidth)+
+  geom_line( aes(y=AU23_r, col='AU23_r'), size=plotlinewidth)+
+  
+
+	coord_cartesian(xlim=NULL, ylim=NULL )+ 
+	facet_grid(participant ~ . )+
+	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+
+
+png(filename= paste(tag,"_AU23_cr.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+
+######################################
+plot <-	ggplot(xdata, aes(x=frame) ) +	
+  geom_line( aes(y=AU25_c, col='AU25_c'), size=plotlinewidth)+
+  geom_line( aes(y=AU25_r, col='AU25_r'), size=plotlinewidth)+
+  
+
+	coord_cartesian(xlim=NULL, ylim=NULL )+ 
+	facet_grid(participant ~ . )+
+	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+
+
+png(filename= paste(tag,"_AU25_cr.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+######################################
+plot <-	ggplot(xdata, aes(x=frame) ) +	
+  geom_line( aes(y=AU26_c, col='AU26_c'), size=plotlinewidth)+
+  geom_line( aes(y=AU26_r, col='AU26_r'), size=plotlinewidth)+
+  
+
+	coord_cartesian(xlim=NULL, ylim=NULL )+ 
+	facet_grid(participant ~ . )+
+	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+
+
+png(filename= paste(tag,"_AU26_cr.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+######################################
+plot <-	ggplot(xdata, aes(x=frame) ) +	
+  geom_line( aes(y=AU45_c, col='AU45_c'), size=plotlinewidth)+
+  geom_line( aes(y=AU45_r, col='AU45_r'), size=plotlinewidth)+
+  
+
+	coord_cartesian(xlim=NULL, ylim=NULL )+ 
+	facet_grid(participant ~ . )+
+	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+
+
+png(filename= paste(tag,"_AU45_cr.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
 
 
 

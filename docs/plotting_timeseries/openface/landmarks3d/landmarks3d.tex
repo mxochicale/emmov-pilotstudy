@@ -1,0 +1,116 @@
+\documentclass[a4paper,12pt]{article}
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+
+
+%% Sets page size and margins
+%\usepackage[a4paper,top=1cm,bottom=4mm,left=3cm,right=0mm,marginparwidth=1.75cm]{geometry}
+%\usepackage[a4paper,top=0cm,bottom=3mm,left=3mm,right=0mm,marginparwidth=0cm]{geometry}
+\usepackage{geometry} % for \newgeometry{} and \restoregeometry
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{url}%for \path{}
+\usepackage{lscape}
+\pagenumbering{gobble}%no numbers in the webpage
+
+%\usepackage[counterclockwise]{rotating} %sidewaysfigure
+
+
+
+
+
+\graphicspath{{/home/map479/mxochicale/github/DataSets/emmov/plots_timeseries/}}
+
+\title{Face Landmarks 3D}
+\author{Miguel P Xochicale \\
+School of Engineering\\
+University of Birmingham, UK}
+
+
+\begin{document}
+
+
+\newgeometry{top=20mm,bottom=20mm,left=20mm,right=20mm}
+\maketitle
+
+%\begin{abstract}
+%
+%\end{abstract}
+
+
+\section{Description}
+
+
+
+X\_0, ... X\_67, Y\_0,...Y\_67, Z\_0,...Z\_67 location of 3D landmarks in millimetres \cite{baltrusaitis2016}.
+
+
+
+
+\section{r-scripts and data paths}
+\path{~/github/emmov-pilotstudy/code/r-scripts/plotting} \\
+\path{timeseries-openface.R}
+is used to generate the plots which are saved at: \\
+\path{~/github/DataSets/emmov/plots_timeseries/*}
+
+
+
+The data is available in \cite{mxochicale2018}.
+
+
+
+\bibliographystyle{apalike}
+\bibliography{references}
+
+%\newpage
+
+%\newgeometry{top=0cm,bottom=3mm,left=3mm,right=0mm,marginparwidth=0cm}
+%\restoregeometry
+
+
+
+
+\begin{figure}
+\centering
+\includegraphics{openface-timeseries_X_all}
+\caption{Landmarks in 3D for $X$ variable.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{openface-timeseries_Y_all}
+\caption{Landmarks in 3D for $Y$ variable.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{openface-timeseries_Z_all}
+\caption{Landmarks in 3D for $Z$ variable.}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

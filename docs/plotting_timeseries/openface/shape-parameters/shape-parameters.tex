@@ -1,0 +1,120 @@
+\documentclass[a4paper,12pt]{article}
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+
+
+%% Sets page size and margins
+%\usepackage[a4paper,top=1cm,bottom=4mm,left=3cm,right=0mm,marginparwidth=1.75cm]{geometry}
+%\usepackage[a4paper,top=0cm,bottom=3mm,left=3mm,right=0mm,marginparwidth=0cm]{geometry}
+\usepackage{geometry} % for \newgeometry{} and \restoregeometry
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{url}%for \path{}
+\usepackage{lscape}
+\pagenumbering{gobble}%no numbers in the webpage
+
+%\usepackage[counterclockwise]{rotating} %sidewaysfigure
+
+
+
+
+
+\graphicspath{{/home/map479/mxochicale/github/DataSets/emmov/plots_timeseries/}}
+
+\title{Shape Parameters}
+\author{Miguel P Xochicale \\
+School of Engineering\\
+University of Birmingham, UK}
+
+
+\begin{document}
+
+
+\newgeometry{top=20mm,bottom=20mm,left=20mm,right=20mm}
+\maketitle
+
+%\begin{abstract}
+%
+%\end{abstract}
+
+
+\section{Description}
+
+
+Parameters of a point distribution model (PDM) that describe the rigid face shape 
+(location, scale and rotation) and non-rigid face shape 
+(deformation due to expression and identity). 
+
+p\_scale, p\_rx, p\_ry, p\_rz, p\_tx, p\_ty - scale, rotation and 
+translation terms of the PDM.
+
+p\_0, p\_1, ... p\_33 - non-rigid shape parameters \cite{baltrusaitis2016}.
+
+
+\section{r-scripts and data paths}
+\path{~/github/emmov-pilotstudy/code/r-scripts/plotting} \\
+\path{timeseries-openface.R}
+is used to generate the plots which are saved at: \\
+\path{~/github/DataSets/emmov/plots_timeseries/*}
+
+
+
+The data is available in \cite{mxochicale2018}.
+
+
+
+\bibliographystyle{apalike}
+\bibliography{references}
+
+%\newpage
+
+%\newgeometry{top=0cm,bottom=3mm,left=3mm,right=0mm,marginparwidth=0cm}
+%\restoregeometry
+
+
+
+\begin{figure}
+\centering
+\includegraphics{openface-timeseries_pscalerxyz_pdm}
+\caption{Rigid face shape for scale and rotation.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{openface-timeseries_ptxy_pdm}
+\caption{Rigid face shape for location.}
+\end{figure}
+
+
+
+
+\begin{figure}
+\centering
+\includegraphics{openface-timeseries_p0top16_nonrigidparameters}
+\caption{Non-rigid face shape p0 to p16 parameters for deformation due to expression and indentity}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{openface-timeseries_p17top33_nonrigidparameters}
+\caption{Non-rigid face shape  p17 to p33 parameters for deformation due to expression and indentity.}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\includegraphics{openface-timeseries_p0top33_nonrigidparameters}
+\caption{Non-rigid face shape p0 to p33 parameters for deformation due to expression and indentity.}
+\end{figure}
+
+
+
+
+
+%
+\end{document}
