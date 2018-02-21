@@ -2,6 +2,16 @@ r-scripts
 ---
 
 
+# Usage
+Open a terminal and run R as follow
+
+```
+$ R
+```
+once R is loaded, explore the history with the up arrow and run the script.
+
+
+
 # R version for the scripts
 
 ```

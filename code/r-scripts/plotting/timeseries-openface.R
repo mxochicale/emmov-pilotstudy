@@ -48,7 +48,7 @@ github_path <- getwd()
 
 main_data_path <- paste( main_repository_path, '/data/openface',sep="")
 outcomes_path <- paste(github_path,"/DataSets/emmov",sep="")
-
+relativeplotpath <- "/plots_timeseries/openface"
 
 
 
@@ -163,7 +163,7 @@ xdata <- datable[,.SD[windowframe],by=.(participant,trial)];
 ################################################################################
 # (3.1) Creating  and Changing to PlotPath
 #
-plot_path <- paste(outcomes_path,"/plots_timeseries",sep="")
+plot_path <- paste(outcomes_path,relativeplotpath,sep="")
 if (file.exists(plot_path)){
     setwd(file.path(plot_path))
 } else {

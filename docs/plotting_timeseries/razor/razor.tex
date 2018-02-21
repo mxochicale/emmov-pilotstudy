@@ -24,11 +24,14 @@
 
 
 
-\graphicspath{{/home/map479/mxochicale/github/DataSets/emmov/plots_timeseries/}}
+\graphicspath{{/home/map479/mxochicale/github/DataSets/emmov/plots_timeseries/razor/}}
+%\title{ OpenFace Time Series }
 
-\title{Face Landmarks 3D}
+\title{Razor Inertial Sensor}
 \author{Miguel P Xochicale \\
+% map479@bham.ac.uk \\
 School of Engineering\\
+%Department of Electronic, Electric and System Engineering\\
 University of Birmingham, UK}
 
 
@@ -39,30 +42,22 @@ University of Birmingham, UK}
 \maketitle
 
 %\begin{abstract}
-%
+%Time series for Facial Action Units. 
 %\end{abstract}
 
 
 \section{Description}
-
-
-
-X\_0, ... X\_67, Y\_0,...Y\_67, Z\_0,...Z\_67 location of 3D landmarks in millimetres \cite{baltrusaitis2016}.
-
-
+Time series for raw data of accelerometer and gyroscope inertial sensor.
+The sample rate is 50 Hertz. 
 
 
 \section{r-scripts and data paths}
 \path{~/github/emmov-pilotstudy/code/r-scripts/plotting} \\
-\path{timeseries-openface.R}
+\path{timeseries-razor.R}
 is used to generate the plots which are saved at: \\
 \path{~/github/DataSets/emmov/plots_timeseries/*}
 
-
-
 The data is available in \cite{mxochicale2018}.
-
-
 
 \bibliographystyle{apalike}
 \bibliography{references}
@@ -77,31 +72,15 @@ The data is available in \cite{mxochicale2018}.
 
 \begin{figure}
 \centering
-\includegraphics{openface-timeseries_X_all}
-\caption{Landmarks in 3D for $X$ variable.}
+\includegraphics{razor-timeseries_AccXYZ}
+\caption{3D Accelerometer}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics{openface-timeseries_Y_all}
-\caption{Landmarks in 3D for $Y$ variable.}
+\includegraphics{razor-timeseries_GyroXYZ}
+\caption{3D Gyroscope}
 \end{figure}
-
-\begin{figure}
-\centering
-\includegraphics{openface-timeseries_Z_all}
-\caption{Landmarks in 3D for $Z$ variable.}
-\end{figure}
-
-
-
-
-
-
-
-
-
-
 
 
 

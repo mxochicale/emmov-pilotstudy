@@ -1,0 +1,134 @@
+\documentclass[a4paper,12pt]{article}
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+
+
+%% Sets page size and margins
+%\usepackage[a4paper,top=1cm,bottom=4mm,left=3cm,right=0mm,marginparwidth=1.75cm]{geometry}
+%\usepackage[a4paper,top=0cm,bottom=3mm,left=3mm,right=0mm,marginparwidth=0cm]{geometry}
+\usepackage{geometry} % for \newgeometry{} and \restoregeometry
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{url}%for \path{}
+\usepackage{lscape}
+\pagenumbering{gobble}%no numbers in the webpage
+
+%\usepackage[counterclockwise]{rotating} %sidewaysfigure
+
+
+
+
+
+\graphicspath{{/home/map479/mxochicale/github/DataSets/emmov/plots_timeseries/openface/}}
+
+\title{Face Landmarks 2D}
+\author{Miguel P Xochicale \\
+School of Engineering\\
+University of Birmingham, UK}
+
+
+\begin{document}
+
+
+\newgeometry{top=20mm,bottom=20mm,left=20mm,right=20mm}
+\maketitle
+
+%\begin{abstract}
+%
+%\end{abstract}
+
+
+\section{Description}
+
+x\_0, x\_1, ... x\_66, x\_67, y\_0,...y\_67 location of 2D landmarks in pixels \cite{baltrusaitis2016}.
+
+
+
+
+\section{r-scripts and data paths}
+\path{~/github/emmov-pilotstudy/code/r-scripts/plotting} \\
+\path{timeseries-openface.R}
+is used to generate the plots which are saved at: \\
+\path{~/github/DataSets/emmov/plots_timeseries/*}
+
+
+
+The data is available in \cite{mxochicale2018}.
+
+
+
+\bibliographystyle{apalike}
+\bibliography{references}
+
+%\newpage
+
+%\newgeometry{top=0cm,bottom=3mm,left=3mm,right=0mm,marginparwidth=0cm}
+%\restoregeometry
+
+
+
+
+\begin{figure}
+\centering
+\includegraphics{openface-timeseries_x_01_to_x_16_roundface}
+\caption{Landmarks in 2D for x\_01 to x\_16 variables for the round face.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{openface-timeseries_x_17_to_x_26_eyerbrows}
+\caption{Landmarks in 2D for x\_17 to x\_26 variables for the eye brows.}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\includegraphics{openface-timeseries_x_48_to_x_67_mouth}
+\caption{Landmarks in 2D for x\_48 to x\_67 variables for the mouth.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{openface-timeseries_x_all}
+\caption{Landmarks in 2D for x\_all  variables.}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\includegraphics{openface-timeseries_y_01_to_y_16_roundface}
+\caption{Landmarks in 2D for y\_01 to y\_16 variables for the round face.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{openface-timeseries_y_17_to_y_26_eyerbrows}
+\caption{Landmarks in 2D for y\_17 to y\_26 variables for the eye brows.}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\includegraphics{openface-timeseries_y_48_to_y_67_mouth}
+\caption{Landmarks in 2D for y\_48 to y\_67 variables for the mouth.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{openface-timeseries_y_all}
+\caption{Landmarks in 2D for y\_all  variables.}
+\end{figure}
+
+
+
+
+
+
+
+
+\end{document}

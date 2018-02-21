@@ -2,7 +2,11 @@
 
 
 
-* `timeseries-openface.R` creates the following image files:
+
+
+* `timeseries-openface.R` creates the following image files
+at  `/home/map479/mxochicale/github/DataSets/emmov/plots_timeseries/openface`
+
 
 ```
 openface-timeseries_AU01_cr.png
@@ -56,3 +60,10 @@ openface-timeseries_Z_all.png
 ```
 
 
+* timeseries-razor.R creates the following images files at
+`/home/map479/mxochicale/github/DataSets/emmov/plots_timeseries/razor`
+
+```
+razor-timeseries_AccXYZ.png
+razor-timeseries_GyroXYZ.png
+```

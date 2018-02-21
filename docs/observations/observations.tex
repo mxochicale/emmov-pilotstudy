@@ -1,0 +1,85 @@
+\documentclass[a4paper,12pt]{article}
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+
+
+%% Sets page size and margins
+%\usepackage[a4paper,top=1cm,bottom=4mm,left=3cm,right=0mm,marginparwidth=1.75cm]{geometry}
+%\usepackage[a4paper,top=0cm,bottom=3mm,left=3mm,right=0mm,marginparwidth=0cm]{geometry}
+\usepackage{geometry} % for \newgeometry{} and \restoregeometry
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{url}%for \path{}
+\usepackage{lscape}
+\pagenumbering{gobble}%no numbers in the webpage
+%\usepackage[counterclockwise]{rotating} %sidewaysfigure
+
+%\graphicspath{{/home/map479/mxochicale/github/DataSets/emmov/plots_timeseries/openface/}}
+%\title{ OpenFace Time Series }
+
+\title{Observations for emmov-pilotstudy}
+\author{Miguel P Xochicale \\
+% map479@bham.ac.uk \\
+School of Engineering\\
+%Department of Electronic, Electric and System Engineering\\
+University of Birmingham, UK}
+
+
+\begin{document}
+\newgeometry{top=20mm,bottom=20mm,left=20mm,right=20mm}
+\maketitle
+
+%\begin{abstract}
+%Time series for Facial Action Units. 
+%\end{abstract}
+
+
+
+\section{Observations}
+
+
+\begin{enumerate}
+\item One general observation from the face landmarks is that 
+movements of the head pose are mounted in all the face landmarks 
+
+\item For future experiments with \cite{baltrusaitis2016}, the camera 
+should be put as closer as can be to the face of the person 
+in order to get better estimation of facelandmarks.
+
+\item Data from the inertial sensor got problems in the syncronisation
+and the collection of data from four sensors for the seven  experiments,
+only three collected data for the four inertial sensors, while the other 
+four only collected data from three sensors.
+
+\end{enumerate}
+
+
+The data for the current pilot studye is available in \cite{mxochicale2018}.
+
+
+
+
+
+
+
+
+\bibliographystyle{apalike}
+\bibliography{references}
+
+%\newpage
+
+%\newgeometry{top=0cm,bottom=3mm,left=3mm,right=0mm,marginparwidth=0cm}
+%\restoregeometry
+
+
+
+
+
+
+
+\end{document}
