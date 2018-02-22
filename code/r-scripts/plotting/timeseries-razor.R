@@ -21,6 +21,8 @@
 		# (3.1) Creating and changing plotting paths
 		# (3.2) Plots features
 		# (3.3) Plots data 
+	# (4) Creating Preprossed Data Path
+	# (5) Writing Data
 
 
 #################
@@ -49,7 +51,7 @@ github_path <- getwd()
 main_data_path <- paste( main_repository_path, '/data/razor_imu',sep="")
 outcomes_path <- paste(github_path,"/DataSets/emmov",sep="")
 relativeplotpath <- "/plots_timeseries/razor"
-
+relativeodatapath <- "/datatables"
 
 
 
@@ -58,9 +60,9 @@ relativeplotpath <- "/plots_timeseries/razor"
 setwd(main_data_path)
 data_path_list <- list.dirs(path = ".", full.names = TRUE, recursive = TRUE)
 
-participantsNN <- 7
+participantsNN <- 6
 trialsNN <- 1
-participant_index <- c(2:8)
+participant_index <- c(2:(participantsNN+1))
 sNN <- 1:4 # number of sensors
 
 
@@ -92,8 +94,9 @@ for(participants_k in 1:participantsNN)
 	message('files[', sNN_k,'] is an NA')
 	}
 	else{	
-
+	#
 	# This for non NA sensors
+	#
 	if ( files[sNN_k] == 's02.csv' ) {
 		message('s02.csv')
 		pNN_ <-  paste("p", participants_k, sep="")
@@ -106,20 +109,44 @@ for(participants_k in 1:participantsNN)
         	temp[,sample:=seq(.N)]
         	setcolorder(temp,c(10,1:9))
         	# add s01 label to sensor
-        	functmp <-function(x) {list("s02")}
+        	functmp <-function(x) {list("imu-human")}
         	temp[,c("sensor"):=functmp(), ]
         	setcolorder(temp,c(11,1:10) )
+		ts02<-temp
 		}
 
-	
+
+	if ( files[sNN_k] == 's03.csv' ) {
+		message('s03.csv')
+		pNN_ <-  paste("p", participants_k, sep="")
+  		assign (pNN_, fread(  files[ sNN_k ] , header = TRUE, sep=',') )
+		temp <- get(pNN_)
+
+		# add column names
+        	setnames(temp, c("Yaw", "Pitch", "Roll", "AccX", "AccY", "AccZ", "GyroX", "GyroY",	"GyroZ") )
+        	#add sample label
+        	temp[,sample:=seq(.N)]
+        	setcolorder(temp,c(10,1:9))
+        	# add s01 label to sensor
+        	functmp <-function(x) {list("imu-robot")}
+        	temp[,c("sensor"):=functmp(), ]
+        	setcolorder(temp,c(11,1:10) )
+		ts03<-temp
+		}
+
 	}##END ifelseNA 
 	
+
+
+
+	
+
 	}
 	# for END sNN_k
+	temp<-rbind(ts02,ts03)
 
-
-
-
+	
+	
 
 
     	# Particpant Number
@@ -178,7 +205,7 @@ for(participants_k in 1:participantsNN)
 
 
 ##### dataTable
-datable <- pNN_tmp
+datatable <- pNN_tmp
 
 
 
@@ -190,8 +217,8 @@ datable <- pNN_tmp
 ################################
 ### (2.1) Windowing Data [xdata[,.SD[1:2],by=.(Participant,Activity,Sensor)]]
 
-windowframe = 000:2000;
-xdata <- datable[,.SD[windowframe],by=.(participant,trial)];
+windowframe = 400:1100;
+xdata <- datatable[,.SD[windowframe],by=.(participant,trial,sensor)];
 
 
 
@@ -217,7 +244,7 @@ if (file.exists(plot_path)){
 #################
 # (3.2) Plots Features
 tag <- 'razor-timeseries'
-image_width <- 2000
+image_width <- 2500
 image_height <- 3000
 image_dpi <- 300
 image_bg <- "transparent"
@@ -234,7 +261,7 @@ plot <- ggplot(xdata, aes(x=sample))+
 	geom_line( aes(y=AccX, col='AccX'), size=plotlinewidth)+
 	geom_line( aes(y=AccY, col='AccY'), size=plotlinewidth)+
 	geom_line( aes(y=AccZ, col='AccZ'), size=plotlinewidth)+
-	facet_grid(participant~.)+
+	facet_grid(participant~sensor)+
 	scale_y_continuous()+
 	coord_cartesian(xlim=NULL, ylim=c(-500,500))
 
@@ -249,7 +276,7 @@ plot <- ggplot(xdata, aes(x=sample))+
 	geom_line( aes(y=GyroX, col='GyroX'), size=plotlinewidth)+
 	geom_line( aes(y=GyroY, col='GyroY'), size=plotlinewidth)+
 	geom_line( aes(y=GyroZ, col='GyroZ'), size=plotlinewidth)+
-	facet_grid(participant~.)+
+	facet_grid(participant~sensor)+
 	scale_y_continuous()+
 	coord_cartesian(xlim=NULL, ylim=c(-3,3))
 
@@ -268,8 +295,28 @@ dev.off()
 #	scale_y_continuous()+
 #	coord_cartesian(xlim=NULL, ylim=c(-200,200))
 #plot
-#
 
+
+################################################################################
+# (4) Creating Preprossed Data Path
+
+odata_path <- paste(outcomes_path,relativeodatapath,sep="")
+if (file.exists(odata_path)){
+    setwd(file.path(odata_path))
+} else {
+  dir.create(odata_path, recursive=TRUE)
+  setwd(file.path(odata_path))
+}
+
+
+
+
+################################################################################
+####  (5)  Writing Data
+write.table(datatable, "rawimudata-v00.datatable", row.name=FALSE)
+
+message('datatable file has been created at '  )
+message (odata_path)
 
 
 
