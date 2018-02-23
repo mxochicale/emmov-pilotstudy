@@ -17,6 +17,7 @@
  	# (1) Definifing paths and Reading data
 	# (2) Data Filtering
 		# (2.1) Windowing
+		# (2.2) Shifting Data
 	# (3) Plotting
 		# (3.1) Creating and changing plotting paths
 		# (3.2) Plots features
@@ -217,8 +218,67 @@ datatable <- pNN_tmp
 ################################
 ### (2.1) Windowing Data [xdata[,.SD[1:2],by=.(Participant,Activity,Sensor)]]
 
-windowframe = 400:1100;
+windowframe = 00:1500;
 xdata <- datatable[,.SD[windowframe],by=.(participant,trial,sensor)];
+
+
+
+################################
+### (2.2) Shifting Data 
+cols = c('Yaw', 'Pitch', 'Roll', 'AccX','AccY','AccZ','GyroX','GyroY','GyroZ')
+anscols = paste("lead", cols, sep="")
+
+
+setkey(xdata, participant)
+xdp01 <- xdata[.(c('p01'))]
+hdp01 <- xdp01[sensor=='imu-human', (anscols):= shift(.SD,75, fill=0, type='lead') , by=.(participant,sensor), .SDcols=cols  ]
+rdp01 <- xdp01[sensor=='imu-robot', (anscols):= shift(.SD,00, fill=0, type='lead') , by=.(participant,sensor), .SDcols=cols  ]
+dp01 <- rbind(hdp01,rdp01)
+
+
+setkey(xdata, participant)
+xdp02 <- xdata[.(c('p02'))]
+hdp02 <- xdp02[sensor=='imu-human', (anscols):= shift(.SD,250, fill=0, type='lead') , by=.(participant,sensor), .SDcols=cols  ]
+rdp02 <- xdp02[sensor=='imu-robot', (anscols):= shift(.SD,250, fill=0, type='lead') , by=.(participant,sensor), .SDcols=cols  ]
+dp02 <- rbind(hdp02,rdp02)
+
+
+setkey(xdata, participant)
+xdp03 <- xdata[.(c('p03'))]
+hdp03 <- xdp03[sensor=='imu-human', (anscols):= shift(.SD,30, fill=0, type='lead') , by=.(participant,sensor), .SDcols=cols  ]
+rdp03 <- xdp03[sensor=='imu-robot', (anscols):= shift(.SD,00, fill=0, type='lead') , by=.(participant,sensor), .SDcols=cols  ]
+dp03 <- rbind(hdp03,rdp03)
+
+
+setkey(xdata, participant)
+xdp04 <- xdata[.(c('p04'))]
+hdp04 <- xdp04[sensor=='imu-human', (anscols):= shift(.SD,240, fill=0, type='lead') , by=.(participant,sensor), .SDcols=cols  ]
+rdp04 <- xdp04[sensor=='imu-robot', (anscols):= shift(.SD,240, fill=0, type='lead') , by=.(participant,sensor), .SDcols=cols  ]
+dp04 <- rbind(hdp04,rdp04)
+
+
+setkey(xdata, participant)
+xdp05 <- xdata[.(c('p05'))]
+hdp05 <- xdp05[sensor=='imu-human', (anscols):= shift(.SD,300, fill=0, type='lead') , by=.(participant,sensor), .SDcols=cols  ]
+rdp05 <- xdp05[sensor=='imu-robot', (anscols):= shift(.SD,300, fill=0, type='lead') , by=.(participant,sensor), .SDcols=cols  ]
+dp05 <- rbind(hdp05,rdp05)
+
+
+setkey(xdata, participant)
+xdp06 <- xdata[.(c('p06'))]
+hdp06 <- xdp06[sensor=='imu-human', (anscols):= shift(.SD,280, fill=0, type='lead') , by=.(participant,sensor), .SDcols=cols  ]
+rdp06 <- xdp06[sensor=='imu-robot', (anscols):= shift(.SD,280, fill=0, type='lead') , by=.(participant,sensor), .SDcols=cols  ]
+dp06 <- rbind(hdp06,rdp06)
+
+
+xdata <- rbind (dp01,dp02,dp03,dp04,dp05,dp06)
+
+
+xdata <- xdata[ , c('participant', 'trial', 'sensor', 'sample', anscols), with = FALSE]
+
+## Renaming Axis
+setnames(xdata, old=anscols, new=cols )
+
 
 
 
@@ -286,6 +346,33 @@ print(plot)
 dev.off()
 
 
+#plot <- ggplot(xdata, aes(x=sample))+  
+#	geom_line( aes(y=leadAccX, col='leadAccX'), size=plotlinewidth)+
+#	geom_line( aes(y=leadAccY, col='leadAccY'), size=plotlinewidth)+
+#	geom_line( aes(y=leadAccZ, col='leadAccZ'), size=plotlinewidth)+
+#	facet_grid(participant~sensor)+
+#	scale_y_continuous()+
+#	coord_cartesian(xlim=NULL, ylim=c(-500,500))
+#
+##png(filename= paste(tag,"_AccXYZ.png",sep=''),
+##   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+#print(plot)
+##dev.off()
+#
+#plot <- ggplot(xdata, aes(x=sample))+  
+#	geom_line( aes(y=leadGyroX, col='leadGyroX'), size=plotlinewidth)+
+#	geom_line( aes(y=leadGyroY, col='leadGyroY'), size=plotlinewidth)+
+#	geom_line( aes(y=leadGyroZ, col='leadGyroZ'), size=plotlinewidth)+
+#	facet_grid(participant~sensor)+
+#	scale_y_continuous()+
+#	coord_cartesian(xlim=NULL, ylim=c(-3,3))
+#
+##png(filename= paste(tag,"_GyroXYZ.png",sep=''),
+##   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+#print(plot)
+##dev.off()
+#
+
 
 #plot <- ggplot(xdata, aes(x=sample))+  
 #	geom_line( aes(y=Yaw, col='Yaw'), size=plotlinewidth)+
@@ -314,6 +401,7 @@ if (file.exists(odata_path)){
 ################################################################################
 ####  (5)  Writing Data
 write.table(datatable, "rawimudata-v00.datatable", row.name=FALSE)
+write.table(xdata, "semialigned-rawimudata-v00.datatable", row.name=FALSE)
 
 message('datatable file has been created at '  )
 message (odata_path)

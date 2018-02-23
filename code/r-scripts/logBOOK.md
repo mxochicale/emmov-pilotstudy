@@ -4,10 +4,23 @@ logBOOK
 # TODO
 
 
-* [ ] shift the data for each of the particpants with [:link:](https://brooksandrew.github.io/simpleblog/articles/advanced-data-table/)
+* [ ] shift the data for each of the particpants with [:link:](https://github.com/mxochicale/r-code_repository/tree/master/dataDOTtable)
 	at: `/home/map479/mxochicale/github/emmov-pilotstudy/code/r-scripts/plotting/timeseries-razor.R`
-	and save preprocessed.datatable at `~/data/razor_imu`
+
+```
+setkey(xdata, participant)
+xdp01 <- xdata[.(c('p01'))]
+hdp01 <- xdp01[sensor=='imu-human', (anscols):= shift(.SD,75, fill=0, type='lead') , by=.(participant,sensor), .SDcols=cols  ]
+rdp01 <- xdp01[sensor=='imu-robot', (anscols):= shift(.SD,00, fill=0, type='lead') , by=.(participant,sensor), .SDcols=cols  ]
+dp01 <- rbind(hdp01,rdp01)
+```
+(created:22feb2018 sorted:23feb2018)
+
+
+* [ ] save preprocessed.datatable at `~/data/razor_imu`
+
 	(created:22feb2018 sorted:)
+
 
 
 * [ ] plot 2d plots with x/y points using pose_tx and pose_ty (created:21february2018, sorted: )
