@@ -1,6 +1,6 @@
 ###############################################################################	
 #
-# Time series plots for razor IMU sensors 
+#  preprocessed data for razor IMU sensors 
 # 
 #
 #
@@ -17,12 +17,19 @@
  	# (1) Definifing paths and Reading data
 	# (2) Data Filtering
 		# (2.1) Windowing
-	# (3) Plotting
-		# (3.1) Creating and changing plotting paths
-		# (3.2) Plots features
-		# (3.3) Plots data 
-	# (4) Creating Preprossed Data Path
-	# (5) Writing Data
+	# (3) Postprocessing
+		# (3.0) Principal Component Analysis
+		# (3.1) Zero Mean Unit Variance
+		# (3.2) Savitzky-Golay Filter
+		# (3.3) Creating Low Frequency Components
+		# (3.4) Creating High Frequency Components
+		# (3.5) Smoothing data with hf sg zmuv
+	# (4) Plotting
+		# (4.0) Plot features
+		# (4.1) Creating and changing plot path
+	# (5) Creating path to write postprocessed data
+
+
 
 
 #################
@@ -61,35 +68,12 @@ odatapath <- paste( outcomes_path, relativeodatapath, sep="" )
 
 ################################################################################
 # (1) Setting DataSets paths and reading data
+
+
 setwd(odatapath)
 
-
-################################################################################
-# (2) Reading data
-datatable <- fread("rawimudata-v00.datatable", header=TRUE)
-
-
-
-
-
-
-
-
-#
-################################################################################
-# (3.1) Creating  and Changing to PlotPath
-plot_path <- paste(outcomes_path,relativeplotpath,sep="")
-if (file.exists(plot_path)){
-    setwd(file.path(plot_path))
-} else {
-  dir.create(plot_path, recursive=TRUE)
-  setwd(file.path(plot_path))
-}
-
-
-
-
-
+#datatable <- fread("rawimudata-v00.datatable", header=TRUE)
+datatable <- fread("semialigned-rawimudata-v00.datatable", header=TRUE)
 
 
 
@@ -106,7 +90,7 @@ if (file.exists(plot_path)){
 ### (2.1) Windowing Data [xdata[,.SD[1:2],by=.(Participant,Activity,Sensor)]]
 
 #windowframe = 400:1000;
-windowframe = 00:2000;
+windowframe = 100:1100;
 xdata <- datatable[,.SD[windowframe],by=.(participant,trial,sensor)];
 
 
@@ -115,6 +99,11 @@ xdata <- datatable[,.SD[windowframe],by=.(participant,trial,sensor)];
 
 ################################################################################
 # (3) Postprocessing
+
+
+################################################################################
+### (3.0) Principal Components
+###
 
 # principal components
 pc <- prcomp(  xdata[, .(AccX, AccY, AccZ) ] , center = T, scale. = T)
@@ -287,11 +276,11 @@ xdata[,c(
 
 
 ################################################################################
-# () Plotting
+# (4) Plotting
 #
 
 #################
-# (.1) Plots Features
+# (4.0) Plots Features
 tag <- 'razor-timeseries'
 image_width <- 2500
 image_height <- 3000
@@ -301,125 +290,136 @@ image_bg <- "transparent"
 plotlinewidth <- 1
 
 
+################################################################################
+# (4.1) Creating  and Changing to PlotPath
+plot_path <- paste(outcomes_path,relativeplotpath,sep="")
+if (file.exists(plot_path)){
+    setwd(file.path(plot_path))
+} else {
+  dir.create(plot_path, recursive=TRUE)
+  setwd(file.path(plot_path))
+}
+
+
 
 ######################
-### (.2) Plots Data from Razor sensor
+### (4.2) Plots Data from Razor sensor
 
 
-#plot <- ggplot(xdata, aes(x=sample))+  
-#	geom_line( aes(y=pc1_Acc, col='pc1_Acc'), size=plotlinewidth)+
-#	geom_line( aes(y=pc2_Acc, col='pc2_Acc'), size=plotlinewidth)+
-#	geom_line( aes(y=pc3_Acc, col='pc3_Acc'), size=plotlinewidth)+
-#	facet_grid(participant~sensor)+
-#	scale_y_continuous()+
-#	coord_cartesian(xlim=NULL, ylim=NULL  )+
-#	ylab('principal components for Acc') + 
-#	xlab('Sample')+
-#	labs(colour = 'pc')
-#
-#
-##png(filename= paste(tag,"_preAccXYZ.png",sep=''),
-##   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
-#print(plot)
-##dev.off()
-##
-#
+plot <- ggplot(xdata, aes(x=sample))+  
+	geom_line( aes(y=pc1_Acc, col='pc1_Acc'), size=plotlinewidth)+
+	geom_line( aes(y=pc2_Acc, col='pc2_Acc'), size=plotlinewidth)+
+	geom_line( aes(y=pc3_Acc, col='pc3_Acc'), size=plotlinewidth)+
+	facet_grid(participant~sensor)+
+	scale_y_continuous()+
+	coord_cartesian(xlim=NULL, ylim=NULL  )+
+	ylab('principal components for Acc') + 
+	xlab('Sample')+
+	labs(colour = 'pc')
 
 
-#plot <- ggplot(xdata, aes(x=sample))+  
-#	geom_line( aes(y=pc1_Gyro, col='pc1_Gyro'), size=plotlinewidth)+
-#	geom_line( aes(y=pc2_Gyro, col='pc2_Gyro'), size=plotlinewidth)+
-#	geom_line( aes(y=pc3_Gyro, col='pc3_Gyro'), size=plotlinewidth)+
-#	facet_grid(participant~sensor)+
-#	scale_y_continuous()+
-#	coord_cartesian(xlim=NULL, ylim=NULL  )+
-#	ylab('principal components for Gyro') + 
-#	xlab('Sample')+
-#	labs(colour = 'pc')
-#
-#
-###png(filename= paste(tag,"_preAccXYZ.png",sep=''),
-###   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
-#print(plot)
-###dev.off()
-###
-##
-
-#plot <- ggplot(xdata, aes(x=sample))+  
-#	geom_line( aes(y=pc1_AG, col='pc1_AG'), size=plotlinewidth)+
-#	geom_line( aes(y=pc2_AG, col='pc2_AG'), size=plotlinewidth)+
-#	geom_line( aes(y=pc3_AG, col='pc3_AG'), size=plotlinewidth)+
-#	facet_grid(participant~sensor)+
-#	scale_y_continuous()+
-#	coord_cartesian(xlim=NULL, ylim=NULL  )+
-#	ylab('principal components for Acc and Gyro') + 
-#	xlab('Sample')+
-#	labs(colour = 'pc')
-#
-#
-###png(filename= paste(tag,"_preAccXYZ.png",sep=''),
-###   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
-#print(plot)
-###dev.off()
-###
-##
-
-#plot <- ggplot(xdata, aes(x=sample))+  
-#	geom_line( aes(y=sgpc1_AG, col='sgpc1_AG'), size=plotlinewidth)+
-#	geom_line( aes(y=sgpc2_AG, col='sgpc2_AG'), size=plotlinewidth)+
-#	geom_line( aes(y=sgpc3_AG, col='sgpc3_AG'), size=plotlinewidth)+
-#	facet_grid(participant~sensor)+
-#	scale_y_continuous()+
-#	coord_cartesian(xlim=NULL, ylim=NULL  )+
-#	ylab('Savitzky-Golay filtering for principal components for Acc and Gyro') + 
-#	xlab('Sample')+
-#	labs(colour = 'pc')
-#
-#
-###png(filename= paste(tag,"_preAccXYZ.png",sep=''),
-###   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
-#print(plot)
-###dev.off()
-###
-##
-#
+png(filename= paste(tag,"_pcAcc.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
 
 
-#plot <- ggplot(xdata, aes(x=sample))+  
-#	geom_line( aes(y=zmuvAccX, col='zmuvAccX'), size=plotlinewidth)+
-#	geom_line( aes(y=zmuvAccY, col='zmuvAccY'), size=plotlinewidth)+
-#	geom_line( aes(y=zmuvAccZ, col='zmuvAccZ'), size=plotlinewidth)+
-#	facet_grid(participant~sensor)+
-#	scale_y_continuous()+
-#	coord_cartesian(xlim=NULL, ylim=c(-5,5)  )+
-#	ylab('ZeroMeanUnitVariance') + 
-#	xlab('Sample')+
-#	labs(colour = 'Feature')
 
 
-##png(filename= paste(tag,"_preAccXYZ.png",sep=''),
-##   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
-#print(plot)
-##dev.off()
+plot <- ggplot(xdata, aes(x=sample))+  
+	geom_line( aes(y=pc1_Gyro, col='pc1_Gyro'), size=plotlinewidth)+
+	geom_line( aes(y=pc2_Gyro, col='pc2_Gyro'), size=plotlinewidth)+
+	geom_line( aes(y=pc3_Gyro, col='pc3_Gyro'), size=plotlinewidth)+
+	facet_grid(participant~sensor)+
+	scale_y_continuous()+
+	coord_cartesian(xlim=NULL, ylim=NULL  )+
+	ylab('principal components for Gyro') + 
+	xlab('Sample')+
+	labs(colour = 'pc')
 
 
-##
-#plot <- ggplot(xdata, aes(x=sample))+  
-#	geom_line( aes(y=sgAccX, col='sgAccX'), size=plotlinewidth)+
-#	geom_line( aes(y=sgAccY, col='sgAccY'), size=plotlinewidth)+
-#	geom_line( aes(y=sgAccZ, col='sgAccZ'), size=plotlinewidth)+
-#	facet_grid(participant~sensor)+
-#	scale_y_continuous()+
-#	coord_cartesian(xlim=NULL, ylim=NULL  )+
-#	ylab('Savitzky-Golay') + 
-#	xlab('Sample')+
-#	labs(colour = 'Feature')
+png(filename= paste(tag,"_pcGyro.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
 
 
-##png(filename= paste(tag,"_preAccXYZ.png",sep=''),
-##   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
-#print(plot)
-##dev.off()
+
+plot <- ggplot(xdata, aes(x=sample))+  
+	geom_line( aes(y=pc1_AG, col='pc1_AG'), size=plotlinewidth)+
+	geom_line( aes(y=pc2_AG, col='pc2_AG'), size=plotlinewidth)+
+	geom_line( aes(y=pc3_AG, col='pc3_AG'), size=plotlinewidth)+
+	facet_grid(participant~sensor)+
+	scale_y_continuous()+
+	coord_cartesian(xlim=NULL, ylim=NULL  )+
+	ylab('principal components for Acc and Gyro') + 
+	xlab('Sample')+
+	labs(colour = 'pc')
+
+
+png(filename= paste(tag,"_pcAG.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+
+
+plot <- ggplot(xdata, aes(x=sample))+  
+	geom_line( aes(y=sgpc1_AG, col='sgpc1_AG'), size=plotlinewidth)+
+	geom_line( aes(y=sgpc2_AG, col='sgpc2_AG'), size=plotlinewidth)+
+	geom_line( aes(y=sgpc3_AG, col='sgpc3_AG'), size=plotlinewidth)+
+	facet_grid(participant~sensor)+
+	scale_y_continuous()+
+	coord_cartesian(xlim=NULL, ylim=NULL  )+
+	ylab('Savitzky-Golay filtering for principal components for Acc and Gyro') + 
+	xlab('Sample')+
+	labs(colour = 'pc')
+
+
+png(filename= paste(tag,"_sgpcAG.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+
+
+
+
+plot <- ggplot(xdata, aes(x=sample))+  
+	geom_line( aes(y=zmuvAccX, col='zmuvAccX'), size=plotlinewidth)+
+	geom_line( aes(y=zmuvAccY, col='zmuvAccY'), size=plotlinewidth)+
+	geom_line( aes(y=zmuvAccZ, col='zmuvAccZ'), size=plotlinewidth)+
+	facet_grid(participant~sensor)+
+	scale_y_continuous()+
+	coord_cartesian(xlim=NULL, ylim=c(-5,5)  )+
+	ylab('ZeroMeanUnitVariance') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+
+png(filename= paste(tag,"_zmuvAccXYZ.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+
+
+plot <- ggplot(xdata, aes(x=sample))+  
+	geom_line( aes(y=sgAccX, col='sgAccX'), size=plotlinewidth)+
+	geom_line( aes(y=sgAccY, col='sgAccY'), size=plotlinewidth)+
+	geom_line( aes(y=sgAccZ, col='sgAccZ'), size=plotlinewidth)+
+	facet_grid(participant~sensor)+
+	scale_y_continuous()+
+	coord_cartesian(xlim=NULL, ylim=NULL  )+
+	ylab('Savitzky-Golay') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+
+png(filename= paste(tag,"_sgAccXYZ.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
 
 
 plot <- ggplot(xdata, aes(x=sample))+  
@@ -433,87 +433,142 @@ plot <- ggplot(xdata, aes(x=sample))+
 	xlab('Sample')+
 	labs(colour = 'Feature')
 
-#png(filename= paste(tag,"_preAccXYZ.png",sep=''),
-#   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+png(filename= paste(tag,"_sgzmuvAccXYZ.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
 print(plot)
-#dev.off()
-
-
-#plot <- ggplot(xdata, aes(x=sample))+  
-#	geom_line( aes(y=sgzmuvGyroX, col='sgzmuvGyroX'), size=plotlinewidth)+
-#	geom_line( aes(y=sgzmuvGyroY, col='sgzmuvGyroY'), size=plotlinewidth)+
-#	geom_line( aes(y=sgzmuvGyroZ, col='sgzmuvGyroZ'), size=plotlinewidth)+
-#	facet_grid(participant~sensor)+
-#	scale_y_continuous()+
-#	coord_cartesian(xlim=NULL, ylim=NULL  )+
-#	ylab('Savitzky-Golay and ZeroMeanUnitVariance') + 
-#	xlab('Sample')+
-#	labs(colour = 'Feature')
-#
-##png(filename= paste(tag,"_preAccXYZ.png",sep=''),
-##   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
-#print(plot)
-##dev.off()
-#
+dev.off()
 
 
 
-#plot <- ggplot(xdata, aes(x=sample))+  
-#	geom_line( aes(y=hfsgzmuvGyroX, col='hfsgzmuvGyroX'), size=plotlinewidth)+
-#	geom_line( aes(y=hfsgzmuvGyroY, col='hfsgzmuvGyroY'), size=plotlinewidth)+
-#	geom_line( aes(y=hfsgzmuvGyroZ, col='hfsgzmuvGyroZ'), size=plotlinewidth)+
-#	facet_grid(participant~sensor)+
-#	scale_y_continuous()+
-#	coord_cartesian(xlim=NULL, ylim=c(-0.05,0.05)  )+
-#	ylab('High Frequency Savitzky-Golay and ZeroMeanUnitVariance') + 
-#	xlab('Sample')+
-#	labs(colour = 'Feature')
-#
-##png(filename= paste(tag,"_preAccXYZ.png",sep=''),
-##   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
-#print(plot)
-##dev.off()
-#
-#
-#
-#
-#
+
+plot <- ggplot(xdata, aes(x=sample))+  
+	geom_line( aes(y=sgGyroX, col='sgGyroX'), size=plotlinewidth)+
+	geom_line( aes(y=sgGyroY, col='sgGyroY'), size=plotlinewidth)+
+	geom_line( aes(y=sgGyroZ, col='sgGyroZ'), size=plotlinewidth)+
+	facet_grid(participant~sensor)+
+	scale_y_continuous()+
+	coord_cartesian(xlim=NULL, ylim=NULL  )+
+	ylab('Savitzky-Golay') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
 
 
-#
-#plot <- ggplot(xdata, aes(x=sample))+  
-#	geom_line( aes(y=sghfsgzmuvAccX, col='sghfsgzmuvAccX'), size=plotlinewidth)+
-#	geom_line( aes(y=sghfsgzmuvAccY, col='sghfsgzmuvAccY'), size=plotlinewidth)+
-#	geom_line( aes(y=sghfsgzmuvAccZ, col='sghfsgzmuvAccZ'), size=plotlinewidth)+
-#	facet_grid(participant~sensor)+
-#	scale_y_continuous()+
-#	coord_cartesian(xlim=NULL, ylim=c(-0.0001,0.0001)  )+
-#	ylab('Savitzky-Golay High Frequency Savitzky-Golay and ZeroMeanUnitVariance') + 
-#	xlab('Sample')+
-#	labs(colour = 'Feature')
-#
-##png(filename= paste(tag,"_preAccXYZ.png",sep=''),
-##   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
-#print(plot)
-##dev.off()
-#
+png(filename= paste(tag,"_sgGyroXYZ.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
 
-#plot <- ggplot(xdata, aes(x=sample))+  
-#	geom_line( aes(y=sghfsgzmuvGyroX, col='sghfsgzmuvGyroX'), size=plotlinewidth)+
-#	geom_line( aes(y=sghfsgzmuvGyroY, col='sghfsgzmuvGyroY'), size=plotlinewidth)+
-#	geom_line( aes(y=sghfsgzmuvGyroZ, col='sghfsgzmuvGyroZ'), size=plotlinewidth)+
-#	facet_grid(participant~sensor)+
-#	scale_y_continuous()+
-#	coord_cartesian(xlim=NULL, ylim=c(-0.0001,0.0001)  )+
-#	ylab('Savitzky-Golay High Frequency Savitzky-Golay and ZeroMeanUnitVariance') + 
-#	xlab('Sample')+
-#	labs(colour = 'Feature')
-#
-##png(filename= paste(tag,"_preAccXYZ.png",sep=''),
-##   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
-#print(plot)
-##dev.off()
-#
+
+plot <- ggplot(xdata, aes(x=sample))+  
+	geom_line( aes(y=zmuvGyroX, col='zmuvGyroX'), size=plotlinewidth)+
+	geom_line( aes(y=zmuvGyroY, col='zmuvGyroY'), size=plotlinewidth)+
+	geom_line( aes(y=zmuvGyroZ, col='zmuvGyroZ'), size=plotlinewidth)+
+	facet_grid(participant~sensor)+
+	scale_y_continuous()+
+	coord_cartesian(xlim=NULL, ylim=NULL  )+
+	ylab('Savitzky-Golay and ZeroMeanUnitVariance') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+png(filename= paste(tag,"_zmuvGyroXYZ.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+
+
+
+
+
+plot <- ggplot(xdata, aes(x=sample))+  
+	geom_line( aes(y=sgzmuvGyroX, col='sgzmuvGyroX'), size=plotlinewidth)+
+	geom_line( aes(y=sgzmuvGyroY, col='sgzmuvGyroY'), size=plotlinewidth)+
+	geom_line( aes(y=sgzmuvGyroZ, col='sgzmuvGyroZ'), size=plotlinewidth)+
+	facet_grid(participant~sensor)+
+	scale_y_continuous()+
+	coord_cartesian(xlim=NULL, ylim=NULL  )+
+	ylab('Savitzky-Golay and ZeroMeanUnitVariance') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+png(filename= paste(tag,"_sgzmuvGyroXYZ.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+
+
+plot <- ggplot(xdata, aes(x=sample))+  
+	geom_line( aes(y=hfsgzmuvAccX, col='hfsgzmuvAccX'), size=plotlinewidth)+
+	geom_line( aes(y=hfsgzmuvAccY, col='hfsgzmuvAccY'), size=plotlinewidth)+
+	geom_line( aes(y=hfsgzmuvAccZ, col='hfsgzmuvAccZ'), size=plotlinewidth)+
+	facet_grid(participant~sensor)+
+	scale_y_continuous()+
+	coord_cartesian(xlim=NULL, ylim=c(-0.05,0.05)  )+
+	ylab('High Frequency Savitzky-Golay and ZeroMeanUnitVariance') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+png(filename= paste(tag,"_hfsgzmuvAccXYZ.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+
+
+
+plot <- ggplot(xdata, aes(x=sample))+  
+	geom_line( aes(y=hfsgzmuvGyroX, col='hfsgzmuvGyroX'), size=plotlinewidth)+
+	geom_line( aes(y=hfsgzmuvGyroY, col='hfsgzmuvGyroY'), size=plotlinewidth)+
+	geom_line( aes(y=hfsgzmuvGyroZ, col='hfsgzmuvGyroZ'), size=plotlinewidth)+
+	facet_grid(participant~sensor)+
+	scale_y_continuous()+
+	coord_cartesian(xlim=NULL, ylim=c(-0.05,0.05)  )+
+	ylab('High Frequency Savitzky-Golay and ZeroMeanUnitVariance') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+png(filename= paste(tag,"_hfsgzmuvGyroXYZ.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+
+
+
+plot <- ggplot(xdata, aes(x=sample))+  
+	geom_line( aes(y=sghfsgzmuvAccX, col='sghfsgzmuvAccX'), size=plotlinewidth)+
+	geom_line( aes(y=sghfsgzmuvAccY, col='sghfsgzmuvAccY'), size=plotlinewidth)+
+	geom_line( aes(y=sghfsgzmuvAccZ, col='sghfsgzmuvAccZ'), size=plotlinewidth)+
+	facet_grid(participant~sensor)+
+	scale_y_continuous()+
+	coord_cartesian(xlim=NULL, ylim=c(-0.0001,0.0001)  )+
+	ylab('Savitzky-Golay High Frequency Savitzky-Golay and ZeroMeanUnitVariance') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+png(filename= paste(tag,"_sghfsgzmuvAccXYZ.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+
+plot <- ggplot(xdata, aes(x=sample))+  
+	geom_line( aes(y=sghfsgzmuvGyroX, col='sghfsgzmuvGyroX'), size=plotlinewidth)+
+	geom_line( aes(y=sghfsgzmuvGyroY, col='sghfsgzmuvGyroY'), size=plotlinewidth)+
+	geom_line( aes(y=sghfsgzmuvGyroZ, col='sghfsgzmuvGyroZ'), size=plotlinewidth)+
+	facet_grid(participant~sensor)+
+	scale_y_continuous()+
+	coord_cartesian(xlim=NULL, ylim=c(-0.0001,0.0001)  )+
+	ylab('Savitzky-Golay High Frequency Savitzky-Golay and ZeroMeanUnitVariance') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+png(filename= paste(tag,"_sghfsgzmuvGyroXYZ.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
 
 
 
@@ -540,7 +595,7 @@ print(plot)
 
 #
 #################################################################################
-## (4) Creating Preprossed Data Path
+## (5) Creating Preprossed Data Path and Writing Data
 #
 #odata_path <- paste(outcomes_path,relativeodatapath,sep="")
 #if (file.exists(odata_path)){

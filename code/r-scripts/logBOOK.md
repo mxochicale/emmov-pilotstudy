@@ -3,19 +3,8 @@ logBOOK
 
 # TODO
 
-
-* [ ] shift the data for each of the particpants with [:link:](https://github.com/mxochicale/r-code_repository/tree/master/dataDOTtable)
-	at: `/home/map479/mxochicale/github/emmov-pilotstudy/code/r-scripts/plotting/timeseries-razor.R`
-
-```
-setkey(xdata, participant)
-xdp01 <- xdata[.(c('p01'))]
-hdp01 <- xdp01[sensor=='imu-human', (anscols):= shift(.SD,75, fill=0, type='lead') , by=.(participant,sensor), .SDcols=cols  ]
-rdp01 <- xdp01[sensor=='imu-robot', (anscols):= shift(.SD,00, fill=0, type='lead') , by=.(participant,sensor), .SDcols=cols  ]
-dp01 <- rbind(hdp01,rdp01)
-```
-(created:22feb2018 sorted:23feb2018)
-
+* [ ] create preprocessing data and document for openface
+	(created:23feb2018 sorted:)
 
 * [ ] save preprocessed.datatable at `~/data/razor_imu`
 
@@ -29,6 +18,22 @@ dp01 <- rbind(hdp01,rdp01)
 
 
 # SORTED 
+
+* [x] document for razor time series `/home/map479/mxochicale/github/emmov-pilotstudy/docs/plotting_timeseries/razor/razor.tex`
+	(created:23feb2018 sorted:23feb2017)
+
+* [x] shift the data for each of the particpants with [:link:](https://github.com/mxochicale/r-code_repository/tree/master/dataDOTtable)
+	at: `/home/map479/mxochicale/github/emmov-pilotstudy/code/r-scripts/plotting/timeseries-razor.R`
+
+```
+setkey(xdata, participant)
+xdp01 <- xdata[.(c('p01'))]
+hdp01 <- xdp01[sensor=='imu-human', (anscols):= shift(.SD,75, fill=0, type='lead') , by=.(participant,sensor), .SDcols=cols  ]
+rdp01 <- xdp01[sensor=='imu-robot', (anscols):= shift(.SD,00, fill=0, type='lead') , by=.(participant,sensor), .SDcols=cols  ]
+dp01 <- rbind(hdp01,rdp01)
+```
+(created:22feb2018 sorted:23feb2018)
+
 
 
 * [x] Write data.table objects in the outcomepath and create scripts for preprocessing techniques (created:21february2018, sorted: 22february)
