@@ -21,6 +21,9 @@
 		# (3.1) Creating and changing plotting paths
 		# (3.2) Plots features
 		# (3.3) Plots data from openface
+	# (4) Creating Preprossed Data Path
+	# (5) Writing Data
+
 
 
 #################
@@ -49,7 +52,7 @@ github_path <- getwd()
 main_data_path <- paste( main_repository_path, '/data/openface',sep="")
 outcomes_path <- paste(github_path,"/DataSets/emmov",sep="")
 relativeplotpath <- "/plots_timeseries/openface"
-
+relativeodatapath <- "/datatables"
 
 
 ################################################################################
@@ -57,9 +60,9 @@ relativeplotpath <- "/plots_timeseries/openface"
 setwd(main_data_path)
 data_path_list <- list.dirs(path = ".", full.names = TRUE, recursive = TRUE)
 
-participantsNN <- 7
+participantsNN <- 6
 trialsNN <- 1
-participant_index <- c(2,4,6,8,10,12,14)
+participant_index <- c(2,4,6,8,10,12)
 
 
 pNN_tmp  <- NULL ## initialise variable
@@ -138,7 +141,7 @@ for(participants_k in 1:participantsNN)
 
 
 ##### dataTable
-datable <- pNN_tmp
+datatable <- pNN_tmp
 
 
 
@@ -150,8 +153,8 @@ datable <- pNN_tmp
 ################################
 ### (2.1) Windowing Data [xdata[,.SD[1:2],by=.(Participant,Activity,Sensor)]]
 
-windowframe = 200:1500;
-xdata <- datable[,.SD[windowframe],by=.(participant,trial)];
+windowframe = 000:2000;
+xdata <- datatable[,.SD[windowframe],by=.(participant,trial)];
 
 
 
@@ -1546,6 +1549,28 @@ png(filename= paste(tag,"_AU45_cr.png",sep=''),
    width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
 print(plot)
 dev.off()
+
+
+################################################################################
+# (4) Creating Preprossed Data Path
+
+odata_path <- paste(outcomes_path,relativeodatapath,sep="")
+if (file.exists(odata_path)){
+    setwd(file.path(odata_path))
+} else {
+  dir.create(odata_path, recursive=TRUE)
+  setwd(file.path(odata_path))
+}
+
+
+
+
+################################################################################
+####  (5)  Writing Data
+write.table(datatable, "rawopenfacedata-v00.datatable", row.name=FALSE)
+
+message('datatable file has been created at '  )
+message (odata_path)
 
 
 

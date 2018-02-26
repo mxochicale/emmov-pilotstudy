@@ -3,11 +3,19 @@ logBOOK
 
 # TODO
 
-* [ ] create preprocessing data and document for openface
+
+* [ ] add dates in the `observation.tex` document with the preprocessed data of both 
+	razor and openface data
+	(created:26feb2018 sorted:)
+
+
+
+* [ ]  create preprocessing data (26feb2018 1531) and document for openface()    
 	(created:23feb2018 sorted:)
 
-* [ ] save preprocessed.datatable at `~/data/razor_imu`
 
+
+* [ ] save preprocessed.datatable at `~/data/razor_imu`
 	(created:22feb2018 sorted:)
 
 
