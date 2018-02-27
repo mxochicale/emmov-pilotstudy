@@ -1,0 +1,217 @@
+\documentclass[a4paper,12pt]{article}
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+
+
+%% Sets page size and margins
+%\usepackage[a4paper,top=1cm,bottom=4mm,left=3cm,right=0mm,marginparwidth=1.75cm]{geometry}
+%\usepackage[a4paper,top=0cm,bottom=3mm,left=3mm,right=0mm,marginparwidth=0cm]{geometry}
+\usepackage{geometry} % for \newgeometry{} and \restoregeometry
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{url}%for \path{}
+\usepackage{lscape}
+\pagenumbering{gobble}%no numbers in the webpage
+
+%\usepackage[counterclockwise]{rotating} %sidewaysfigure
+
+
+
+
+\graphicspath{{/home/map479/mxochicale/github/DataSets/emmov/plots_timeseries/of-postprocessing/}}
+
+
+\title{Postprocessing data for OpenFace}
+\author{Miguel P Xochicale \\
+School of Engineering\\
+University of Birmingham, UK}
+
+
+\begin{document}
+
+
+\newgeometry{top=20mm,bottom=20mm,left=20mm,right=20mm}
+\maketitle
+
+%\begin{abstract}
+%
+%\end{abstract}
+
+
+\section{Description}
+
+
+Postprocessing techniques (e.g. Savitzky-Golay Filter, Zero Mean Unit Variance, Principal Component Analysis)
+for OpenFace raw data \cite{baltrusaitis2016}.
+
+
+\section{r-scripts and data paths}
+\path{~/github/emmov-pilotstudy/code/r-scripts/postprocessing} \\
+\path{postprocessing-openface.R}
+is used to generate the plots which are saved at: \\
+\path{~/github/DataSets/emmov/plots_timeseries/of-postprocessing/*}
+
+
+The data is available in \cite{mxochicale2018}.
+
+
+
+\bibliographystyle{apalike}
+\bibliography{references}
+
+%\newpage
+
+%\newgeometry{top=0cm,bottom=3mm,left=3mm,right=0mm,marginparwidth=0cm}
+%\restoregeometry
+
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{pre-of-timeseries_base}
+\caption{S-G confidence and success.}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{pre-of-timeseries_sgzmuvbase}
+\caption{S-G,ZMUV confidence and success.}
+\end{figure}
+
+
+
+
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{pre-of-timeseries_sggaze_xy}
+\caption{S-G gaze xy.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{pre-of-timeseries_sggaze_z}
+\caption{S-G gaze z.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{pre-of-timeseries_sgzmuvgaze}
+\caption{S-G,ZMUV gaze.}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{pre-of-timeseries_PCgaze}
+\caption{Principal Components for gaze.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{pre-of-timeseries_sgzmuvPCgaze}
+\caption{S-G,ZMUV PC gaze.}
+\end{figure}
+
+
+
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{pre-of-timeseries_sgposeRxyz}
+\caption{S-G pose Rotation xyz.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{pre-of-timeseries_sgzmuvposeR}
+\caption{S-G,ZMUV pose R.}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{pre-of-timeseries_sgposeTxy}
+\caption{S-G pose Translation xyz.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{pre-of-timeseries_sgposeTz}
+\caption{S-G pose Translation z.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{pre-of-timeseries_sgzmuvposeT}
+\caption{S-G,ZMUV pose T.}
+\end{figure}
+
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{pre-of-timeseries_PCpose}
+\caption{Principal Components for pose.}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{pre-of-timeseries_sgzmuvPCpose}
+\caption{S-G,ZMUV PC pose.}
+\end{figure}
+
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{pre-of-timeseries_sgzmuvPCxlm}
+\caption{S-G,ZMUV PC x landmarks.}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{pre-of-timeseries_sgzmuvPCylm}
+\caption{S-G,ZMUV PC y landmarks.}
+\end{figure}
+
+
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{pre-of-timeseries_sgzmuvshape}
+\caption{S-G,ZMUV shape.}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{pre-of-timeseries_sgzmuvx012}
+\caption{S-G,ZMUV x\_0, x\_1, x\_2.}
+\end{figure}
+
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{pre-of-timeseries_sgzmuvy012}
+\caption{S-G,ZMUV y\_0, y\_1, y\_2.}
+\end{figure}
+
+
+
+
+
+
+\end{document}

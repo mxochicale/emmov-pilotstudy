@@ -10,11 +10,6 @@ logBOOK
 
 
 
-* [ ]  create preprocessing data (26feb2018 1531) and document for openface()    
-	(created:23feb2018 sorted:)
-
-
-
 * [ ] save preprocessed.datatable at `~/data/razor_imu`
 	(created:22feb2018 sorted:)
 
@@ -26,6 +21,10 @@ logBOOK
 
 
 # SORTED 
+
+* [x]  create postprocessing data (26feb2018 1531) and document for openface(27feb2018, 1811 )    
+	(created:23feb2018 sorted:27feb2018)
+
 
 * [x] document for razor time series `/home/map479/mxochicale/github/emmov-pilotstudy/docs/plotting_timeseries/razor/razor.tex`
 	(created:23feb2018 sorted:23feb2017)
