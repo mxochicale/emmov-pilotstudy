@@ -4,17 +4,21 @@ logBOOK
 # TODO
 
 
-* [ ] add dates in the `observation.tex` document with the preprocessed data of both 
-	razor and openface data
-	(created:26feb2018 sorted:)
+* [ ] For razor and openface timeseries create :
+	* compute m and tau for the time-delay embeddging theorem
+	* state space reconstruction 
+	* recurrence plots 
+	* recurrence qunatification analysis parameters
+	(created:28feb2018, sorted: )	
 
 
+* [ ] for postprocessing, try different parameters for savitzky-golay filter as the
+	current ones `SavitzkyGolayCoeffs <- sgolay(p=5,n=155 ,m=0)`, 
+	smoothed the openface time series to the point that no osicllations are 
+	presented in the head pose estimation time series.
 
-* [ ] save preprocessed.datatable at `~/data/razor_imu`
-	(created:22feb2018 sorted:)
 
-
-
+* [ ] save preprocessed.datatable at `~/data/razor_imu`	(created:22feb2018 sorted:)
 * [ ] plot 2d plots with x/y points using pose_tx and pose_ty (created:21february2018, sorted: )
 * [ ] plot 3d plots with x/y/z points using xyz values (created:21february2018, sorted: )
 
@@ -22,12 +26,23 @@ logBOOK
 
 # SORTED 
 
+
+* [x] add dates in the `observation.tex` document with the preprocessed data of both 
+	razor and openface data
+	(created:26feb2018 sorted:28feb2018)
+
+
+
+
 * [x]  create postprocessing data (26feb2018 1531) and document for openface(27feb2018, 1811 )    
 	(created:23feb2018 sorted:27feb2018)
 
 
+
 * [x] document for razor time series `/home/map479/mxochicale/github/emmov-pilotstudy/docs/plotting_timeseries/razor/razor.tex`
 	(created:23feb2018 sorted:23feb2017)
+
+
 
 * [x] shift the data for each of the particpants with [:link:](https://github.com/mxochicale/r-code_repository/tree/master/dataDOTtable)
 	at: `/home/map479/mxochicale/github/emmov-pilotstudy/code/r-scripts/plotting/timeseries-razor.R`
@@ -43,14 +58,20 @@ dp01 <- rbind(hdp01,rdp01)
 
 
 
+
 * [x] Write data.table objects in the outcomepath and create scripts for preprocessing techniques (created:21february2018, sorted: 22february)
 	`~/github/emmov-pilotstudy/code/r-scripts/preprocessing/preprocessing-razor.R`
+
 
 
 * [x] plot data from two sensors (one for the person, one for the robot) for participants 01 to 06 (created:21february2018, sorted:22february2018)
 	`/home/map479/mxochicale/github/emmov-pilotstudy/code/r-scripts/plotting/timeseries-razor.R`
 
 
+
+
 * [x] create document with graphical results for openface and razor data (created: 17february2018, sorted:21february2018)
+
+
 
 * [x] Plot time series from face landmarks (created:16feb2018, sorted:17february2018)

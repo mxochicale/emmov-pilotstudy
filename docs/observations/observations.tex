@@ -24,9 +24,7 @@
 
 \title{Observations for emmov-pilotstudy}
 \author{Miguel P Xochicale \\
-% map479@bham.ac.uk \\
 School of Engineering\\
-%Department of Electronic, Electric and System Engineering\\
 University of Birmingham, UK}
 
 
@@ -40,26 +38,44 @@ University of Birmingham, UK}
 
 
 
-\section{Observations}
-
+\section{Razor}
 
 \begin{enumerate}
-\item One general observation from the face landmarks is that 
-movements of the head pose are mounted in all the face landmarks 
-
-\item For future experiments with \cite{baltrusaitis2016}, the camera 
-should be put as closer as can be to the face of the person 
-in order to get better estimation of facelandmarks.
-
 \item Data from the inertial sensor got problems in the syncronisation
-and the collection of data from four sensors for the seven  experiments,
-only three collected data for the four inertial sensors, while the other 
-four only collected data from three sensors.
+	and the collection of data from four sensors in seven experiments.
+	Only three of the experiments collected data for the four inertial sensors, 
+	and the other four only collected data from three sensors. Such problems 
+	are related to the poor bluetooth connection between sensors and 
+	the bluetooth dongle (21 February 2018).
 
 \end{enumerate}
 
 
-The data for the current pilot studye is available in \cite{mxochicale2018}.
+\section{Open Face}
+
+\begin{enumerate}
+\item One general observation from the face landmarks is that 
+	movements of the head pose translation position (pose Tx and pose Ty) 
+	are mounted in all the face landmarks (x\_0 to x\_67) (21 February 2018).
+
+\item For future experiments with \cite{baltrusaitis2016}, the camera 
+	should be put as closer as can be to the face of the person 
+	in order to get better estimation of facelandmarks (21 February 2018).
+
+\item Just by eye, I cannot see evidently differences when observing the time series for
+ 	postprocessing data. The most evident is the sgconfidence and sgsuccess for which
+ 	participants p03 and p04 failed to track their head pose estimation and face landmarks.
+ 	Pose time series also represent a good indicator for head movement which can be seen
+	in the inestability of  participant three with the ocuclision problems and
+ 	participant five which was quite  static in the activity.
+	(28 February 2018).
+
+
+
+\end{enumerate}
+
+
+The data for the current pilot study is available in \cite{mxochicale2018}.
 
 
 
