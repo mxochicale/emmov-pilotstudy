@@ -2,17 +2,16 @@ r-scripts
 ---
 
 
-# Usage
-Open a terminal and run R as follow
-
+# Usage in Ubuntu
+Open a terminal, go to, for instance, `~/rscript/postprocessing/` and run R as follow
 ```
 $ R
 ```
-once R is loaded, explore the history with the up arrow and run the script.
+once `R` is loaded, explore the history with the up arrow and hit enter to run the script.
 
 
 
-# R version for the scripts
+# R version
 
 ```
 > R.version

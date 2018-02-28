@@ -4,6 +4,8 @@ logBOOK
 # TODO
 
 
+
+
 * [ ] For razor and openface timeseries create :
 	* compute m and tau for the time-delay embeddging theorem
 	* state space reconstruction 
@@ -25,6 +27,16 @@ logBOOK
 
 
 # SORTED 
+
+* [x] create doc for timeseries for utde
+	* zmuvAccX, sgzmuvAccX
+	* zmuvAccY, sgzmuvAccY
+	* zmuvAccZ, sgzmuvAccZ
+	* zmuvGyroX, sgzmuvAccX
+	* zmuvGyroY, sgzmuvGyroY
+	* zmuvGyroZ, sgzmuvGyroZ
+	(created28feb2018,sorted28feb2018)
+
 
 
 * [x] add dates in the `observation.tex` document with the preprocessed data of both 

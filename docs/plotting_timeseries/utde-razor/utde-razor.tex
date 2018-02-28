@@ -1,0 +1,123 @@
+\documentclass[a4paper,12pt]{article}
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+
+
+%% Sets page size and margins
+%\usepackage[a4paper,top=1cm,bottom=4mm,left=3cm,right=0mm,marginparwidth=1.75cm]{geometry}
+%\usepackage[a4paper,top=0cm,bottom=3mm,left=3mm,right=0mm,marginparwidth=0cm]{geometry}
+\usepackage{geometry} % for \newgeometry{} and \restoregeometry
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{url}%for \path{}
+\usepackage{lscape}
+\pagenumbering{gobble}%no numbers in the webpage
+
+%\usepackage[counterclockwise]{rotating} %sidewaysfigure
+
+
+
+
+
+\graphicspath{{/home/map479/mxochicale/github/DataSets/emmov/plots_timeseries/razor/utde/}}
+
+%\title{ OpenFace Time Series }
+
+\title{Time Series of Razor Sensor for UTDE}
+\author{Miguel P Xochicale \\
+School of Engineering\\
+University of Birmingham, UK}
+
+
+\begin{document}
+
+
+\newgeometry{top=20mm,bottom=20mm,left=20mm,right=20mm}
+\maketitle
+
+%\begin{abstract}
+%Time series for Facial Action Units. 
+%\end{abstract}
+
+
+\section{Description}
+Time series for normalised raw data and normalised and smoothed data from  accelerometer and gyroscope inertial sensor.
+The sample rate is 50 Hertz. 
+
+
+\section{r-scripts and data paths}
+\path{~/github/emmov-pilotstudy/code/r-scripts/utde} \\
+\path{utde-razor.R}
+is used to generate the plots which are saved at: \\
+\path{~/github/DataSets/emmov/plots_timeseries/razor/utde/*}
+
+The data is available in \cite{mxochicale2018}.
+
+\bibliographystyle{apalike}
+\bibliography{references}
+
+%\newpage
+
+%\newgeometry{top=0cm,bottom=3mm,left=3mm,right=0mm,marginparwidth=0cm}
+%\restoregeometry
+
+
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{razor-timeseries_zmuv-sgzmuvAccX}
+\caption{AccX}
+\end{figure}
+
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{razor-timeseries_zmuv-sgzmuvAccY}
+\caption{AccY}
+\end{figure}
+
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{razor-timeseries_zmuv-sgzmuvAccZ}
+\caption{AccZ}
+\end{figure}
+
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{razor-timeseries_zmuv-sgzmuvGyroX}
+\caption{GyroX}
+\end{figure}
+
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{razor-timeseries_zmuv-sgzmuvGyroY}
+\caption{GyroY}
+\end{figure}
+
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{razor-timeseries_zmuv-sgzmuvGyroZ}
+\caption{GyroZ}
+\end{figure}
+
+
+
+
+
+
+\end{document}
