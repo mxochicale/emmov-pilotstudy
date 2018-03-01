@@ -8,6 +8,8 @@ logBOOK
 
 * [ ] For razor and openface timeseries create :
 	* compute m and tau for the time-delay embeddging theorem
+	(cao algorithm for m estimation and plotting 1march2018)
+
 	* state space reconstruction 
 	* recurrence plots 
 	* recurrence qunatification analysis parameters
