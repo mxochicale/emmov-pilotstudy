@@ -8,7 +8,9 @@ logBOOK
 
 * [ ] For razor and openface timeseries create :
 	* compute m and tau for the time-delay embeddging theorem
-	(cao algorithm for m estimation and plotting 1march2018)
+	(implement cao and ami algorithms for embedding parameter estimations plotting 1march2018: sorted:2march2018)
+	* create datatable for minumum embedding parameters (created:2march2018, sorted:)
+	
 
 	* state space reconstruction 
 	* recurrence plots 
