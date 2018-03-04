@@ -289,6 +289,17 @@ load_all('~/mxochicale/github/nonlinearTseries')
 
 maxtau <- 100
 numberOFpartitions <- 100
+
+#Method used for selecting a concrete time lag. Available methods are "first.zero", "first.e.decay" (default), "first.minimum" and "first.value".
+ami_timelag_selection_method <- 'first.minimum' # 'first.minimum'
+
+
+#ami_timelag_selection_method <- 'first.value' # 'first.minimum'
+
+##Numeric value indicating the value that the autocorrelation/AMI function must cross in order to select the time lag. It is used only with the "first.value" selection method.
+ami_numeric_value <- 1/exp(0)
+
+
 #
 xd <- xdata[,.(zmuvAccX,zmuvAccY,zmuvAccZ,sgzmuvAccX,sgzmuvAccY,sgzmuvAccZ,zmuvGyroX,zmuvGyroY,zmuvGyroZ,sgzmuvGyroX,sgzmuvGyroY,sgzmuvGyroZ), by=. (participant,trial,sensor,sample)]
 
@@ -298,6 +309,8 @@ axis <- c("zmuvAccX","zmuvAccY","zmuvAccZ","sgzmuvAccX","sgzmuvAccY","sgzmuvAccZ
 
 
 AMI <- NULL
+time_lags <- NULL
+
 for (participants_k in c(1:6)) {#for (pNN_k in c(1:1)) {
 
 message('####################')
@@ -307,6 +320,7 @@ xdp <- xd[.( pNN[participants_k] )]
 hxdp <- xdp[sensor=='imu-human', .SDcols=cols  ]
 rxdp <- xdp[sensor=='imu-robot', .SDcols=cols  ]
 
+time_lags_p <- NULL
 amip<-NULL
 for (axis_k in c(1:12)){ #for (axis_k in c(1:12)){
 
@@ -321,11 +335,12 @@ for (axis_k in c(1:12)){ #for (axis_k in c(1:12)){
 
 	## tau-delay estimation based on the mutual information function
 	tau.ami <- timeLag(time.series = inputtimeseries, technique = "ami",
-                  selection.method = "first.minimum", lag.max = maxtau,
-                  do.plot = F, n.partitions = numberOFpartitions,
-                  units = "Bits")
+                selection.method = ami_timelag_selection_method, value = ami_numeric_value,
+		lag.max = maxtau,
+                do.plot = F, n.partitions = numberOFpartitions,
+                units = "Bits")
 
-	tauamilag <- tau.ami[[1]]
+	tauamilag_h <- as.data.table(tau.ami[[1]])
 	ami <- tau.ami[[2]]
 
 	amidt <- as.data.table(ami)
@@ -335,6 +350,8 @@ for (axis_k in c(1:12)){ #for (axis_k in c(1:12)){
 	amidt[,c("sensor"):=ftag(), ]
 	amih <- amidt
 
+	tauamilag_h[,c("sensor"):=ftag(), ]
+	
 	
 	#######################
 	message('     #robot')
@@ -342,11 +359,12 @@ for (axis_k in c(1:12)){ #for (axis_k in c(1:12)){
 	
 	## tau-delay estimation based on the mutual information function
 	tau.ami <- timeLag(time.series = inputtimeseries, technique = "ami",
-                  selection.method = "first.minimum", lag.max = maxtau,
-                  do.plot = F, n.partitions = numberOFpartitions,
-                  units = "Bits")
+                selection.method = ami_timelag_selection_method, value = ami_numeric_value,
+		lag.max = maxtau,
+                do.plot = F, n.partitions = numberOFpartitions,
+                units = "Bits")
 
-	tauamilag <- tau.ami[[1]]
+	tauamilag_r <- as.data.table(tau.ami[[1]])
 	ami <- tau.ami[[2]]
 
 	amidt <- as.data.table(ami)
@@ -356,9 +374,15 @@ for (axis_k in c(1:12)){ #for (axis_k in c(1:12)){
 	amidt[,c("sensor"):=ftag(), ]
 	amir <- amidt
 
+	tauamilag_r[,c("sensor"):=ftag(), ]
+
+
+	time_lags_a <- rbind(tauamilag_h, tauamilag_r)
+
+
 	amis<-rbind(amih,amir)
 
-
+	
 	if (axis_k == 1){
     	ftag <-function(x) {list("zmuvAccX")}
     	} else if (axis_k == 2){
@@ -386,9 +410,14 @@ for (axis_k in c(1:12)){ #for (axis_k in c(1:12)){
     	} 
 
 	
-	amis[,c("axis"):=ftag(), ]
 
+	time_lags_a[,c("axis"):=ftag(), ]
+	time_lags_p <- rbind(time_lags_p,time_lags_a)
+
+
+	amis[,c("axis"):=ftag(), ]
 	amip <- rbind(amip,amis)
+
 
 	}#for (axis_k in c(1:12)){
 
@@ -412,9 +441,12 @@ fsNNtmp <-function(x) {list("p07")}
 } 
 
 amip[,c("participant"):=fsNNtmp(), ]
-
-
 AMI <- rbind(AMI, amip)
+
+
+time_lags_p[,c("participant"):=fsNNtmp(), ]
+time_lags <- rbind(time_lags,time_lags_p)
+
 
 }#for (pNN_k in c(1:1)) {
 
@@ -422,6 +454,8 @@ AMI <- rbind(AMI, amip)
 
 setcolorder(AMI,c(5,4,3,2,1) )
 
+setcolorder(time_lags,c(4,2,3,1) )
+names(time_lags)[4] <- 'timelags'
 
 
 
@@ -433,21 +467,20 @@ print_AMI_flag <- TRUE
 
 
 
-if (print_AMI_flag == TRUE) {
-
-### Save Picture
-width = 2000
-height = 1000
-text.factor = 1
-dpi <- text.factor * 100
-width.calc <- width / dpi
-height.calc <- height / dpi
+if (print_AMI_flag == TRUE) { #if (print_AMI_flag == TRUE) {
 
 
 plotlinewidth <- 0.9
 #filenameimage <- paste("Evalues", t, ".png",sep="")
 
 
+
+
+htl <- time_lags[sensor=='imu-human', .SDcols=cols  ]
+htlp <- ggplot(htl, aes(x=participant,y=timelags) ) + geom_point( aes(fill=participant, colour=participant, shape=participant), size=5 ) + facet_grid(.~axis) + ylab("First Mimimum AMI - TimeLags (Human)") + coord_cartesian(xlim=NULL, ylim=c(0,35)  )
+
+rtl <- time_lags[sensor=='imu-robot', .SDcols=cols  ]
+rtlp <- ggplot(rtl, aes(x=participant,y=timelags) ) + geom_point( aes(fill=participant, colour=participant, shape=participant), size=5 ) + facet_grid(.~axis) + ylab("First Minimum AMI - TimeLags (Robot)") + coord_cartesian(xlim=NULL, ylim=c(0,35)  )
 
 
 hAMI <- AMI[sensor=='imu-human', .SDcols=cols  ]
@@ -478,9 +511,49 @@ if (file.exists(plot_path)){
   setwd(file.path(plot_path))
 }
 
+### Save Picture
+width = 2000
+height = 1000
+text.factor = 1
+dpi <- text.factor * 100
+width.calc <- width / dpi
+height.calc <- height / dpi
 
 
-filenameimage <- paste("amih_", ".png",sep="")
+#
+#filenameimage <- paste("amih_", ".png",sep="")
+#ggsave(filename = filenameimage,
+#        dpi = dpi,
+#        width = width.calc,
+#        height = height.calc,
+#        units = 'in',
+#        bg = "transparent",
+#        device = "png",
+#	hami)
+#
+#
+#filenameimage <- paste("amir_", ".png",sep="")
+#ggsave(filename = filenameimage,
+#        dpi = dpi,
+#        width = width.calc,
+#        height = height.calc,
+#        units = 'in',
+#        bg = "transparent",
+#        device = "png",
+#	rami)
+#
+#
+
+### Save Picture
+width = 1900
+height = 400
+text.factor = 1
+dpi <- text.factor * 100
+width.calc <- width / dpi
+height.calc <- height / dpi
+
+
+filenameimage <- paste("htimelags_", ".png",sep="")
 ggsave(filename = filenameimage,
         dpi = dpi,
         width = width.calc,
@@ -488,10 +561,10 @@ ggsave(filename = filenameimage,
         units = 'in',
         bg = "transparent",
         device = "png",
-	hami)
+	htlp)
 
 
-filenameimage <- paste("amir_", ".png",sep="")
+filenameimage <- paste("rtimelags_", ".png",sep="")
 ggsave(filename = filenameimage,
         dpi = dpi,
         width = width.calc,
@@ -499,16 +572,12 @@ ggsave(filename = filenameimage,
         units = 'in',
         bg = "transparent",
         device = "png",
-	rami)
+	rtlp)
 
 
 
 
-
-
-}
-
-
+} #if (print_AMI_flag == TRUE) {
 
 
 
