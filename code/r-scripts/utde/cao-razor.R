@@ -1,6 +1,6 @@
 ###############################################################################	
 #
-#  Average Mutual Information
+#  preprocessed data for razor IMU sensors 
 # 
 #
 #
@@ -24,8 +24,8 @@
 		# (3.3) Creating Low Frequency Components
 		# (3.4) Creating High Frequency Components
 		# (3.5) Smoothing data with hf sg zmuv
-	# (4) Compute Avarage Mutual Infomration (AMI)
-	# (5) Create path and plot AMIs
+	# (4) CAO's Algoring
+	# (5) Plot E1 and E2 values
 
 
 
@@ -41,7 +41,7 @@ library(data.table) # for manipulating data
 library(ggplot2) # for plotting 
 
 library(signal)# for butterworth filter and sgolay
-source('~/mxochicale/github/r-code_repository/functions/ollin_cencah.R')
+source('~/mxochicale/github/R/functions/ollin_cencah.R')
 
 
 
@@ -59,7 +59,7 @@ github_path <- getwd()
 main_data_path <- paste( main_repository_path, '/data/razor_imu',sep="")
 outcomes_path <- paste(github_path,"/DataSets/emmov",sep="")
 relativeplotpath <- "/plots_timeseries/razor/utde"
-relativeplotpathforEmbeddingValues <- "/plots_timeseries/razor/utde/embedding-values"
+relativeplotpathforEmbeddedValues <- "/plots_timeseries/razor/utde/embedding-values"
 relativeodatapath <- "/datatables"
 
 odatapath <- paste( outcomes_path, relativeodatapath, sep="" )
@@ -277,112 +277,93 @@ xdata[,c(
 
 
 
-##############################################################################
-##############################################################################
+
 ###############################################################################
-# (4) Average Mutual Information
-
-library(devtools)
-load_all('~/mxochicale/github/nonlinearTseries')
-
-
-
-maxtau <- 100
-numberOFpartitions <- 100
-
-#Method used for selecting a concrete time lag. Available methods are "first.zero", "first.e.decay" (default), "first.minimum" and "first.value".
-ami_timelag_selection_method <- 'first.minimum' # 'first.minimum'
+###############################################################################
+################################################################################
+## (4) CAO's Algorithm
+##
+source('~/mxochicale/github/R/functions/embedding_parameters/withCao1997/cao97_functions.R')
 
 
-#ami_timelag_selection_method <- 'first.value' # 'first.minimum'
-
-##Numeric value indicating the value that the autocorrelation/AMI function must cross in order to select the time lag. It is used only with the "first.value" selection method.
-ami_numeric_value <- 1/exp(0)
+maxtau <- 20
+maxdim <- 21
 
 
-#
-xd <- xdata[,.(zmuvAccX,zmuvAccY,zmuvAccZ,sgzmuvAccX,sgzmuvAccY,sgzmuvAccZ,zmuvGyroX,zmuvGyroY,zmuvGyroZ,sgzmuvGyroX,sgzmuvGyroY,sgzmuvGyroZ), by=. (participant,trial,sensor,sample)]
+
+
+xcao <- xdata[,.(zmuvAccX,zmuvAccY,zmuvAccZ,sgzmuvAccX,sgzmuvAccY,sgzmuvAccZ,zmuvGyroX,zmuvGyroY,zmuvGyroZ,sgzmuvGyroX,sgzmuvGyroY,sgzmuvGyroZ), by=. (participant,trial,sensor,sample)]
 
 pNN <- c('p01', 'p02', 'p03', 'p04', 'p05', 'p06')
 axis <- c("zmuvAccX","zmuvAccY","zmuvAccZ","sgzmuvAccX","sgzmuvAccY","sgzmuvAccZ","zmuvGyroX","zmuvGyroY","zmuvGyroZ","sgzmuvGyroX","sgzmuvGyroY","sgzmuvGyroZ")
 
 
-
-AMI <- NULL
-time_lags <- NULL
-
+EE <- NULL
 for (participants_k in c(1:6)) {#for (pNN_k in c(1:1)) {
 
-message('####################')
-message('# PARTICIPANT: ', participants_k)
-setkey(xd, participant)
-xdp <- xd[.( pNN[participants_k] )]
-hxdp <- xdp[sensor=='imu-human', .SDcols=cols  ]
-rxdp <- xdp[sensor=='imu-robot', .SDcols=cols  ]
+setkey(xcao, participant)
+xcao1 <- xcao[.( pNN[participants_k] )]
+hxcao1 <- xcao1[sensor=='imu-human', .SDcols=cols  ]
+rxcao1 <- xcao1[sensor=='imu-robot', .SDcols=cols  ]
 
-time_lags_p <- NULL
-amip<-NULL
+
+
+
+
+
+Ep <- NULL
+
+
 for (axis_k in c(1:12)){ #for (axis_k in c(1:12)){
 
-	message('#### axis:' , axis[axis_k])
+message('#### axis:' , axis[axis_k])
+
+message('     #human')
+inputtimeseries <- hxcao1[,  get(axis[axis_k]) ]
+E <- data.table()
+for (tau_i in 1:maxtau){
+    message( 'tau: ', tau_i )
+    Et<- as.data.table(cao97sub(inputtimeseries,maxdim,tau_i) )
+    func <-function(x) {list( tau_i )}
+    Et[,c("tau"):=func(), ]
+    Et[,dim:=seq(.N)]
+    setcolorder(Et, c(3,4,1:2))
+    E <- rbind(E, Et )
+}
+names(E) <- gsub("V1", "E1", names(E))
+names(E) <- gsub("V2", "E2", names(E))
+
+ftag <-function(x) {list("imu-human")}
+E[,c("sensor"):=ftag(), ]
+Eh <- E
+
+E <- NULL
+
+message('    #robot')
+
+inputtimeseries <- rxcao1[,  get(axis[axis_k]) ]
+E <- data.table()
+for (tau_i in 1:maxtau){
+    message( 'tau: ', tau_i )
+    Et<- as.data.table(cao97sub(inputtimeseries,maxdim,tau_i) )
+    func <-function(x) {list( tau_i )}
+    Et[,c("tau"):=func(), ]
+    Et[,dim:=seq(.N)]
+    setcolorder(Et, c(3,4,1:2))
+    E <- rbind(E, Et )
+}
+names(E) <- gsub("V1", "E1", names(E))
+names(E) <- gsub("V2", "E2", names(E))
+
+ftag <-function(x) {list("imu-robot")}
+E[,c("sensor"):=ftag(), ]
+Er <-E
+E<-NULL
 
 
 
-	########################
-	message('     #human')
-	inputtimeseries <- hxdp[,  get(axis[axis_k]) ]
+Ea <- rbind(Eh,Er)
 
-
-	## tau-delay estimation based on the mutual information function
-	tau.ami <- timeLag(time.series = inputtimeseries, technique = "ami",
-                selection.method = ami_timelag_selection_method, value = ami_numeric_value,
-		lag.max = maxtau,
-                do.plot = F, n.partitions = numberOFpartitions,
-                units = "Bits")
-
-	tauamilag_h <- as.data.table(tau.ami[[1]])
-	ami <- tau.ami[[2]]
-
-	amidt <- as.data.table(ami)
-	amidt[, tau := 0:(.N-1), ]
-	
-	ftag <-function(x) {list("imu-human")}
-	amidt[,c("sensor"):=ftag(), ]
-	amih <- amidt
-
-	tauamilag_h[,c("sensor"):=ftag(), ]
-	
-	
-	#######################
-	message('     #robot')
-	inputtimeseries <- rxdp[,  get(axis[axis_k]) ]
-	
-	## tau-delay estimation based on the mutual information function
-	tau.ami <- timeLag(time.series = inputtimeseries, technique = "ami",
-                selection.method = ami_timelag_selection_method, value = ami_numeric_value,
-		lag.max = maxtau,
-                do.plot = F, n.partitions = numberOFpartitions,
-                units = "Bits")
-
-	tauamilag_r <- as.data.table(tau.ami[[1]])
-	ami <- tau.ami[[2]]
-
-	amidt <- as.data.table(ami)
-	amidt[, tau := 0:(.N-1), ]
-	
-	ftag <-function(x) {list("imu-robot")}
-	amidt[,c("sensor"):=ftag(), ]
-	amir <- amidt
-
-	tauamilag_r[,c("sensor"):=ftag(), ]
-
-
-	time_lags_a <- rbind(tauamilag_h, tauamilag_r)
-
-
-	amis<-rbind(amih,amir)
-
-	
 	if (axis_k == 1){
     	ftag <-function(x) {list("zmuvAccX")}
     	} else if (axis_k == 2){
@@ -409,65 +390,70 @@ for (axis_k in c(1:12)){ #for (axis_k in c(1:12)){
     	ftag <-function(x) {list("sgzmuvGyroZ")}
     	} 
 
+
+
 	
+Ea[,c("axis"):=ftag(), ]
 
-	time_lags_a[,c("axis"):=ftag(), ]
-	time_lags_p <- rbind(time_lags_p,time_lags_a)
-
-
-	amis[,c("axis"):=ftag(), ]
-	amip <- rbind(amip,amis)
+Ep <- rbind(Ep,Ea)
+}# for (axis_k in c(1:12)){ 
 
 
-	}#for (axis_k in c(1:12)){
 
 
- # Particpant Number
-
-if (participants_k == 1){
-fsNNtmp <-function(x) {list("p01")}
-} else if (participants_k == 2){
-fsNNtmp <-function(x) {list("p02")}
-} else if (participants_k == 3){
-fsNNtmp <-function(x) {list("p03")}
-} else if (participants_k == 4){
-fsNNtmp <-function(x) {list("p04")}
-} else if (participants_k == 5){
-fsNNtmp <-function(x) {list("p05")}
-} else if (participants_k == 6){
-fsNNtmp <-function(x) {list("p06")}
-} else if (participants_k == 7){
-fsNNtmp <-function(x) {list("p07")}
-} 
-
-amip[,c("participant"):=fsNNtmp(), ]
-AMI <- rbind(AMI, amip)
+   	# Particpant Number
 
 
-time_lags_p[,c("participant"):=fsNNtmp(), ]
-time_lags <- rbind(time_lags,time_lags_p)
+	if (participants_k == 1){
+    	fsNNtmp <-function(x) {list("p01")}
+    	} else if (participants_k == 2){
+	fsNNtmp <-function(x) {list("p02")}
+    	} else if (participants_k == 3){
+    	fsNNtmp <-function(x) {list("p03")}
+    	} else if (participants_k == 4){
+	fsNNtmp <-function(x) {list("p04")}
+	} else if (participants_k == 5){
+	fsNNtmp <-function(x) {list("p05")}
+	} else if (participants_k == 6){
+	fsNNtmp <-function(x) {list("p06")}
+	} else if (participants_k == 7){
+	fsNNtmp <-function(x) {list("p07")}
+	} 
+
+Ep[,c("participant"):=fsNNtmp(), ]
+
+EE <- rbind(EE,Ep)
+
 
 
 }#for (pNN_k in c(1:1)) {
 
 
+setcolorder(EE,c(7,5,6,1:4) )
 
-setcolorder(AMI,c(5,4,3,2,1) )
 
-setcolorder(time_lags,c(4,2,3,1) )
-names(time_lags)[4] <- 'timelags'
+
 
 
 
 ################################################################################
-### (5) Plot Avarage Mutual Information 
-
-
-print_AMI_flag <- TRUE
+### (5) Plot E values
 
 
 
-if (print_AMI_flag == TRUE) { #if (print_AMI_flag == TRUE) {
+#print_EVALUES_flag <- TRUE
+print_EVALUES_flag <- FALSE
+
+
+if (print_EVALUES_flag == TRUE) {
+
+### Save Picture
+width = 2000
+height = 1000
+text.factor = 1
+dpi <- text.factor * 100
+width.calc <- width / dpi
+height.calc <- height / dpi
 
 
 plotlinewidth <- 0.9
@@ -476,20 +462,13 @@ plotlinewidth <- 0.9
 
 
 
-htl <- time_lags[sensor=='imu-human', .SDcols=cols  ]
-htlp <- ggplot(htl, aes(x=participant,y=timelags) ) + geom_point( aes(fill=participant, colour=participant, shape=participant), size=5 ) + facet_grid(.~axis) + ylab("First Mimimum AMI - TimeLags (Human)") + coord_cartesian(xlim=NULL, ylim=c(0,35)  )
+hEE <- EE[sensor=='imu-human', .SDcols=cols  ]
+he1 <- ggplot(hEE, aes(x=dim) ) + geom_line( aes(y=E1, colour=factor(tau) ),lwd = plotlinewidth, alpha=0.5 ) + facet_grid(participant~axis) + ylab('E1') + xlab('Dimension, m')+ labs(colour = 'tau')
+he2 <- ggplot(hEE, aes(x=dim) ) + geom_line( aes(y=E2, colour=factor(tau) ),lwd = plotlinewidth, alpha=0.5 ) + facet_grid(participant~axis) + ylab('E2') + xlab('Dimension, m')+ labs(colour = 'tau')
 
-rtl <- time_lags[sensor=='imu-robot', .SDcols=cols  ]
-rtlp <- ggplot(rtl, aes(x=participant,y=timelags) ) + geom_point( aes(fill=participant, colour=participant, shape=participant), size=5 ) + facet_grid(.~axis) + ylab("First Minimum AMI - TimeLags (Robot)") + coord_cartesian(xlim=NULL, ylim=c(0,35)  )
-
-
-hAMI <- AMI[sensor=='imu-human', .SDcols=cols  ]
-hami <- ggplot(hAMI, aes(x=tau) ) + geom_line( aes(y=ami ),lwd = plotlinewidth, alpha=0.7 ) + facet_grid(participant~axis) + ylab('AMI') + xlab('Tau')
-#+ labs(colour = 'tau')
-
-
-rAMI <- AMI[sensor=='imu-robot', .SDcols=cols  ]
-rami <- ggplot(rAMI, aes(x=tau) ) + geom_line( aes(y=ami ),lwd = plotlinewidth, alpha=0.7 ) + facet_grid(participant~axis) + ylab('AMI') + xlab('Tau')
+rEE <- EE[sensor=='imu-robot', .SDcols=cols  ]
+re1 <- ggplot(rEE, aes(x=dim) ) + geom_line( aes(y=E1, colour=factor(tau) ),lwd = plotlinewidth, alpha=0.5 ) + facet_grid(participant~axis) + ylab('E1') + xlab('Dimension, m')+ labs(colour = 'tau')
+re2 <- ggplot(rEE, aes(x=dim) ) + geom_line( aes(y=E2, colour=factor(tau) ),lwd = plotlinewidth, alpha=0.5 ) + facet_grid(participant~axis) + ylab('E2') + xlab('Dimension, m')+ labs(colour = 'tau')
 
 
 #    geom_point( aes(x=dim,y=E1, shape=factor(tau), colour=factor(tau)), size=5, stroke =1 )+
@@ -503,7 +482,7 @@ rami <- ggplot(rAMI, aes(x=tau) ) + geom_line( aes(y=ami ),lwd = plotlinewidth, 
 
 ## Setting up plots_path
 
-plot_path <- paste(outcomes_path,relativeplotpathforEmbeddingValues,sep="")
+plot_path <- paste(outcomes_path,relativeplotpathforEmbeddedValues,sep="")
 if (file.exists(plot_path)){
     setwd(file.path(plot_path))
 } else {
@@ -511,49 +490,9 @@ if (file.exists(plot_path)){
   setwd(file.path(plot_path))
 }
 
-### Save Picture
-width = 2000
-height = 1000
-text.factor = 1
-dpi <- text.factor * 100
-width.calc <- width / dpi
-height.calc <- height / dpi
 
 
-#
-#filenameimage <- paste("amih_", ".png",sep="")
-#ggsave(filename = filenameimage,
-#        dpi = dpi,
-#        width = width.calc,
-#        height = height.calc,
-#        units = 'in',
-#        bg = "transparent",
-#        device = "png",
-#	hami)
-#
-#
-#filenameimage <- paste("amir_", ".png",sep="")
-#ggsave(filename = filenameimage,
-#        dpi = dpi,
-#        width = width.calc,
-#        height = height.calc,
-#        units = 'in',
-#        bg = "transparent",
-#        device = "png",
-#	rami)
-#
-#
-
-### Save Picture
-width = 1900
-height = 400
-text.factor = 1
-dpi <- text.factor * 100
-width.calc <- width / dpi
-height.calc <- height / dpi
-
-
-filenameimage <- paste("htimelags_", ".png",sep="")
+filenameimage <- paste("e1h_", ".png",sep="")
 ggsave(filename = filenameimage,
         dpi = dpi,
         width = width.calc,
@@ -561,10 +500,10 @@ ggsave(filename = filenameimage,
         units = 'in',
         bg = "transparent",
         device = "png",
-	htlp)
+	he1)
 
 
-filenameimage <- paste("rtimelags_", ".png",sep="")
+filenameimage <- paste("e2h_", ".png",sep="")
 ggsave(filename = filenameimage,
         dpi = dpi,
         width = width.calc,
@@ -572,28 +511,41 @@ ggsave(filename = filenameimage,
         units = 'in',
         bg = "transparent",
         device = "png",
-	rtlp)
+	he2)
+
+
+filenameimage <- paste("e1r_", ".png",sep="")
+ggsave(filename = filenameimage,
+        dpi = dpi,
+        width = width.calc,
+        height = height.calc,
+        units = 'in',
+        bg = "transparent",
+        device = "png",
+	re1)
+
+
+filenameimage <- paste("e2r_", ".png",sep="")
+ggsave(filename = filenameimage,
+        dpi = dpi,
+        width = width.calc,
+        height = height.calc,
+        units = 'in',
+        bg = "transparent",
+        device = "png",
+	re2)
 
 
 
 
-} #if (print_AMI_flag == TRUE) {
-
-
-
-
-
-
-
-
-
+}
 
 
 
 
 #
 #################################################################################
-## (5) Creating Preprossed Data Path and Writing Data
+## (X) Creating Preprossed Data Path and Writing Data
 #
 #odata_path <- paste(outcomes_path,relativeodatapath,sep="")
 #if (file.exists(odata_path)){

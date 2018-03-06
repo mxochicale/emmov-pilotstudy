@@ -12,6 +12,11 @@ logBOOK
 		* create datatable for minumum tau embedding parameters (created:2march2018, sorted:4march2018,01h25m)
 		* create datatable for minumum dim embedding parameters (created:2march2018, sorted:)
 	
+	* in  ami-razor and cao-razor, For outcomes paht for utde use `outcomes/emmov/utde/razor/...` (created:6mach2018,1h22m sorted:)
+
+	* in utde-razor,  similarly to `plotRSS3D2D(a_rss)` plot PC components (transformedsignals and modify ollinfunc  (created: 6march2018,4h08, sorted:)
+
+
 
 	* state space reconstruction 
 	* recurrence plots 
