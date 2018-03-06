@@ -24,7 +24,7 @@
 		# (3.3) Creating Low Frequency Components
 		# (3.4) Creating High Frequency Components
 		# (3.5) Smoothing data with hf sg zmuv
-	# (4) Compute Avarage Mutual Infomration (AMI)
+	# (4) UNIFORM TIME DELAY EMBEDDING
 	# (5) Create path and plot AMIs
 
 
@@ -282,7 +282,7 @@ xdata[,c(
 
 ################################################################################
 ################################################################################
-#  TIME_DELAY EMBEDDING
+# (4) TIME_DELAY EMBEDDING
 ################################################################################
 ################################################################################
 #### Embedding Creating Preprossede Data Path
@@ -302,12 +302,9 @@ xd <- xdata[,.(zmuvAccX,zmuvAccY,zmuvAccZ,sgzmuvAccX,sgzmuvAccY,sgzmuvAccZ,zmuvG
 pNN <- c('p01', 'p02', 'p03', 'p04', 'p05', 'p06')
 axis <- c("zmuvAccX","zmuvAccY","zmuvAccZ","sgzmuvAccX","sgzmuvAccY","sgzmuvAccZ","zmuvGyroX","zmuvGyroY","zmuvGyroZ","sgzmuvGyroX","sgzmuvGyroY","sgzmuvGyroZ")
 sensors <- c('imu-human','imu-robot')
-#
-#
-#
-#AMI <- NULL
-#time_lags <- NULL
-#
+
+
+ED <- NULL # Euclidean Distances data.table object!
 for (participants_k in c(1:6)) {#for (pNN_k in c(1:1)) {
 
 message('####################')
@@ -322,7 +319,7 @@ xdp <- xd[.( pNN[participants_k] )]
 
 
 
-
+ED_sa <- NULL
 for (sensor_k in c(1:2)) {
 
 hrxdp <- xdp[sensor== sensors[sensor_k], .SDcols=cols  ]
@@ -331,7 +328,7 @@ hrxdp <- xdp[sensor== sensors[sensor_k], .SDcols=cols  ]
 
 
 #time_lags_p <- NULL
-#amip<-NULL
+ED_a<-NULL
 for (axis_k in c(1:12)){ #for (axis_k in c(1:12)){
 
 	message('#### axis:' , axis[axis_k])
@@ -370,17 +367,26 @@ for (axis_k in c(1:12)){ #for (axis_k in c(1:12)){
 
 
 
-delays <- c(4,5,6,7,8,9,10)
-dimensions <- c(3,5,7,10,20,30,40,50,60,70,80,90,100)
+#delays <- c(4,5,6,7,8,9,10)
+#dimensions <- c(3,5,7,10,20,30,40,50,60,70,80,90,100)
 
-#delays <- c(4,5)
-#dimensions <- c(5,7)
+#delays <- c(2,8)
+#dimensions <- c(10, 100)
+
+
+delays <- c(2,6)
+dimensions <- c(10)
+
 
 
 
 ################################################################################
+
+ed_dimtau_dta <-NULL
 for (dim_i in (1:500)[dimensions]){
-    for (tau_j in (1:500)[delays]){
+    
+	ed_tau_dta <- NULL
+	for (tau_j in (1:500)[delays]){
 
 
 #      #### Embedding Creating Preprossede Data Path
@@ -407,36 +413,195 @@ a_rss <- PCA( a_utde ,0)
 
 
 
-image_width_p3d =  1000#2000 #3508 #595 #877
-image_height_p3d = 500#700#2480 #842 #620
 
 
+image_width =  1000#2000 #3508 #595 #877
+image_height = 1000#700#2480 #842 #620
 
-imagefilename <- paste('utde_p', formatC(participants_k,width=2,flag='0'),'_m',formatC(dim_i,width=2,flag='0'),'d',formatC(tau_j,width=2,flag='0'), '_', sensors[sensor_k], '.jpeg', sep='')
-jpeg(filename=imagefilename,
-width=image_width_p3d, height=image_height_p3d, units="px", res = resolution, bg="white")
-
-plotRSS3D2D(a_rss)
-#plot PC components (transformedsignals and modify ollinfunc
+imagefilename <- paste('pc_rotateddata_p', formatC(participants_k,width=2,flag='0'),'_m',formatC(dim_i,width=2,flag='0'),'d',formatC(tau_j,width=2,flag='0'), '_', sensors[sensor_k], '.png', sep='')
+png(filename=imagefilename, width=image_width, height=image_height, units="px", bg="white")
+plotRSS2D_rotateddata(a_rss,15)
 dev.off()
 
 
 
 
 
-}##for (dim_i in (1:500)[dimensions]){
+## Euclidean Distances
+ed_dta <- as.data.table(euclidean.distances_rotateddata(a_rss))
+fun <- function(x) {list( axis[axis_k] )}
+ed_dta[,c('axis'):= fun(), ]
+
+
+
+
+
+#
+#image_width_p3d =  2000#2000 #3508 #595 #877
+#image_height_p3d = 500#700#2480 #842 #620
+#
+##imagefilename <- paste('utde_p', formatC(participants_k,width=2,flag='0'),'_m',formatC(dim_i,width=2,flag='0'),'d',formatC(tau_j,width=2,flag='0'), '_', sensors[sensor_k], '.jpeg', sep='')
+##jpeg(filename=imagefilename, width=image_width_p3d, height=image_height_p3d, units="px", bg="white")
+#
+#
+#imagefilename <- paste('utde_p', formatC(participants_k,width=2,flag='0'),'_m',formatC(dim_i,width=2,flag='0'),'d',formatC(tau_j,width=2,flag='0'), '_', sensors[sensor_k], '.png', sep='')
+#png(filename=imagefilename, width=image_width_p3d, height=image_height_p3d, units="px", bg="white")
+#
+#plotRSS3D2D(a_rss)
+#dev.off()
+#
+
+
+
+########################################################################
+########### START OF  ....   THIS PART CREATES SOME PROBLEMS WITH THE IMAGE RESOLUTION
+#### Save Picture
+#width = 500
+#height = 500
+#text.factor = 1
+#dpi <- text.factor * 100
+#width_calc <- width / dpi
+#height_calc <- height / dpi
+#
+#imagefilename <- paste('utde_p', formatC(participants_k,width=2,flag='0'),'_m',formatC(dim_i,width=2,flag='0'),'d',formatC(tau_j,width=2,flag='0'), '_', sensors[sensor_k], '.jpeg', sep='')
+##png(filename=imagefilename, width=width_calc, height=height_calc, units="px", res = dpi, bg="white")
+#jpeg(filename=imagefilename, width=width_calc, height=height_calc, units="px", res = dpi, bg="white")
+#
+#
+#p <- plotRSS3D2D(a_rss)
+#
+#dev.off()
+#
+##
+##ggsave(
+##	plot=plotRSS3D2D(a_rss),
+##	filename = imagefilename,
+##        dpi = dpi,
+##        width = width.calc,
+##        height = height.calc,
+##        units = 'in',
+##        bg = "transparent",
+##        device = "png"
+##	)	
+##
+##
+#
+########### END OF ....   THIS PART CREATES SOME PROBLEMS WITH THE IMAGE RESOLUTION
+########################################################################
+
+
+
+fun <- function(x) {list(  formatC(tau_j, width=2, flag='0')   )}
+ed_dta[,c('tau'):= fun(), ]
+
+
+ed_tau_dta <- rbind(ed_tau_dta,ed_dta)
+
+
 }##for (tau_j in (1:500)[delays]){
 
+fun <- function(x) {list(  formatC(dim_i, width=2, flag='0')   )}
+ed_tau_dta[,c('dim'):= fun(), ]
 
+ed_dimtau_dta <- rbind(ed_dimtau_dta, ed_tau_dta)
+
+}##for (dim_i in (1:500)[dimensions]){
+
+
+#fun <- function(x) {list( tau_j )}
+#ed_a[,c('axis'):= fun(), ]
+
+
+
+
+
+
+ED_a <- rbind(ED_a, ed_dimtau_dta)
 
 
 }##for (axis_k in c(1:12)){
 
 
+fun <- function(x) {list( sensors[sensor_k] )}
+ED_a[,c('sensor'):= fun(), ]
+
+
+ED_sa <- rbind(ED_sa, ED_a)
+
+
 }###for (sensor_k in c(1:2))
 
 
+
+
+
+
+
+ # Particpant Number
+
+if (participants_k == 1){
+fsNNtmp <-function(x) {list("p01")}
+} else if (participants_k == 2){
+fsNNtmp <-function(x) {list("p02")}
+} else if (participants_k == 3){
+fsNNtmp <-function(x) {list("p03")}
+} else if (participants_k == 4){
+fsNNtmp <-function(x) {list("p04")}
+} else if (participants_k == 5){
+fsNNtmp <-function(x) {list("p05")}
+} else if (participants_k == 6){
+fsNNtmp <-function(x) {list("p06")}
+} else if (participants_k == 7){
+fsNNtmp <-function(x) {list("p07")}
+} 
+
+ED_sa[,c("participant"):=fsNNtmp(), ]
+ED <- rbind(ED, ED_sa)
+
+
+
 }##for (pNN_k in c(1:1)) {
+
+
+
+
+
+names(ED) <- gsub("V1", "EuclideanDistances", names(ED))
+setcolorder( ED, c(6,5,2,3,4,1) )
+
+
+
+
+
+
+hED <- ED[sensor=='imu-human', .SDcols=cols  ]
+hpbox <-  ggplot(hED, aes(x=participant, y=EuclideanDistances) ) + geom_point(aes(fill=participant)  ) + geom_boxplot(lwd=0.5,outlier.colour=NA, fill=NA)+ facet_grid(tau~axis)
+
+
+rED <- ED[sensor=='imu-robot', .SDcols=cols  ]
+rpbox <-  ggplot(rED, aes(x=participant, y=EuclideanDistances) ) + geom_point(aes(fill=participant)  ) + geom_boxplot(lwd=0.5,outlier.colour=NA, fill=NA)+ facet_grid(tau~axis)
+
+
+#
+#pbox <-  ggplot(hED, aes(x=participant, y=EuclideanDistances) )+
+#          geom_point(aes(fill=participant),
+#                alpha=0.9,
+#                size=0.5,
+#                shape=21,
+#                position=position_jitter(width=0.25, height=0)  )+
+#         geom_boxplot(lwd=0.5,outlier.colour=NA, fill=NA)+ facet_grid(.~axis)
+
+
+#         labs(x= "Participant", y="")+
+#         theme_bw(15)+
+#         theme(panel.grid.minor= element_blank(),
+#               panel.border=element_rect(color="black"),
+#               legend.position="none")+
+#         coord_cartesian( ylim=c(0,15) )+
+#        theme(axis.text.x = element_text(colour="grey20",size=16,angle=90,hjust=.5,vjust=.5,face="plain"),
+#              axis.text.y = element_text(colour="grey20",size=16,angle=0,hjust=.5,vjust=.5,face="plain"),
+#              axis.title.x = element_text(colour="grey20",size=18,angle=0,hjust=.5,vjust=.5,face="plain")
+#              )
 
 
 

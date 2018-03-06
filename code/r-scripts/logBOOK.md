@@ -14,9 +14,14 @@ logBOOK
 	
 	* in  ami-razor and cao-razor, For outcomes paht for utde use `outcomes/emmov/utde/razor/...` (created:6mach2018,1h22m sorted:)
 
-	* in utde-razor,  similarly to `plotRSS3D2D(a_rss)` plot PC components (transformedsignals and modify ollinfunc  (created: 6march2018,4h08, sorted:)
+	* in utde-razor,  similarly to `plotRSS3D2D(a_rss)` plot PC components plotRSS transformedsignals `plotRSS2D_rotateddata()`  (created: 6march2018,4h08, sorted:6march2018,14h00m)
 
+	* in utde-razor, ED data.table object is created to compute the euclideian distances for different axis, sensors, participants, and embedding parameters (created and sorted: 6march2018, 16h57)
 
+	* create error plots of the ED of utde-razor for different dim values (created:6march2018,17h00m; sorted: )
+	* cp utde-razor as utde-openface and compute error bars of ED for different embedding values (created:6march2018,17h00; sorted:)
+
+ 
 
 	* state space reconstruction 
 	* recurrence plots 
