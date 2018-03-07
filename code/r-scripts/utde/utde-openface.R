@@ -1,6 +1,6 @@
 ###############################################################################	
 #
-#  preprocessed data for razor IMU sensors 
+#  preprocessed data for openface 
 # 
 #
 #
@@ -43,7 +43,7 @@ library(data.table) # for manipulating data
 library(ggplot2) # for plotting 
 
 library(signal)# for butterworth filter and sgolay
-source('~/mxochicale/github/r-code_repository/functions/ollin_cencah.R')
+source('~/mxochicale/github/R/functions/ollin_cencah.R')
 
 
 
@@ -60,18 +60,18 @@ github_path <- getwd()
 
 main_data_path <- paste( main_repository_path, '/data/razor_imu',sep="")
 outcomes_path <- paste(github_path,"/DataSets/emmov",sep="")
-relativeplotpath <- "/plots_timeseries/of-postprocessing"
+relativeplotpathtimeseries <- "/utde/openface/timeseries"
 relativeodatapath <- "/datatables"
 
-odatapath <- paste( outcomes_path, relativeodatapath, sep="" )
-
+relativeplotpath4utde_openface_ed <- "/utde/openface/euclideandistances"
+utde_sensor_path <- paste(outcomes_path,'/utde/openface',sep='')
 
 ################################################################################
 # (1) Setting DataSets paths and reading data
 
 
+odatapath <- paste( outcomes_path, relativeodatapath, sep="" )
 setwd(odatapath)
-
 datatable <- fread("rawopenfacedata-v00.datatable", header=TRUE)
 
 
@@ -256,21 +256,11 @@ xdata[,c(
 ##create lowfreq components
 #xdata[,c(
 #	'lfsgYaw', 'lfsgPitch', 'lfsgRoll',
-#	'lfsgAccX', 'lfsgAccY', 'lfsgAccZ',
-#	'lfsgGyroX', 'lfsgGyroY', 'lfsgGyroZ',
-#	'lfsgzmuvYaw', 'lfsgzmuvPitch', 'lfsgzmuvRoll',
-#	'lfsgzmuvAccX', 'lfsgzmuvAccY', 'lfsgzmuvAccZ',
-#	'lfsgzmuvGyroX', 'lfsgzmuvGyroY', 'lfsgzmuvGyroZ',
 #	'lfsgpc1_AG', 'lfsgpc2_AG', 'lfsgpc3_AG'
 #	)
 #:=lapply(
 #	.(
 #	sgYaw, sgPitch, sgRoll,
-#	sgAccX, sgAccY, sgAccZ,
-#	sgGyroX, sgGyroY, sgGyroZ,
-#	sgzmuvYaw, sgzmuvPitch, sgzmuvRoll,
-#	sgzmuvAccX, sgzmuvAccY, sgzmuvAccZ,
-#	sgzmuvGyroX, sgzmuvGyroY, sgzmuvGyroZ,
 #	sgpc1_AG, sgpc2_AG, sgpc3_AG
 #	),
 #	function(x) ( filtfilt(f, x)) )
@@ -289,63 +279,37 @@ xdata[,c(
 #xdata[, hfsgPitch := sgPitch - lfsgPitch]
 #xdata[, hfsgRoll := sgRoll - lfsgRoll]
 #
-#xdata[, hfsgAccX := sgAccX - lfsgAccX]
-#xdata[, hfsgAccY := sgAccY - lfsgAccY]
-#xdata[, hfsgAccZ := sgAccZ - lfsgAccZ]
-#
-#xdata[, hfsgGyroX := sgGyroX - lfsgGyroX]
-#xdata[, hfsgGyroY := sgGyroY - lfsgGyroY]
-#xdata[, hfsgGyroZ := sgGyroZ - lfsgGyroZ]
-#
-#xdata[, hfsgzmuvYaw := sgzmuvYaw - lfsgzmuvYaw]
-#xdata[, hfsgzmuvPitch := sgzmuvPitch - lfsgzmuvPitch]
-#xdata[, hfsgzmuvRoll := sgzmuvRoll - lfsgzmuvRoll]
-#
-#xdata[, hfsgzmuvAccX := sgzmuvAccX - lfsgzmuvAccX]
-#xdata[, hfsgzmuvAccY := sgzmuvAccY - lfsgzmuvAccY]
-#xdata[, hfsgzmuvAccZ := sgzmuvAccZ - lfsgzmuvAccZ]
-#
 #xdata[, hfsgzmuvGyroX := sgzmuvGyroX - lfsgzmuvGyroX]
 #xdata[, hfsgzmuvGyroY := sgzmuvGyroY - lfsgzmuvGyroY]
 #xdata[, hfsgzmuvGyroZ := sgzmuvGyroZ - lfsgzmuvGyroZ]
 #
 #
 #
-#################################################################################
-#### (3.5) Smoothing data with hf sg zmuv
-####
-#SavitzkyGolayCoeffs <- sgolay(p=5,n=155 ,m=0)
-#
-#### FUNCTON TO SMOOTH THE DATA
-#SGolay <- function(xinput,sgCoeffs){
-#  output <- filter(sgCoeffs, xinput)
-#  return(output)
-#}
-#
-#
-#xdata[,c(
-#	'sghfsgzmuvAccX', 'sghfsgzmuvAccY', 'sghfsgzmuvAccZ',
-#	'sghfsgzmuvGyroX', 'sghfsgzmuvGyroY', 'sghfsgzmuvGyroZ'
-#	) 
-#:=lapply(
-#	.(
-#	hfsgzmuvAccX,  hfsgzmuvAccY, hfsgzmuvAccZ,
-#	hfsgzmuvGyroX, hfsgzmuvGyroY, hfsgzmuvGyroZ
-#	), 
-#	function(x) ( SGolay(x,SavitzkyGolayCoeffs)  ))
-#	]
-#
-#
-#
-#
-#
-#
-#
-#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #
 ################################################################################
 # (4) Plotting
 #
+
+
+PLOTTINGTIMESERIES <- FALSE
+
+
+if (PLOTTINGTIMESERIES == TRUE) 
+{
 
 #################
 # (4.0) Plots Features
@@ -360,7 +324,7 @@ plotlinewidth <- 1
 
 ################################################################################
 # (4.1) Creating  and Changing to PlotPath
-plot_path <- paste(outcomes_path,relativeplotpath,sep="")
+plot_path <- paste(outcomes_path,relativeplotpathtimeseries,sep="")
 if (file.exists(plot_path)){
     setwd(file.path(plot_path))
 } else {
@@ -375,248 +339,39 @@ if (file.exists(plot_path)){
 
 
 plot <- ggplot(xdata, aes(x=frame))+  
-	geom_line( aes(y=pc1_gaze, col='pc1_gaze'), size=plotlinewidth)+
-	geom_line( aes(y=pc2_gaze, col='pc2_gaze'), size=plotlinewidth)+
-	geom_line( aes(y=pc3_gaze, col='pc3_gaze'), size=plotlinewidth)+
-
-	facet_grid(participant~.)+
-	#scale_y_continuous()+
-	coord_cartesian(xlim=NULL, ylim=NULL  )+
-	ylab('Three principal components for gaze_0_x_y_z gaze_1_x_y_z ') + 
-	xlab('Sample')+
-	labs(colour = 'pc')
-
-
-png(filename= paste(tag,"_PCgaze.png",sep=''),
-   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
-print(plot)
-dev.off()
-
-
-plot <- ggplot(xdata, aes(x=frame))+  
-	geom_line( aes(y=pc1_pose, col='pc1_pose'), size=plotlinewidth)+
-	geom_line( aes(y=pc2_pose, col='pc2_pose'), size=plotlinewidth)+
-	geom_line( aes(y=pc3_pose, col='pc3_pose'), size=plotlinewidth)+
-
-	facet_grid(participant~.)+
-	#scale_y_continuous()+
-	coord_cartesian(xlim=NULL, ylim=NULL  )+
-	ylab('Three principal components for pose_T_x_y_z pose_R_x_y_z ') + 
-	xlab('Sample')+
-	labs(colour = 'pc')
-
-
-png(filename= paste(tag,"_PCpose.png",sep=''),
-   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
-print(plot)
-dev.off()
-
-
-#'sgzmuvpc1_gaze', 'sgzmuvpc2_gaze', 'sgzmuvpc3_gaze', 
-#	'sgzmuvpc1_pose', 'sgzmuvpc2_pose', 'sgzmuvpc3_pose', 
-#	'sgzmuvpc1_lm', 'sgzmuvpc2_lm', 'sgzmuvpc3_lm' 
-
-
-
-plot <- ggplot(xdata, aes(x=frame))+  
-	geom_line( aes(y=sgzmuvpc1_gaze, col='sgzmuvpc1_gaze'), size=plotlinewidth)+
-	geom_line( aes(y=sgzmuvpc2_gaze, col='sgzmuvpc2_gaze'), size=plotlinewidth)+
-	geom_line( aes(y=sgzmuvpc3_gaze, col='sgzmuvpc3_gaze'), size=plotlinewidth)+
-
-	facet_grid(participant~.)+
-	#scale_y_continuous()+
-	coord_cartesian(xlim=NULL, ylim=NULL  )+
-	ylab('Savitzky-Golay, Zero Mean Unit Variance, PC') + 
-	xlab('Sample')+
-	labs(colour = 'pc')
-
-
-png(filename= paste(tag,"_sgzmuvPCgaze.png",sep=''),
-   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
-print(plot)
-dev.off()
-
-
-
-plot <- ggplot(xdata, aes(x=frame))+  
-	geom_line( aes(y=sgzmuvpc1_pose, col='sgzmuvpc1_pose'), size=plotlinewidth)+
-	geom_line( aes(y=sgzmuvpc2_pose, col='sgzmuvpc2_pose'), size=plotlinewidth)+
-	geom_line( aes(y=sgzmuvpc3_pose, col='sgzmuvpc3_pose'), size=plotlinewidth)+
-
-	facet_grid(participant~.)+
-	#scale_y_continuous()+
-	coord_cartesian(xlim=NULL, ylim=NULL  )+
-	ylab('Savitzky-Golay, Zero Mean Unit Variance, PC') + 
-	xlab('Sample')+
-	labs(colour = 'pc')
-
-
-png(filename= paste(tag,"_sgzmuvPCpose.png",sep=''),
-   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
-print(plot)
-dev.off()
-
-
-plot <- ggplot(xdata, aes(x=frame))+  
-	geom_line( aes(y=sgzmuvpc1_xlm, col='sgzmuvpc1_xlm'), size=plotlinewidth)+
-	geom_line( aes(y=sgzmuvpc2_xlm, col='sgzmuvpc2_xlm'), size=plotlinewidth)+
-	geom_line( aes(y=sgzmuvpc3_xlm, col='sgzmuvpc3_xlm'), size=plotlinewidth)+
-
-	facet_grid(participant~.)+
-	#scale_y_continuous()+
-	coord_cartesian(xlim=NULL, ylim=NULL  )+
-	ylab('Savitzky-Golay, Zero Mean Unit Variance, PC') + 
-	xlab('Sample')+
-	labs(colour = 'pc')
-
-
-png(filename= paste(tag,"_sgzmuvPCxlm.png",sep=''),
-   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
-print(plot)
-dev.off()
-
-
-plot <- ggplot(xdata, aes(x=frame))+  
-	geom_line( aes(y=sgzmuvpc1_ylm, col='sgzmuvpc1_ylm'), size=plotlinewidth)+
-	geom_line( aes(y=sgzmuvpc2_ylm, col='sgzmuvpc2_ylm'), size=plotlinewidth)+
-	geom_line( aes(y=sgzmuvpc3_ylm, col='sgzmuvpc3_ylm'), size=plotlinewidth)+
-
-	facet_grid(participant~.)+
-	#scale_y_continuous()+
-	coord_cartesian(xlim=NULL, ylim=NULL  )+
-	ylab('Savitzky-Golay, Zero Mean Unit Variance, PC') + 
-	xlab('Sample')+
-	labs(colour = 'pc')
-
-
-png(filename= paste(tag,"_sgzmuvPCylm.png",sep=''),
-   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
-print(plot)
-dev.off()
-
-
-
-
-plot <- ggplot(xdata, aes(x=frame))+  
-	geom_line( aes(y=sgconfidence, col='sgconfidence'), size=plotlinewidth)+
-	geom_line( aes(y=sgsuccess, col='sgsuccess'), size=plotlinewidth)+
+	geom_line( aes(y=zmuvconfidence, col='zmuvconfidence'), size=plotlinewidth)+
+	geom_line( aes(y=zmuvsuccess, col='zmuvsuccess'), size=plotlinewidth)+
 
 	facet_grid(participant~.)+
 	coord_cartesian(xlim=NULL, ylim=NULL  )+
-	ylab('Savitzky-Golay  ') + 
+	ylab('ZMUV data ') + 
 	xlab('Sample')+
 	labs(colour = 'Features')
 
 
-png(filename= paste(tag,"_base.png",sep=''),
+png(filename= paste(tag,"_zmuvbase.png",sep=''),
    width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
 print(plot)
 dev.off()
 
 
-
-
-
-plot <- ggplot(xdata, aes(x=frame))+  
-	geom_line( aes(y=sggaze_0_x, col='sggaze_0_x'), size=plotlinewidth)+
-	geom_line( aes(y=sggaze_0_y, col='sggaze_0_y'), size=plotlinewidth)+
-	#geom_line( aes(y=sggaze_0_z, col='sggaze_0_z'), size=plotlinewidth)+
-	geom_line( aes(y=sggaze_1_x, col='sggaze_1_x'), size=plotlinewidth)+
-	geom_line( aes(y=sggaze_1_y, col='sggaze_1_y'), size=plotlinewidth)+
-	#geom_line( aes(y=sggaze_1_z, col='sggaze_1_z'), size=plotlinewidth)+
-
-
-	facet_grid(participant~.)+
-	coord_cartesian(xlim=NULL, ylim=NULL  )+
-	ylab('Savitzky-Golay  ') + 
-	xlab('Sample')+
-	labs(colour = 'Features')
-
-
-png(filename= paste(tag,"_sggaze_xy.png",sep=''),
-   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
-print(plot)
-dev.off()
-
-
-
-plot <- ggplot(xdata, aes(x=frame))+  
-	geom_line( aes(y=sggaze_0_z, col='sggaze_0_z'), size=plotlinewidth)+
-	geom_line( aes(y=sggaze_1_z, col='sggaze_1_z'), size=plotlinewidth)+
-
-
-	facet_grid(participant~.)+
-	coord_cartesian(xlim=NULL, ylim=NULL  )+
-	ylab('Savitzky-Golay  ') + 
-	xlab('Sample')+
-	labs(colour = 'Features')
-
-
-png(filename= paste(tag,"_sggaze_z.png",sep=''),
-   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
-print(plot)
-dev.off()
-
-
-
-plot <- ggplot(xdata, aes(x=frame))+  
-	geom_line( aes(y=sgpose_Tx, col='sgpose_Tx'), size=plotlinewidth)+
-	geom_line( aes(y=sgpose_Ty, col='sgpose_Ty'), size=plotlinewidth)+
-
-	facet_grid(participant~.)+
-	coord_cartesian(xlim=NULL, ylim=NULL  )+
-	ylab('Savitzky-Golay  ') + 
-	xlab('Sample')+
-	labs(colour = 'Features')
-
-
-png(filename= paste(tag,"_sgposeTxy.png",sep=''),
-   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
-print(plot)
-dev.off()
-
-
-plot <- ggplot(xdata, aes(x=frame))+  
-	geom_line( aes(y=sgpose_Tz, col='sgpose_Tz'), size=plotlinewidth)+
-	#geom_line( aes(y=sgpose_Rz, col='sgpose_Rz'), size=plotlinewidth)+
-	#geom_line( aes(y=sgpose_Rz, col='sgpose_Rz'), size=plotlinewidth)+
-	#geom_line( aes(y=sgpose_Rz, col='sgpose_Rz'), size=plotlinewidth)+
-
-	facet_grid(participant~.)+
-	coord_cartesian(xlim=NULL, ylim=NULL  )+
-	ylab('Savitzky-Golay  ') + 
-	xlab('Sample')+
-	labs(colour = 'Features')
-
-
-png(filename= paste(tag,"_sgposeTz.png",sep=''),
-   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
-print(plot)
-dev.off()
-
-
-
-
-
-plot <- ggplot(xdata, aes(x=frame))+  
-	geom_line( aes(y=sgpose_Rx, col='sgpose_Rx'), size=plotlinewidth)+
-	geom_line( aes(y=sgpose_Ry, col='sgpose_Ry'), size=plotlinewidth)+
-	geom_line( aes(y=sgpose_Rz, col='sgpose_Rz'), size=plotlinewidth)+
-
-	facet_grid(participant~.)+
-	coord_cartesian(xlim=NULL, ylim=NULL  )+
-	ylab('Savitzky-Golay  ') + 
-	xlab('Sample')+
-	labs(colour = 'Features')
-
-
-png(filename= paste(tag,"_sgposeRxyz.png",sep=''),
-   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
-print(plot)
-dev.off()
-
-
-
+#
+#plot <- ggplot(xdata, aes(x=frame))+  
+#	geom_line( aes(y=sgconfidence, col='sgconfidence'), size=plotlinewidth)+
+#	geom_line( aes(y=sgsuccess, col='sgsuccess'), size=plotlinewidth)+
+#
+#	facet_grid(participant~.)+
+#	coord_cartesian(xlim=NULL, ylim=NULL  )+
+#	ylab('Savitzky-Golay  ') + 
+#	xlab('Sample')+
+#	labs(colour = 'Features')
+#
+#
+#png(filename= paste(tag,"_sgbase.png",sep=''),
+#   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+#print(plot)
+#dev.off()
+#
 
 plot <- ggplot(xdata, aes(x=frame))+  
 	geom_line( aes(y=sgzmuvconfidence, col='sgzmuvconfidence'), size=plotlinewidth)+
@@ -635,27 +390,58 @@ print(plot)
 dev.off()
 
 
-
+#plot <- ggplot(xdata, aes(x=frame))+  
+#	geom_line( aes(y=pose_Tx, col='pose_Tx'), size=plotlinewidth)+
+#	geom_line( aes(y=pose_Ty, col='pose_Ty'), size=plotlinewidth)+
+#	#geom_line( aes(y=pose_Tz, col='pose_Tz'), size=plotlinewidth)+
+#
+#	facet_grid(participant~.)+
+#	coord_cartesian(xlim=NULL, ylim=NULL  )+
+#	ylab('Raw Pose Position Data ') + 
+#	xlab('Sample')+
+#	labs(colour = 'Features')
+#
+#
+#png(filename= paste(tag,"_poseTxTy.png",sep=''),
+#   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+#print(plot)
+#dev.off()
+#
+#
+#plot <- ggplot(xdata, aes(x=frame))+  
+#	#geom_line( aes(y=pose_Tx, col='pose_Tx'), size=plotlinewidth)+
+#	#geom_line( aes(y=pose_Ty, col='pose_Ty'), size=plotlinewidth)+
+#	geom_line( aes(y=pose_Tz, col='pose_Tz'), size=plotlinewidth)+
+#
+#	facet_grid(participant~.)+
+#	coord_cartesian(xlim=NULL, ylim=NULL  )+
+#	ylab('Raw Pose Position Data ') + 
+#	xlab('Sample')+
+#	labs(colour = 'Features')
+#
+#
+#png(filename= paste(tag,"_poseTz.png",sep=''),
+#   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+#print(plot)
+#dev.off()
+#
 plot <- ggplot(xdata, aes(x=frame))+  
-	geom_line( aes(y=sgzmuvgaze_0_x, col='sgzmuvgaze_0_x'), size=plotlinewidth)+
-	geom_line( aes(y=sgzmuvgaze_0_y, col='sgzmuvgaze_0_y'), size=plotlinewidth)+
-	geom_line( aes(y=sgzmuvgaze_0_z, col='sgzmuvgaze_0_z'), size=plotlinewidth)+
-	geom_line( aes(y=sgzmuvgaze_1_x, col='sgzmuvgaze_1_x'), size=plotlinewidth)+
-	geom_line( aes(y=sgzmuvgaze_1_y, col='sgzmuvgaze_1_y'), size=plotlinewidth)+
-	geom_line( aes(y=sgzmuvgaze_1_z, col='sgzmuvgaze_1_z'), size=plotlinewidth)+
-
+	geom_line( aes(y=zmuvpose_Tx, col='zmuvpose_Tx'), size=plotlinewidth)+
+	geom_line( aes(y=zmuvpose_Ty, col='zmuvpose_Ty'), size=plotlinewidth)+
+	geom_line( aes(y=zmuvpose_Tz, col='zmuvpose_Tz'), size=plotlinewidth)+
 
 	facet_grid(participant~.)+
 	coord_cartesian(xlim=NULL, ylim=NULL  )+
-	ylab('Savitzky-Golay, Zero Mean Unit Variance ') + 
+	ylab('Raw Pose Position Data ') + 
 	xlab('Sample')+
 	labs(colour = 'Features')
 
 
-png(filename= paste(tag,"_sgzmuvgaze.png",sep=''),
+png(filename= paste(tag,"_zmuvposeT.png",sep=''),
    width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
 print(plot)
 dev.off()
+
 
 
 
@@ -677,85 +463,520 @@ print(plot)
 dev.off()
 
 
+
+
+#plot <- ggplot(xdata, aes(x=frame))+  
+#	geom_line( aes(y=sgpose_Tx, col='sgpose_Tx'), size=plotlinewidth)+
+#	geom_line( aes(y=sgpose_Ty, col='sgpose_Ty'), size=plotlinewidth)+
+#
+#	facet_grid(participant~.)+
+#	coord_cartesian(xlim=NULL, ylim=NULL  )+
+#	ylab('Savitzky-Golay  ') + 
+#	xlab('Sample')+
+#	labs(colour = 'Features')
+#
+#
+#png(filename= paste(tag,"_sgposeTxy.png",sep=''),
+#   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+#print(plot)
+#dev.off()
+#
+#
+#plot <- ggplot(xdata, aes(x=frame))+  
+#	geom_line( aes(y=sgpose_Tz, col='sgpose_Tz'), size=plotlinewidth)+
+#	#geom_line( aes(y=sgpose_Rz, col='sgpose_Rz'), size=plotlinewidth)+
+#	#geom_line( aes(y=sgpose_Rz, col='sgpose_Rz'), size=plotlinewidth)+
+#	#geom_line( aes(y=sgpose_Rz, col='sgpose_Rz'), size=plotlinewidth)+
+#
+#	facet_grid(participant~.)+
+#	coord_cartesian(xlim=NULL, ylim=NULL  )+
+#	ylab('Savitzky-Golay  ') + 
+#	xlab('Sample')+
+#	labs(colour = 'Features')
+#
+#
+#png(filename= paste(tag,"_sgposeTz.png",sep=''),
+#   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+#print(plot)
+#dev.off()
+#
+#
+
+
+
+#plot <- ggplot(xdata, aes(x=frame))+  
+#	geom_line( aes(y=pose_Rx, col='pose_Rx'), size=plotlinewidth)+
+#	geom_line( aes(y=pose_Ry, col='pose_Ry'), size=plotlinewidth)+
+#	geom_line( aes(y=pose_Rz, col='pose_Rz'), size=plotlinewidth)+
+#
+#	facet_grid(participant~.)+
+#	coord_cartesian(xlim=NULL, ylim=NULL  )+
+#	ylab('Raw Poste Rotation Data ') + 
+#	xlab('Sample')+
+#	labs(colour = 'Features')
+#
+#
+#png(filename= paste(tag,"_poseR.png",sep=''),
+#   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+#print(plot)
+#dev.off()
+#v
+#
+#plot <- ggplot(xdata, aes(x=frame))+  
+#	geom_line( aes(y=sgpose_Rx, col='sgpose_Rx'), size=plotlinewidth)+
+#	geom_line( aes(y=sgpose_Ry, col='sgpose_Ry'), size=plotlinewidth)+
+#	geom_line( aes(y=sgpose_Rz, col='sgpose_Rz'), size=plotlinewidth)+
+#
+#	facet_grid(participant~.)+
+#	coord_cartesian(xlim=NULL, ylim=NULL  )+
+#	ylab('Savitzky-Golay  ') + 
+#	xlab('Sample')+
+#	labs(colour = 'Features')
+#
+#
+#png(filename= paste(tag,"_sgposeRxyz.png",sep=''),
+#   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+#print(plot)
+#dev.off()
+#
+#
+
 plot <- ggplot(xdata, aes(x=frame))+  
-	geom_line( aes(y=sgzmuvpose_Rx, col='sgzmuvpose_Rx'), size=plotlinewidth)+
-	geom_line( aes(y=sgzmuvpose_Ry, col='sgzmuvpose_Ry'), size=plotlinewidth)+
-	geom_line( aes(y=sgzmuvpose_Rz, col='sgzmuvpose_Rz'), size=plotlinewidth)+
+	geom_line( aes(y=zmuvpose_Rx, col='zmuvpose_Rx'), size=plotlinewidth)+
+	geom_line( aes(y=zmuvpose_Ry, col='zmuvpose_Ry'), size=plotlinewidth)+
+	geom_line( aes(y=zmuvpose_Rz, col='zmuvpose_Rz'), size=plotlinewidth)+
 
 	facet_grid(participant~.)+
 	coord_cartesian(xlim=NULL, ylim=NULL  )+
-	ylab('Savitzky-Golay, Zero Mean Unit Variance ') + 
+	ylab('Zero Mean Unit Variance ') + 
 	xlab('Sample')+
 	labs(colour = 'Features')
+
+
+png(filename= paste(tag,"_zmuvposeR.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+
+plot <- ggplot(xdata, aes(x=frame))+  
+geom_line( aes(y=sgzmuvpose_Rx, col='sgzmuvpose_Rx'), size=plotlinewidth)+
+geom_line( aes(y=sgzmuvpose_Ry, col='sgzmuvpose_Ry'), size=plotlinewidth)+
+geom_line( aes(y=sgzmuvpose_Rz, col='sgzmuvpose_Rz'), size=plotlinewidth)+
+
+facet_grid(participant~.)+
+coord_cartesian(xlim=NULL, ylim=NULL  )+
+ylab('Savitzky-Golay, Zero Mean Unit Variance ') + 
+xlab('Sample')+
+labs(colour = 'Features')
 
 
 png(filename= paste(tag,"_sgzmuvposeR.png",sep=''),
-   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
-print(plot)
-dev.off()
-
-
-plot <- ggplot(xdata, aes(x=frame))+  
-	geom_line( aes(y=sgzmuvx_0, col='sgzmuvx_0'), size=plotlinewidth)+
-	geom_line( aes(y=sgzmuvx_1, col='sgzmuvx_1'), size=plotlinewidth)+
-	geom_line( aes(y=sgzmuvx_2, col='sgzmuvx_2'), size=plotlinewidth)+
-
-	facet_grid(participant~.)+
-	coord_cartesian(xlim=NULL, ylim=NULL  )+
-	ylab('Savitzky-Golay, Zero Mean Unit Variance ') + 
-	xlab('Sample')+
-	labs(colour = 'Features')
-
-
-png(filename= paste(tag,"_sgzmuvx012.png",sep=''),
-   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
-print(plot)
-dev.off()
-
-
-
-plot <- ggplot(xdata, aes(x=frame))+  
-	geom_line( aes(y=sgzmuvy_0, col='sgzmuvy_0'), size=plotlinewidth)+
-	geom_line( aes(y=sgzmuvy_1, col='sgzmuvy_1'), size=plotlinewidth)+
-	geom_line( aes(y=sgzmuvy_2, col='sgzmuvy_2'), size=plotlinewidth)+
-
-	facet_grid(participant~.)+
-	coord_cartesian(xlim=NULL, ylim=NULL  )+
-	ylab('Savitzky-Golay, Zero Mean Unit Variance ') + 
-	xlab('Sample')+
-	labs(colour = 'Features')
-
-
-png(filename= paste(tag,"_sgzmuvy012.png",sep=''),
-   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
 print(plot)
 dev.off()
 
 
 
 
+#
+#
+#plot <- ggplot(xdata, aes(x=frame))+  
+#	geom_line( aes(y=sggaze_0_x, col='sggaze_0_x'), size=plotlinewidth)+
+#	geom_line( aes(y=sggaze_0_y, col='sggaze_0_y'), size=plotlinewidth)+
+#	#geom_line( aes(y=sggaze_0_z, col='sggaze_0_z'), size=plotlinewidth)+
+#	geom_line( aes(y=sggaze_1_x, col='sggaze_1_x'), size=plotlinewidth)+
+#	geom_line( aes(y=sggaze_1_y, col='sggaze_1_y'), size=plotlinewidth)+
+#	#geom_line( aes(y=sggaze_1_z, col='sggaze_1_z'), size=plotlinewidth)+
+#
+#
+#	facet_grid(participant~.)+
+#	coord_cartesian(xlim=NULL, ylim=NULL  )+
+#	ylab('Savitzky-Golay  ') + 
+#	xlab('Sample')+
+#	labs(colour = 'Features')
+#
+#
+#png(filename= paste(tag,"_sggaze_xy.png",sep=''),
+#   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+#print(plot)
+#dev.off()
+#
+
+#
+#plot <- ggplot(xdata, aes(x=frame))+  
+#	geom_line( aes(y=sggaze_0_z, col='sggaze_0_z'), size=plotlinewidth)+
+#	geom_line( aes(y=sggaze_1_z, col='sggaze_1_z'), size=plotlinewidth)+
+#
+#
+#	facet_grid(participant~.)+
+#	coord_cartesian(xlim=NULL, ylim=NULL  )+
+#	ylab('Savitzky-Golay  ') + 
+#	xlab('Sample')+
+#	labs(colour = 'Features')
+#
+#
+#png(filename= paste(tag,"_sggaze_z.png",sep=''),
+#   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+#print(plot)
+#dev.off()
+#
 
 
-plot <- ggplot(xdata, aes(x=frame))+  
-	geom_line( aes(y=sgzmuvp_scale, col='sgzmuvp_scale'), size=plotlinewidth)+
-	geom_line( aes(y=sgzmuvp_rx, col='sgzmuvp_rx'), size=plotlinewidth)+
-	geom_line( aes(y=sgzmuvp_ry, col='sgzmuvp_ry'), size=plotlinewidth)+
-	geom_line( aes(y=sgzmuvp_rz, col='sgzmuvp_rz'), size=plotlinewidth)+
-	geom_line( aes(y=sgzmuvp_tx, col='sgzmuvp_tx'), size=plotlinewidth)+
-	geom_line( aes(y=sgzmuvp_ty, col='sgzmuvp_ty'), size=plotlinewidth)+
+
+#
+#plot <- ggplot(xdata, aes(x=frame))+  
+#	geom_line( aes(y=sgzmuvgaze_0_x, col='sgzmuvgaze_0_x'), size=plotlinewidth)+
+#	geom_line( aes(y=sgzmuvgaze_0_y, col='sgzmuvgaze_0_y'), size=plotlinewidth)+
+#	geom_line( aes(y=sgzmuvgaze_0_z, col='sgzmuvgaze_0_z'), size=plotlinewidth)+
+#	geom_line( aes(y=sgzmuvgaze_1_x, col='sgzmuvgaze_1_x'), size=plotlinewidth)+
+#	geom_line( aes(y=sgzmuvgaze_1_y, col='sgzmuvgaze_1_y'), size=plotlinewidth)+
+#	geom_line( aes(y=sgzmuvgaze_1_z, col='sgzmuvgaze_1_z'), size=plotlinewidth)+
+#
+#
+#	facet_grid(participant~.)+
+#	coord_cartesian(xlim=NULL, ylim=NULL  )+
+#	ylab('Savitzky-Golay, Zero Mean Unit Variance ') + 
+#	xlab('Sample')+
+#	labs(colour = 'Features')
+#
+#
+#png(filename= paste(tag,"_sgzmuvgaze.png",sep=''),
+#   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+#print(plot)
+#dev.off()
+#
+#
 
 
-	facet_grid(participant~.)+
-	coord_cartesian(xlim=NULL, ylim=NULL  )+
-	ylab('Savitzky-Golay, Zero Mean Unit Variance ') + 
-	xlab('Sample')+
-	labs(colour = 'Features')
 
 
-png(filename= paste(tag,"_sgzmuvshape.png",sep=''),
-   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
-print(plot)
+
+} # if PLOTTINGTIMESERIES
+
+
+
+
+
+
+
+
+
+
+
+
+################################################################################
+################################################################################
+# (4) TIME_DELAY EMBEDDING
+################################################################################
+################################################################################
+
+
+UTDE <- FALSE
+
+if (UTDE == TRUE) {
+
+
+
+
+
+#### Embedding Creating Preprossede Data Path
+embedding_path <- paste(utde_sensor_path,"/embeddings",sep="")
+if (file.exists(embedding_path)){
+setwd(file.path(embedding_path))
+} else {
+dir.create(embedding_path, recursive=TRUE)
+setwd(file.path(embedding_path))
+}
+
+
+
+
+
+
+pNN <- c('p01', 'p02', 'p03', 'p04', 'p05', 'p06')
+axis <- c('zmuvconfidence', 'zmuvsuccess', 'sgzmuvconfidence', 'sgzmuvsuccess', 'zmuvpose_Rx', 'zmuvpose_Ry', 'zmuvpose_Rz', 'sgzmuvpose_Rx', 'sgzmuvpose_Ry', 'sgzmuvpose_Rz', 'zmuvpose_Tx', 'zmuvpose_Ty', 'zmuvpose_Tz', 'sgzmuvpose_Tx', 'sgzmuvpose_Ty', 'sgzmuvpose_Tz')
+
+xd <- xdata[,.(zmuvconfidence, zmuvsuccess, sgzmuvconfidence, sgzmuvsuccess, zmuvpose_Rx, zmuvpose_Ry, zmuvpose_Rz, sgzmuvpose_Rx, sgzmuvpose_Ry, sgzmuvpose_Rz, zmuvpose_Tx, zmuvpose_Ty, zmuvpose_Tz, sgzmuvpose_Tx, sgzmuvpose_Ty, sgzmuvpose_Tz), by=. (participant,trial,frame)]
+
+
+ED <- NULL # Euclidean Distances data.table object!
+for (participants_k in c(1:6)) {#for (pNN_k in c(1:1)) {
+
+message('####################')
+message('# PARTICIPANT: ', participants_k)
+setkey(xd, participant)
+xdp <- xd[.( pNN[participants_k] )]
+
+
+
+
+
+
+#time_lags_p <- NULL
+ED_a<-NULL
+for (axis_k in c(1:length(axis))){ #for (axis_k in c(1:12)){
+
+
+	message('#### axis:' , axis[axis_k])
+	inputtimeseries <- xdp[,  get(axis[axis_k]) ]
+
+
+
+
+      #### Embedding Creating Preprossede Data Path
+      axis_embedding_path <- paste(embedding_path, '/',axis[axis_k],sep="")
+      if (file.exists(axis_embedding_path)){
+      setwd(file.path(axis_embedding_path))
+      } else {
+      dir.create(axis_embedding_path, recursive=TRUE)
+      setwd(file.path(axis_embedding_path))
+      }
+
+
+
+
+################################################################################
+################################################################################
+## buildTakens
+
+### Computed Embedding parameters:  m=7 tau=4
+# delays <- tau
+# dimensions <- dimension
+
+
+
+#delays <- c(2)
+#dimensions <- c(10)
+
+#delays <- c(2,8)
+#dimensions <- c(10, 100)
+
+delays <- c(2,5,10)
+dimensions <- c(10,25,50)
+
+#delays <- c(4,5,6,7,8,9,10)
+#dimensions <- c(3,5,7,10,20,30,40,50,60,70,80,90,100)
+
+
+################################################################################
+
+ed_dimtau_dta <-NULL
+for (dim_i in (1:500)[dimensions]){
+    
+	ed_tau_dta <- NULL
+	for (tau_j in (1:500)[delays]){
+
+
+#      #### Embedding Creating Preprossede Data Path
+#      TAU_embedding_path <- paste(axis_embedding_path,"/tau_", formatC(tau_j,width=2,flag='0'),sep="")
+#      if (file.exists(TAU_embedding_path)){
+#      setwd(file.path(TAU_embedding_path))
+#      } else {
+#      dir.create(TAU_embedding_path, recursive=TRUE)
+#      setwd(file.path(TAU_embedding_path))
+#      }
+
+
+
+message('Embedding parameters:  m=',dim_i,' tau=',d=tau_j)
+
+
+
+#autde <- buildTakens(hinputtimeseries,embedding.dim= dim_i, time.lag= tau_j)
+#X<-bT[,]
+
+a_utde <- Takens_Theorem(inputtimeseries, dim_i, tau_j, 1)
+
+a_rss <- PCA( a_utde ,0)
+
+
+
+
+
+image_width =  1000#2000 #3508 #595 #877
+image_height = 1000#700#2480 #842 #620
+
+imagefilename <- paste('pc_rotateddata_p', formatC(participants_k,width=2,flag='0'),'_m',formatC(dim_i,width=2,flag='0'),'d',formatC(tau_j,width=2,flag='0'), '_', '.png', sep='')
+png(filename=imagefilename, width=image_width, height=image_height, units="px", bg="white")
+plotRSS2D_rotateddata(a_rss,05)
 dev.off()
+
+
+
+
+
+## Euclidean Distances
+ed_dta <- as.data.table(euclidean.distances_rotateddata(a_rss))
+fun <- function(x) {list( axis[axis_k] )}
+ed_dta[,c('axis'):= fun(), ]
+
+
+
+
+
+#
+#image_width_p3d =  2000#2000 #3508 #595 #877
+#image_height_p3d = 500#700#2480 #842 #620
+#[[
+##imagefilename <- paste('utde_p', formatC(participants_k,width=2,flag='0'),'_m',formatC(dim_i,width=2,flag='0'),'d',formatC(tau_j,width=2,flag='0'), '_', sensors[sensor_k], '.jpeg', sep='')
+##jpeg(filename=imagefilename, width=image_width_p3d, height=image_height_p3d, units="px", bg="white")
+#
+#
+#imagefilename <- paste('utde_p', formatC(participants_k,width=2,flag='0'),'_m',formatC(dim_i,width=2,flag='0'),'d',formatC(tau_j,width=2,flag='0'), '_', sensors[sensor_k], '.png', sep='')
+#png(filename=imagefilename, width=image_width_p3d, height=image_height_p3d, units="px", bg="white")
+#
+#plotRSS3D2D(a_rss)
+#dev.off()
+#
+
+
+
+
+fun <- function(x) {list(  formatC(tau_j, width=3, flag='0')   )}
+ed_dta[,c('tau'):= fun(), ]
+
+
+ed_tau_dta <- rbind(ed_tau_dta,ed_dta)
+
+
+}##for (tau_j in (1:500)[delays]){
+
+fun <- function(x) {list(  formatC(dim_i, width=3, flag='0')   )}
+ed_tau_dta[,c('dim'):= fun(), ]
+
+ed_dimtau_dta <- rbind(ed_dimtau_dta, ed_tau_dta)
+
+}##for (dim_i in (1:500)[dimensions]){
+
+
+#fun <- function(x) {list( tau_j )}
+#ed_a[,c('axis'):= fun(), ]
+
+
+
+
+
+
+ED_a <- rbind(ED_a, ed_dimtau_dta)
+
+
+
+
+}###for (axis_k in c(1:12)){ #for (axis_k in c(1:12)){
+
+
+
+ # Particpant Number
+
+if (participants_k == 1){
+fsNNtmp <-function(x) {list("p01")}
+} else if (participants_k == 2){
+fsNNtmp <-function(x) {list("p02")}
+} else if (participants_k == 3){
+fsNNtmp <-function(x) {list("p03")}
+} else if (participants_k == 4){
+fsNNtmp <-function(x) {list("p04")}
+} else if (participants_k == 5){
+fsNNtmp <-function(x) {list("p05")}
+} else if (participants_k == 6){
+fsNNtmp <-function(x) {list("p06")}
+} else if (participants_k == 7){
+fsNNtmp <-function(x) {list("p07")}
+} 
+
+ED_a[,c("participant"):=fsNNtmp(), ]
+ED <- rbind(ED, ED_a)
+
+
+
+
+
+} ###for (participants_k in c(1:6)) {#for (pNN_k in c(1:1)) {
+
+
+
+
+
+
+names(ED) <- gsub("V1", "EuclideanDistances", names(ED))
+setcolorder( ED, c(5,2,3,4,1) )
+
+
+
+
+
+plot_path <- paste(outcomes_path,relativeplotpath4utde_openface_ed,sep="")
+if (file.exists(plot_path)){
+    setwd(file.path(plot_path))
+} else {
+  dir.create(plot_path, recursive=TRUE)
+  setwd(file.path(plot_path))
+}
+
+
+
+
+
+
+for (pd_k in c(1:length(delays))) {
+
+tau_value <-  formatC(delays[pd_k],width=3,flag='0')
+dED <- ED[tau== tau_value, .SDcols=cols  ]
+
+
+pbox <- ggplot(dED, aes(x=participant, y=EuclideanDistances) )+
+    	geom_point(aes(fill=participant),
+                alpha=0.9,
+                size=0.5,
+                shape=21,
+                position=position_jitter(width=0.25, height=0)  )+
+       	geom_boxplot(lwd=0.5,outlier.colour=NA, fill=NA)+ 
+	facet_grid(dim~axis)+
+	labs(x= "Participant", y="")+
+        theme_bw(15)+
+        theme(panel.grid.minor= element_blank(),
+               panel.border=element_rect(color="black"),
+               legend.position="none")+
+        coord_cartesian( ylim=c(0,20) )+
+        theme(axis.text.x = element_text(colour="grey20",size=16,angle=90,hjust=.5,vjust=.5,face="plain"),
+              axis.text.y = element_text(colour="grey20",size=16,angle=0,hjust=.5,vjust=.5,face="plain"),
+              axis.title.x = element_text(colour="grey20",size=18,angle=0,hjust=.5,vjust=.5,face="plain")
+              )
+
+
+
+## Setting up plots_path
+
+### Save Picture
+width = 2000
+height = 1000
+text.factor = 1
+dpi <- text.factor * 100
+width.calc <- width / dpi
+height.calc <- height / dpi
+
+
+
+filenameimage <- paste("edhumans_", 'tau_', tau_value, ".png",sep="")
+ggsave(filename = filenameimage,
+        dpi = dpi,
+        width = width.calc,
+        height = height.calc,
+        units = 'in',
+        bg = "transparent",
+        device = "png",
+	pbox)
+
+
+} ###for (pd_k in c(1:length(delays))) {
+
+
+
+
+
+
+} #### if (UTDE == TRUE) {
 
 
 

@@ -1,0 +1,123 @@
+\documentclass[a4paper,12pt]{article}
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+
+
+%% Sets page size and margins
+%\usepackage[a4paper,top=1cm,bottom=4mm,left=3cm,right=0mm,marginparwidth=1.75cm]{geometry}
+%\usepackage[a4paper,top=0cm,bottom=3mm,left=3mm,right=0mm,marginparwidth=0cm]{geometry}
+\usepackage{geometry} % for \newgeometry{} and \restoregeometry
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{url}%for \path{}
+\usepackage{lscape}
+\pagenumbering{gobble}%no numbers in the webpage
+
+%\usepackage[counterclockwise]{rotating} %sidewaysfigure
+
+
+
+
+\graphicspath{{/home/map479/mxochicale/github/DataSets/emmov/utde/openface/timeseries/}}
+
+\title{OpenFace Time Series for UTDE Analysis}
+\author{Miguel P Xochicale \\
+School of Engineering\\
+University of Birmingham, UK}
+
+
+\begin{document}
+
+
+\newgeometry{top=20mm,bottom=20mm,left=20mm,right=20mm}
+\maketitle
+
+%\begin{abstract}
+%
+%\end{abstract}
+
+
+\section{Description}
+
+
+Postprocessing techniques (e.g. Savitzky-Golay Filter, Zero Mean Unit Variance)
+for OpenFace raw data \cite{baltrusaitis2016}.
+
+
+\section{r-scripts and data paths}
+\path{~/github/emmov-pilotstudy/code/r-scripts/utde/} \\
+\path{utde-openface.R}
+is used to generate the plots which are saved at: \\
+\path{~/github/DataSets/emmov/utde/openface/timeseries/*}
+The data is available in \cite{mxochicale2018}.
+
+
+
+\bibliographystyle{apalike}
+\bibliography{references}
+
+%\newpage
+
+%\newgeometry{top=0cm,bottom=3mm,left=3mm,right=0mm,marginparwidth=0cm}
+%\restoregeometry
+
+
+
+
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{pre-of-timeseries_zmuvbase}
+\caption{S-G confidence and success.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{pre-of-timeseries_sgzmuvbase}
+\caption{S-G,ZMUV confidence and success.}
+\end{figure}
+
+
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{pre-of-timeseries_zmuvposeR}
+\caption{ZMUV pose R.}
+\end{figure}
+
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{pre-of-timeseries_sgzmuvposeR}
+\caption{S-G,ZMUV pose R.}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{pre-of-timeseries_zmuvposeT}
+\caption{ZMUV pose T.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{pre-of-timeseries_sgzmuvposeT}
+\caption{S-G,ZMUV pose T.}
+\end{figure}
+
+
+
+
+
+
+
+
+\end{document}

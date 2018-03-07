@@ -18,8 +18,8 @@ logBOOK
 
 	* in utde-razor, ED data.table object is created to compute the euclideian distances for different axis, sensors, participants, and embedding parameters (created and sorted: 6march2018, 16h57)
 
-	* create error plots of the ED of utde-razor for different dim values (created:6march2018,17h00m; sorted: )
-	* cp utde-razor as utde-openface and compute error bars of ED for different embedding values (created:6march2018,17h00; sorted:)
+	* create error plots of the ED of utde-razor for different dim values (created:6march2018,17h00m; sorted: 6march2018,21h34)
+	* cp utde-razor as utde-openface and compute error bars of ED for different embedding values (created:6march2018,17h00; sorted:7march2018,02h02m)
 
  
 

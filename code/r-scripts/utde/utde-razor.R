@@ -64,10 +64,11 @@ utde_sensor_path <- paste(outcomes_path,'/utde/razor',sep='')
 
 
 relativeplotpath <- "/plots_timeseries/razor/utde"
-relativeplotpathforEmbeddingValues <- "/plots_timeseries/razor/utde/embedding-values"
+relativeplotpath4utde_razor_ed <- "/utde/razor/euclideandistances"
 relativeodatapath <- "/datatables"
 
 odatapath <- paste( outcomes_path, relativeodatapath, sep="" )
+
 
 
 
@@ -374,8 +375,8 @@ for (axis_k in c(1:12)){ #for (axis_k in c(1:12)){
 #dimensions <- c(10, 100)
 
 
-delays <- c(2,6)
-dimensions <- c(10)
+delays <- c(2,5,10)
+dimensions <- c(10,50,100)
 
 
 
@@ -491,7 +492,7 @@ ed_dta[,c('axis'):= fun(), ]
 
 
 
-fun <- function(x) {list(  formatC(tau_j, width=2, flag='0')   )}
+fun <- function(x) {list(  formatC(tau_j, width=3, flag='0')   )}
 ed_dta[,c('tau'):= fun(), ]
 
 
@@ -500,7 +501,7 @@ ed_tau_dta <- rbind(ed_tau_dta,ed_dta)
 
 }##for (tau_j in (1:500)[delays]){
 
-fun <- function(x) {list(  formatC(dim_i, width=2, flag='0')   )}
+fun <- function(x) {list(  formatC(dim_i, width=3, flag='0')   )}
 ed_tau_dta[,c('dim'):= fun(), ]
 
 ed_dimtau_dta <- rbind(ed_dimtau_dta, ed_tau_dta)
@@ -574,38 +575,115 @@ setcolorder( ED, c(6,5,2,3,4,1) )
 
 
 
-hED <- ED[sensor=='imu-human', .SDcols=cols  ]
-hpbox <-  ggplot(hED, aes(x=participant, y=EuclideanDistances) ) + geom_point(aes(fill=participant)  ) + geom_boxplot(lwd=0.5,outlier.colour=NA, fill=NA)+ facet_grid(tau~axis)
 
 
-rED <- ED[sensor=='imu-robot', .SDcols=cols  ]
-rpbox <-  ggplot(rED, aes(x=participant, y=EuclideanDistances) ) + geom_point(aes(fill=participant)  ) + geom_boxplot(lwd=0.5,outlier.colour=NA, fill=NA)+ facet_grid(tau~axis)
-
-
-#
-#pbox <-  ggplot(hED, aes(x=participant, y=EuclideanDistances) )+
-#          geom_point(aes(fill=participant),
-#                alpha=0.9,
-#                size=0.5,
-#                shape=21,
-#                position=position_jitter(width=0.25, height=0)  )+
-#         geom_boxplot(lwd=0.5,outlier.colour=NA, fill=NA)+ facet_grid(.~axis)
-
-
-#         labs(x= "Participant", y="")+
-#         theme_bw(15)+
-#         theme(panel.grid.minor= element_blank(),
-#               panel.border=element_rect(color="black"),
-#               legend.position="none")+
-#         coord_cartesian( ylim=c(0,15) )+
-#        theme(axis.text.x = element_text(colour="grey20",size=16,angle=90,hjust=.5,vjust=.5,face="plain"),
-#              axis.text.y = element_text(colour="grey20",size=16,angle=0,hjust=.5,vjust=.5,face="plain"),
-#              axis.title.x = element_text(colour="grey20",size=18,angle=0,hjust=.5,vjust=.5,face="plain")
-#              )
+plot_path <- paste(outcomes_path,relativeplotpath4utde_razor_ed,sep="")
+if (file.exists(plot_path)){
+    setwd(file.path(plot_path))
+} else {
+  dir.create(plot_path, recursive=TRUE)
+  setwd(file.path(plot_path))
+}
 
 
 
 
+
+
+
+
+for (pd_k in c(1:length(delays))) {
+
+tau_value <-  formatC(delays[pd_k],width=3,flag='0')
+dED <- ED[tau== tau_value, .SDcols=cols  ]
+
+
+
+
+
+
+hED <- dED[sensor=='imu-human', .SDcols=cols  ]
+
+hpbox <- ggplot(hED, aes(x=participant, y=EuclideanDistances) )+
+    	geom_point(aes(fill=participant),
+                alpha=0.9,
+                size=0.5,
+                shape=21,
+                position=position_jitter(width=0.25, height=0)  )+
+       	geom_boxplot(lwd=0.5,outlier.colour=NA, fill=NA)+ 
+	facet_grid(dim~axis)+
+	labs(x= "Participant", y="")+
+        theme_bw(15)+
+        theme(panel.grid.minor= element_blank(),
+               panel.border=element_rect(color="black"),
+               legend.position="none")+
+        coord_cartesian( ylim=c(0,20) )+
+        theme(axis.text.x = element_text(colour="grey20",size=16,angle=90,hjust=.5,vjust=.5,face="plain"),
+              axis.text.y = element_text(colour="grey20",size=16,angle=0,hjust=.5,vjust=.5,face="plain"),
+              axis.title.x = element_text(colour="grey20",size=18,angle=0,hjust=.5,vjust=.5,face="plain")
+              )
+
+
+
+rED <- dED[sensor=='imu-robot', .SDcols=cols  ]
+
+rpbox <- ggplot(rED, aes(x=participant, y=EuclideanDistances) )+
+	geom_point(aes(fill=participant),
+		alpha=0.9,
+		size=0.5,
+		shape=21,
+		position=position_jitter(width=0.25, height=0)  )+
+	geom_boxplot(lwd=0.5,outlier.colour=NA, fill=NA)+ 
+	facet_grid(dim~axis)+
+	labs(x= "Participant", y="")+
+	theme_bw(15)+
+	theme(panel.grid.minor= element_blank(),
+	       panel.border=element_rect(color="black"),
+	       legend.position="none")+
+	coord_cartesian( ylim=c(0,20) )+
+	theme(axis.text.x = element_text(colour="grey20",size=16,angle=90,hjust=.5,vjust=.5,face="plain"),
+	      axis.text.y = element_text(colour="grey20",size=16,angle=0,hjust=.5,vjust=.5,face="plain"),
+	      axis.title.x = element_text(colour="grey20",size=18,angle=0,hjust=.5,vjust=.5,face="plain")
+	      )
+
+
+
+
+## Setting up plots_path
+
+### Save Picture
+width = 2000
+height = 1000
+text.factor = 1
+dpi <- text.factor * 100
+width.calc <- width / dpi
+height.calc <- height / dpi
+
+
+
+filenameimage <- paste("edhumans_", 'tau_', tau_value, ".png",sep="")
+ggsave(filename = filenameimage,
+        dpi = dpi,
+        width = width.calc,
+        height = height.calc,
+        units = 'in',
+        bg = "transparent",
+        device = "png",
+	hpbox)
+
+
+filenameimage <- paste("edrobot_", 'tau_', tau_value, ".png",sep="")
+ggsave(filename = filenameimage,
+        dpi = dpi,
+        width = width.calc,
+        height = height.calc,
+        units = 'in',
+        bg = "transparent",
+        device = "png",
+	rpbox)
+
+
+} ###for (pd_k in c(1:length(delays))) {
 
 
 
@@ -640,5 +718,4 @@ end.time - start.time
 
 ################################################################################
 setwd(r_scripts_path) ## go back to the r-script source path
-
 
