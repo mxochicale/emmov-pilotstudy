@@ -63,12 +63,16 @@ utde_sensor_path <- paste(outcomes_path,'/utde/razor',sep='')
 
 
 
-relativeplotpath <- "/plots_timeseries/razor/utde"
-relativeplotpath4utde_razor_ed <- "/utde/razor/euclideandistances"
+relativeplotpathtimeseries <- "/utde/razor/timeseries"
+#relativeplotpath <- "/plots_timeseries/razor/utde"
+relativeplotpath4utde_razor_euclidean_distances <- "/utde/razor/euclideandistances"
+
 relativeodatapath <- "/datatables"
 
 odatapath <- paste( outcomes_path, relativeodatapath, sep="" )
 
+
+utde_sensor_path <- paste(outcomes_path,'/utde/razor',sep='')
 
 
 
@@ -174,7 +178,9 @@ xdata[,c(
 	) 
 :=lapply(
 	.(
-	Yaw, Pitch, Roll, AccX, AccY, AccZ, GyroX, GyroY, GyroZ,
+	Yaw, Pitch, Roll, 
+	AccX, AccY, AccZ, 
+	GyroX, GyroY, GyroZ,
 	zmuvYaw, zmuvPitch, zmuvRoll,
 	zmuvAccX, zmuvAccY, zmuvAccZ,
 	zmuvGyroX, zmuvGyroY, zmuvGyroZ,
@@ -280,6 +286,197 @@ xdata[,c(
 
 
 
+################################################################################
+################################################################################
+################################################################################
+################################################################################
+
+
+
+#PLOTTING_TIME_SERIES = FALSE
+PLOTTING_TIME_SERIES = TRUE
+
+
+
+
+if ( PLOTTING_TIME_SERIES == TRUE ) {
+
+
+
+
+
+
+
+################################################################################
+# (4) plotting
+#
+
+#################
+# (4.0) plots features
+tag <- 'postprocessing'
+image_width <- 2500
+image_height <- 3000
+image_dpi <- 300
+image_bg <- "transparent"
+
+
+
+plotlinewidth_z <- 1
+alpha_z <- 0.9
+
+plotlinewidth_sg <- 2
+alpha_sg <- 0.7
+
+
+
+
+
+################################################################################
+# (4.1) creating  and changing to plotpath
+plot_path <- paste(outcomes_path,relativeplotpathtimeseries,sep="")
+                                #relativeplotpathtimeseries <- "/utde/razor/timeseries"
+
+if (file.exists(plot_path)){
+    setwd(file.path(plot_path))
+} else {
+  dir.create(plot_path, recursive=TRUE)
+  setwd(file.path(plot_path))
+}
+
+
+
+######################
+### (4.2) Plots Data from Razor sensor
+
+
+
+plot <- ggplot(xdata, aes(x=sample))+  
+	geom_line( aes(y=zmuvAccX, col='zmuvAccX'), size=plotlinewidth_z,alpha=alpha_z)+
+	geom_line( aes(y=sgzmuvAccX, col='sgzmuvAccX'), size=plotlinewidth_sg, alpha=alpha_sg)+
+	facet_grid(participant~sensor)+
+	scale_y_continuous()+
+	coord_cartesian(xlim=NULL, ylim=c(-5,5)  )+
+	ylab('ZeroMeanUnitVariance and Satikzky-Golay zmuv') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+
+png(filename= paste(tag,"_AccX.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+plot <- ggplot(xdata, aes(x=sample))+  
+	geom_line( aes(y=zmuvAccY, col='zmuvAccY'), size=plotlinewidth_z,alpha=alpha_z)+
+	geom_line( aes(y=sgzmuvAccY, col='sgzmuvAccY'), size=plotlinewidth_sg, alpha=alpha_sg)+
+	facet_grid(participant~sensor)+
+	scale_y_continuous()+
+	coord_cartesian(xlim=NULL, ylim=c(-5,5)  )+
+	ylab('ZeroMeanUnitVariance and Satikzky-Golay zmuv') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+
+png(filename= paste(tag,"_AccY.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+plot <- ggplot(xdata, aes(x=sample))+  
+	geom_line( aes(y=zmuvAccZ, col='zmuvAccZ'), size=plotlinewidth_z,alpha=alpha_z)+
+	geom_line( aes(y=sgzmuvAccZ, col='sgzmuvAccZ'), size=plotlinewidth_sg, alpha=alpha_sg)+
+	facet_grid(participant~sensor)+
+	scale_y_continuous()+
+	coord_cartesian(xlim=NULL, ylim=c(-5,5)  )+
+	ylab('ZeroMeanUnitVariance and Satikzky-Golay zmuv') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+
+png(filename= paste(tag,"_AccZ.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+
+
+plot <- ggplot(xdata, aes(x=sample))+  
+	geom_line( aes(y=zmuvGyroX, col='zmuvGyroX'), size=plotlinewidth_z,alpha=alpha_z)+
+	geom_line( aes(y=sgzmuvGyroX, col='sgzmuvGyroX'), size=plotlinewidth_sg, alpha=alpha_sg)+
+	facet_grid(participant~sensor)+
+	scale_y_continuous()+
+	coord_cartesian(xlim=NULL, ylim=c(-5,5)  )+
+	ylab('ZeroMeanUnitVariance and Satikzky-Golay zmuv') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+
+png(filename= paste(tag,"_GyroX.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+plot <- ggplot(xdata, aes(x=sample))+  
+	geom_line( aes(y=zmuvGyroY, col='zmuvGyroY'), size=plotlinewidth_z,alpha=alpha_z)+
+	geom_line( aes(y=sgzmuvGyroY, col='sgzmuvGyroY'), size=plotlinewidth_sg, alpha=alpha_sg)+
+	facet_grid(participant~sensor)+
+	scale_y_continuous()+
+	coord_cartesian(xlim=NULL, ylim=c(-5,5)  )+
+	ylab('ZeroMeanUnitVariance and Satikzky-Golay zmuv') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+
+png(filename= paste(tag,"_GyroY.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+plot <- ggplot(xdata, aes(x=sample))+  
+	geom_line( aes(y=zmuvGyroZ, col='zmuvGyroZ'), size=plotlinewidth_z,alpha=alpha_z)+
+	geom_line( aes(y=sgzmuvGyroZ, col='sgzmuvGyroZ'), size=plotlinewidth_sg, alpha=alpha_sg)+
+	facet_grid(participant~sensor)+
+	scale_y_continuous()+
+	coord_cartesian(xlim=NULL, ylim=c(-5,5)  )+
+	ylab('ZeroMeanUnitVariance and Satikzky-Golay zmuv') + 
+	xlab('Sample')+
+	labs(colour = 'Feature')
+
+
+png(filename= paste(tag,"_GyroZ.png",sep=''),
+   width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
+print(plot)
+dev.off()
+
+
+
+
+
+
+} ###if ( PLOTTING_TIME_SERIES = TRUE ) {
+
+
+
+
+
+
+
+
+
+################################################################################
+################################################################################
+################################################################################
+################################################################################
+
+
+
+#TIME_DELAY_EMBEDDING_COMPUTATIONS = FALSE
+TIME_DELAY_EMBEDDING_COMPUTATIONS = TRUE
+
+
+if ( TIME_DELAY_EMBEDDING_COMPUTATIONS == TRUE ) {
+
+
 
 ################################################################################
 ################################################################################
@@ -368,15 +565,20 @@ for (axis_k in c(1:12)){ #for (axis_k in c(1:12)){
 
 
 
-#delays <- c(4,5,6,7,8,9,10)
-#dimensions <- c(3,5,7,10,20,30,40,50,60,70,80,90,100)
+## For testing purposes 
+#delays <- c(2)
+#dimensions <- c(5)
+
+
 
 #delays <- c(2,8)
 #dimensions <- c(10, 100)
 
-
 delays <- c(2,5,10)
 dimensions <- c(10,50,100)
+
+#delays <- c(4,5,6,7,8,9,10)
+#dimensions <- c(3,5,7,10,20,30,40,50,60,70,80,90,100)
 
 
 
@@ -577,7 +779,7 @@ setcolorder( ED, c(6,5,2,3,4,1) )
 
 
 
-plot_path <- paste(outcomes_path,relativeplotpath4utde_razor_ed,sep="")
+plot_path <- paste(outcomes_path,relativeplotpath4utde_razor_euclidean_distances,sep="")
 if (file.exists(plot_path)){
     setwd(file.path(plot_path))
 } else {
@@ -684,6 +886,23 @@ ggsave(filename = filenameimage,
 
 
 } ###for (pd_k in c(1:length(delays))) {
+
+
+
+
+
+
+} ## if ( TIME_DELAY_EMBEDDING_COMPUTATIONS == TRUE ) {
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -276,11 +276,11 @@ xdata[,c(
 
 
 ################################################################################
-# (4) Plotting
+# (4) plotting
 #
 
 #################
-# (4.0) Plots Features
+# (4.0) plots features
 tag <- 'razor-timeseries'
 image_width <- 2500
 image_height <- 3000
@@ -291,12 +291,12 @@ plotlinewidth <- 1
 
 
 ################################################################################
-# (4.1) Creating  and Changing to PlotPath
+# (4.1) creating  and changing to plotpath
 plot_path <- paste(outcomes_path,relativeplotpath,sep="")
 if (file.exists(plot_path)){
     setwd(file.path(plot_path))
 } else {
-  dir.create(plot_path, recursive=TRUE)
+  dir.create(plot_path, recursive=true)
   setwd(file.path(plot_path))
 }
 

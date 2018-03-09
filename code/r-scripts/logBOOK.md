@@ -12,13 +12,14 @@ logBOOK
 		* create datatable for minumum tau embedding parameters (created:2march2018, sorted:4march2018,01h25m)
 		* create datatable for minumum dim embedding parameters (created:2march2018, sorted:)
 	
-	* in  ami-razor and cao-razor, For outcomes paht for utde use `outcomes/emmov/utde/razor/...` (created:6mach2018,1h22m sorted:)
+	* in  ami-razor and cao-razor, For outcomes paht for utde use `outcomes/emmov/utde/razor/...` (created:6mach2018,1h22m sorted:9march1458)
 
 	* in utde-razor,  similarly to `plotRSS3D2D(a_rss)` plot PC components plotRSS transformedsignals `plotRSS2D_rotateddata()`  (created: 6march2018,4h08, sorted:6march2018,14h00m)
 
 	* in utde-razor, ED data.table object is created to compute the euclideian distances for different axis, sensors, participants, and embedding parameters (created and sorted: 6march2018, 16h57)
 
 	* create error plots of the ED of utde-razor for different dim values (created:6march2018,17h00m; sorted: 6march2018,21h34)
+
 	* cp utde-razor as utde-openface and compute error bars of ED for different embedding values (created:6march2018,17h00; sorted:7march2018,02h02m)
 
  

@@ -58,8 +58,8 @@ github_path <- getwd()
 
 main_data_path <- paste( main_repository_path, '/data/razor_imu',sep="")
 outcomes_path <- paste(github_path,"/DataSets/emmov",sep="")
-relativeplotpath <- "/plots_timeseries/razor/utde"
-relativeplotpathforEmbeddedValues <- "/plots_timeseries/razor/utde/embedding-values"
+relativeplotpath <- "/utde/razor/timeseries"
+relativeplotpathforEmbeddedValues <- "/utde/razor/minimum-embedding-values"
 relativeodatapath <- "/datatables"
 
 odatapath <- paste( outcomes_path, relativeodatapath, sep="" )
@@ -441,8 +441,8 @@ setcolorder(EE,c(7,5,6,1:4) )
 
 
 
-#print_EVALUES_flag <- TRUE
-print_EVALUES_flag <- FALSE
+print_EVALUES_flag <- TRUE
+#print_EVALUES_flag <- FALSE
 
 
 if (print_EVALUES_flag == TRUE) {
