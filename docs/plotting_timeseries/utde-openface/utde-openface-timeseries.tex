@@ -16,9 +16,17 @@
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
 \usepackage{url}%for \path{}
 \usepackage{lscape}
-\pagenumbering{gobble}%no numbers in the webpage
+%\pagenumbering{gobble}%no numbers in the webpage
 
 %\usepackage[counterclockwise]{rotating} %sidewaysfigure
+
+\usepackage{fancyhdr} 
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{  }
+\lhead{OpenFace Time Series for UTDE Analyis}
+\rfoot{Page \thepage}
+
 
 
 
@@ -73,50 +81,94 @@ The data is available in \cite{mxochicale2018}.
 
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{pre-of-timeseries_zmuvbase}
-\caption{S-G confidence and success.}
+\includegraphics[width=\textwidth]{timeseries_confidence}
+\caption{confidence.}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{pre-of-timeseries_sgzmuvbase}
-\caption{S-G,ZMUV confidence and success.}
+\includegraphics[width=\textwidth]{timeseries_sucess}
+\caption{success.}
 \end{figure}
 
-
-
-
-\begin{figure}
-\centering
-\includegraphics[width=\textwidth]{pre-of-timeseries_zmuvposeR}
-\caption{ZMUV pose R.}
-\end{figure}
 
 
 
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{pre-of-timeseries_sgzmuvposeR}
-\caption{S-G,ZMUV pose R.}
+\includegraphics[width=\textwidth]{timeseries_poseRx}
+\caption{pose Rx.}
 \end{figure}
 
 
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{pre-of-timeseries_zmuvposeT}
-\caption{ZMUV pose T.}
+\includegraphics[width=\textwidth]{timeseries_poseRy}
+\caption{pose Ry.}
 \end{figure}
+
 
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{pre-of-timeseries_sgzmuvposeT}
-\caption{S-G,ZMUV pose T.}
+\includegraphics[width=\textwidth]{timeseries_poseRz}
+\caption{pose Rz.}
 \end{figure}
 
 
 
 
 
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{timeseries_poseTx}
+\caption{pose Tx.}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{timeseries_poseTy}
+\caption{pose Ty.}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{timeseries_poseTz}
+\caption{pose Tz.}
+\end{figure}
+
+
+
+
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{timeseries_sgzmuvx}
+\caption{sg-zmuv for x0 and x67 landmarks.}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{timeseries_sg-zmuv-x}
+\caption{sg-zmuv for x landmarks.}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{timeseries_sgzmuvy}
+\caption{sg-zmuv for y0 and y67 landmarks.}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{timeseries_sg-zmuv-y}
+\caption{sg-zmuv for y landmarks.}
+\end{figure}
 
 
 

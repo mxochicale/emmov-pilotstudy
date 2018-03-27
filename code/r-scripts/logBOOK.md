@@ -3,9 +3,6 @@ logBOOK
 
 # TODO
 
-
-
-
 * [ ] For razor and openface timeseries create :
 	* compute m and tau for the time-delay embeddging theorem
 		* implement cao and ami algorithms for embedding parameter estimations plotting (1march2018: sorted:2march2018)
@@ -43,6 +40,17 @@ logBOOK
 
 
 # SORTED 
+
+
+* [x] time series for utde-razor.tex and utde-openface.tex have been created to do 
+	uniform time delay embedding
+	(sorted: 27march2018 1703)
+
+
+* [x] comment the code of utde-razor.R and utde-openface.R
+	(added:26march2018, sorted:27march2018)
+
+
 
 * [x] create doc for timeseries for utde
 	* zmuvAccX, sgzmuvAccX

@@ -7,7 +7,7 @@
 #
 #
 # Written by Miguel P Xochicale [http://mxochicale.github.io]
-# email:perez.xochicale@gmail.com
+# email: @gmail.com
 # please email me directly if you see any errors or have any questions
 # last update: 21 February 2018
 #

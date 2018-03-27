@@ -7,9 +7,9 @@
 #
 #
 # Written by Miguel P Xochicale [http://mxochicale.github.io]
-# email:perez.xochicale@gmail.com
+# email:@gmail.com
 # please email me directly if you see any errors or have any questions
-# last update: 21 February 2018
+# 
 #
 ###############################################################################	
 	# OUTLINE:
@@ -24,9 +24,16 @@
 		# (3.3) Creating Low Frequency Components
 		# (3.4) Creating High Frequency Components
 		# (3.5) Smoothing data with hf sg zmuv
-	# (4) UNIFORM TIME DELAY EMBEDDING
-	# (5) Create path and plot AMIs
-
+	# (4) Plotting time series
+		# (4.0) Plots features	 
+		# (4.1) Creating and chanding plot path	 
+		# (4.2) Plots data for razor sensor
+	# (5) Uniform Time Delay Embedding
+		# (5.0) Embedding Creating Preprossede Data Path
+		# (5.1) Filtering Axis for Analysis of the UTDE
+		# (5.2) Computing Eucliddean Distances from the PC1 and PC2
+		# (5.3) buildTakens
+		# (5.4) Creating path for razor euclidean distances
 
 
 
@@ -287,6 +294,11 @@ xdata[,c(
 
 
 ################################################################################
+# (4) plotting
+#
+
+
+################################################################################
 ################################################################################
 ################################################################################
 ################################################################################
@@ -305,11 +317,6 @@ if ( PLOTTING_TIME_SERIES == TRUE ) {
 
 
 
-
-
-################################################################################
-# (4) plotting
-#
 
 #################
 # (4.0) plots features
@@ -461,6 +468,11 @@ dev.off()
 
 
 
+################################################################################
+################################################################################
+# (5)  UNIFORM TIME DELAY EMBEDDING
+################################################################################
+################################################################################
 
 
 ################################################################################
@@ -471,19 +483,16 @@ dev.off()
 
 
 #TIME_DELAY_EMBEDDING_COMPUTATIONS = FALSE
-TIME_DELAY_EMBEDDING_COMPUTATIONS = TRUE
+TIME_DELAY_EMBEDDING_COMPUTATIONS = FALSE
+
+
+
 
 
 if ( TIME_DELAY_EMBEDDING_COMPUTATIONS == TRUE ) {
 
 
-
-################################################################################
-################################################################################
-# (4) TIME_DELAY EMBEDDING
-################################################################################
-################################################################################
-#### Embedding Creating Preprossede Data Path
+### (5.0) Embedding Creating Preprossede Data Path
 embedding_path <- paste(utde_sensor_path,"/embeddings",sep="")
 if (file.exists(embedding_path)){
 setwd(file.path(embedding_path))
@@ -494,6 +503,7 @@ setwd(file.path(embedding_path))
 
 
 
+### (5.1) Filtering Axis for Analysis of the UTDE
 
 xd <- xdata[,.(zmuvAccX,zmuvAccY,zmuvAccZ,sgzmuvAccX,sgzmuvAccY,sgzmuvAccZ,zmuvGyroX,zmuvGyroY,zmuvGyroZ,sgzmuvGyroX,sgzmuvGyroY,sgzmuvGyroZ), by=. (participant,trial,sensor,sample)]
 
@@ -501,6 +511,10 @@ pNN <- c('p01', 'p02', 'p03', 'p04', 'p05', 'p06')
 axis <- c("zmuvAccX","zmuvAccY","zmuvAccZ","sgzmuvAccX","sgzmuvAccY","sgzmuvAccZ","zmuvGyroX","zmuvGyroY","zmuvGyroZ","sgzmuvGyroX","sgzmuvGyroY","sgzmuvGyroZ")
 sensors <- c('imu-human','imu-robot')
 
+
+
+
+### (5.2) Computing Eucliddean Distances from the PC1 and PC2
 
 ED <- NULL # Euclidean Distances data.table object!
 for (participants_k in c(1:6)) {#for (pNN_k in c(1:1)) {
@@ -557,7 +571,7 @@ for (axis_k in c(1:12)){ #for (axis_k in c(1:12)){
 
 ################################################################################
 ################################################################################
-## buildTakens
+## (5.3) buildTakens
 
 ### Computed Embedding parameters:  m=7 tau=4
 # delays <- tau
@@ -779,6 +793,10 @@ setcolorder( ED, c(6,5,2,3,4,1) )
 
 
 
+### (5.4) Creating path for razor euclidean distances
+
+
+
 plot_path <- paste(outcomes_path,relativeplotpath4utde_razor_euclidean_distances,sep="")
 if (file.exists(plot_path)){
     setwd(file.path(plot_path))
@@ -815,7 +833,7 @@ hpbox <- ggplot(hED, aes(x=participant, y=EuclideanDistances) )+
        	geom_boxplot(lwd=0.5,outlier.colour=NA, fill=NA)+ 
 	facet_grid(dim~axis)+
 	labs(x= "Participant", y="")+
-        theme_bw(15)+
+       theme_bw(15)+
         theme(panel.grid.minor= element_blank(),
                panel.border=element_rect(color="black"),
                legend.position="none")+
@@ -904,30 +922,6 @@ ggsave(filename = filenameimage,
 
 
 
-
-
-#################################################################################
-## (5) Creating Preprossed Data Path and Writing Data
-#
-#odata_path <- paste(outcomes_path,relativeodatapath,sep="")
-#if (file.exists(odata_path)){
-#    setwd(file.path(odata_path))
-#} else {
-#  dir.create(odata_path, recursive=TRUE)
-#  setwd(file.path(odata_path))
-#}
-#
-#
-#
-#
-#################################################################################
-#####  (5)  Writing Data
-#write.table(xdata, "rawimudata-v00.datatable", row.name=FALSE)
-#
-#message('datatable file has been created at '  )
-#message (odata_path)
-#
-#
 
 
 #################
