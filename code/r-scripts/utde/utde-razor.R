@@ -24,11 +24,11 @@
 		# (3.3) Creating Low Frequency Components
 		# (3.4) Creating High Frequency Components
 		# (3.5) Smoothing data with hf sg zmuv
-	# (4) Plotting time series
+	# (4) Plotting time series: (PLOTTING_TIME_SERIES = FALSE/TRUE)
 		# (4.0) Plots features	 
 		# (4.1) Creating and chanding plot path	 
 		# (4.2) Plots data for razor sensor
-	# (5) Uniform Time Delay Embedding
+	# (5) Uniform Time Delay Embedding: (TIME_DELAY_EMBEDDING_COMPUTATIONS = FALSE/TRUE)
 		# (5.0) Embedding Creating Preprossede Data Path
 		# (5.1) Filtering Axis for Analysis of the UTDE
 		# (5.2) Computing Eucliddean Distances from the PC1 and PC2
@@ -305,8 +305,8 @@ xdata[,c(
 
 
 
-#PLOTTING_TIME_SERIES = FALSE
-PLOTTING_TIME_SERIES = TRUE
+PLOTTING_TIME_SERIES = FALSE
+#PLOTTING_TIME_SERIES = TRUE
 
 
 
@@ -483,9 +483,7 @@ dev.off()
 
 
 #TIME_DELAY_EMBEDDING_COMPUTATIONS = FALSE
-TIME_DELAY_EMBEDDING_COMPUTATIONS = FALSE
-
-
+TIME_DELAY_EMBEDDING_COMPUTATIONS = TRUE
 
 
 

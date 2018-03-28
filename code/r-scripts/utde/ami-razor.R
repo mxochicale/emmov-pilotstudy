@@ -9,7 +9,6 @@
 # Written by Miguel P Xochicale [http://mxochicale.github.io]
 # email:@gmail.com
 # please email me directly if you see any errors or have any questions
-# last update: 21 February 2018
 #
 ###############################################################################	
 	# OUTLINE:
@@ -70,7 +69,7 @@ odatapath <- paste( outcomes_path, relativeodatapath, sep="" )
 
 
 ################################################################################
-# (1) Setting DataSets paths and reading data
+# (2) Setting DataSets paths and reading data
 
 
 setwd(odatapath)
@@ -477,19 +476,44 @@ plotlinewidth <- 0.9
 
 
 htl <- time_lags[sensor=='imu-human', .SDcols=cols  ]
-htlp <- ggplot(htl, aes(x=participant,y=timelags) ) + geom_point( aes(fill=participant, colour=participant, shape=participant), size=5 ) + facet_grid(.~axis) + ylab("First Mimimum AMI - TimeLags (Human)") + coord_cartesian(xlim=NULL, ylim=c(0,35)  )
+htlp <- ggplot(htl, aes(x=participant,y=timelags) ) + 
+	geom_point( aes(fill=participant, colour=participant, shape=participant), size=5 ) + 
+	facet_grid(.~axis) + ylab("First Mimimum AMI") + 
+	theme_bw(20) +	
+	coord_cartesian(xlim=NULL, ylim=c(0,35)  ) +
+        theme(axis.text.x = element_text(colour="grey20",size=16,angle=90,hjust=.5,vjust=.5,face="plain")
+              )
+
 
 rtl <- time_lags[sensor=='imu-robot', .SDcols=cols  ]
-rtlp <- ggplot(rtl, aes(x=participant,y=timelags) ) + geom_point( aes(fill=participant, colour=participant, shape=participant), size=5 ) + facet_grid(.~axis) + ylab("First Minimum AMI - TimeLags (Robot)") + coord_cartesian(xlim=NULL, ylim=c(0,35)  )
+rtlp <- ggplot(rtl, aes(x=participant,y=timelags) ) + 
+	geom_point( aes(fill=participant, colour=participant, shape=participant), size=5 ) + 
+	facet_grid(.~axis) + ylab("First Minimum AMI") + 
+	theme_bw(20) +	
+	coord_cartesian(xlim=NULL, ylim=c(0,35)  ) +
+        theme(axis.text.x = element_text(colour="grey20",size=16,angle=90,hjust=.5,vjust=.5,face="plain")
+              )
+
+
+
+
 
 
 hAMI <- AMI[sensor=='imu-human', .SDcols=cols  ]
-hami <- ggplot(hAMI, aes(x=tau) ) + geom_line( aes(y=ami ),lwd = plotlinewidth, alpha=0.7 ) + facet_grid(participant~axis) + ylab('AMI') + xlab('Tau')
-#+ labs(colour = 'tau')
+hami <- ggplot(hAMI, aes(x=tau) ) + 
+	geom_line( aes(y=ami ),lwd = plotlinewidth, alpha=0.7 ) + 
+	facet_grid(participant~axis) + 
+	ylab('AMI') + xlab('Tau') +
+	theme_bw(20)
+
 
 
 rAMI <- AMI[sensor=='imu-robot', .SDcols=cols  ]
-rami <- ggplot(rAMI, aes(x=tau) ) + geom_line( aes(y=ami ),lwd = plotlinewidth, alpha=0.7 ) + facet_grid(participant~axis) + ylab('AMI') + xlab('Tau')
+rami <- ggplot(rAMI, aes(x=tau) ) + 
+	geom_line( aes(y=ami ),lwd = plotlinewidth, alpha=0.7 ) + 
+	facet_grid(participant~axis) + 
+	ylab('AMI') + xlab('Tau') +
+	theme_bw(20) 
 
 
 #    geom_point( aes(x=dim,y=E1, shape=factor(tau), colour=factor(tau)), size=5, stroke =1 )+
@@ -545,7 +569,7 @@ ggsave(filename = filenameimage,
 
 
 ### Save Picture
-width = 1900
+width = 2100
 height = 400
 text.factor = 1
 dpi <- text.factor * 100
@@ -591,29 +615,6 @@ ggsave(filename = filenameimage,
 
 
 
-#
-#################################################################################
-## (5) Creating Preprossed Data Path and Writing Data
-#
-#odata_path <- paste(outcomes_path,relativeodatapath,sep="")
-#if (file.exists(odata_path)){
-#    setwd(file.path(odata_path))
-#} else {
-#  dir.create(odata_path, recursive=TRUE)
-#  setwd(file.path(odata_path))
-#}
-#
-#
-#
-#
-#################################################################################
-#####  (5)  Writing Data
-#write.table(xdata, "rawimudata-v00.datatable", row.name=FALSE)
-#
-#message('datatable file has been created at '  )
-#message (odata_path)
-#
-#
 
 
 #################
