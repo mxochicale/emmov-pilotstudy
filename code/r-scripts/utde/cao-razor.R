@@ -1,7 +1,7 @@
 ###############################################################################	
 #
 #  preprocessed data for razor IMU sensors 
-# 
+#  it takes around 30 minutes 29march2018 
 #
 #
 #

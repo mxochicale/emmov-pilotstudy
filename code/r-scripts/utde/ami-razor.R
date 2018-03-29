@@ -478,22 +478,19 @@ plotlinewidth <- 0.9
 htl <- time_lags[sensor=='imu-human', .SDcols=cols  ]
 htlp <- ggplot(htl, aes(x=participant,y=timelags) ) + 
 	geom_point( aes(fill=participant, colour=participant, shape=participant), size=5 ) + 
-	facet_grid(.~axis) + ylab("First Mimimum AMI") + 
-	theme_bw(20) +	
+	facet_grid(.~axis) + ylab("First Minimum AMI") + 
 	coord_cartesian(xlim=NULL, ylim=c(0,35)  ) +
-        theme(axis.text.x = element_text(colour="grey20",size=16,angle=90,hjust=.5,vjust=.5,face="plain")
-              )
+	theme_bw(20) +	
+        theme(axis.text.x = element_text(colour="grey20",size=16,angle=90,hjust=.5,vjust=.5,face="plain")  )
 
 
 rtl <- time_lags[sensor=='imu-robot', .SDcols=cols  ]
 rtlp <- ggplot(rtl, aes(x=participant,y=timelags) ) + 
 	geom_point( aes(fill=participant, colour=participant, shape=participant), size=5 ) + 
 	facet_grid(.~axis) + ylab("First Minimum AMI") + 
-	theme_bw(20) +	
 	coord_cartesian(xlim=NULL, ylim=c(0,35)  ) +
-        theme(axis.text.x = element_text(colour="grey20",size=16,angle=90,hjust=.5,vjust=.5,face="plain")
-              )
-
+	theme_bw(20) +	
+        theme(axis.text.x = element_text(colour="grey20",size=16,angle=90,hjust=.5,vjust=.5,face="plain") )
 
 
 
@@ -504,16 +501,17 @@ hami <- ggplot(hAMI, aes(x=tau) ) +
 	geom_line( aes(y=ami ),lwd = plotlinewidth, alpha=0.7 ) + 
 	facet_grid(participant~axis) + 
 	ylab('AMI') + xlab('Tau') +
-	theme_bw(20)
-
-
+	theme_bw(20)+
+        theme(axis.text.x = element_text(colour="grey20",size=16,angle=90,hjust=.5,vjust=.5,face="plain"))
 
 rAMI <- AMI[sensor=='imu-robot', .SDcols=cols  ]
 rami <- ggplot(rAMI, aes(x=tau) ) + 
 	geom_line( aes(y=ami ),lwd = plotlinewidth, alpha=0.7 ) + 
 	facet_grid(participant~axis) + 
 	ylab('AMI') + xlab('Tau') +
-	theme_bw(20) 
+	theme_bw(20)+
+        theme(axis.text.x = element_text(colour="grey20",size=16,angle=90,hjust=.5,vjust=.5,face="plain"))
+
 
 
 #    geom_point( aes(x=dim,y=E1, shape=factor(tau), colour=factor(tau)), size=5, stroke =1 )+
@@ -545,7 +543,7 @@ height.calc <- height / dpi
 
 
 
-filenameimage <- paste("amih_", ".png",sep="")
+filenameimage <- paste("ami-human_", ".png",sep="")
 ggsave(filename = filenameimage,
         dpi = dpi,
         width = width.calc,
@@ -556,7 +554,7 @@ ggsave(filename = filenameimage,
 	hami)
 
 
-filenameimage <- paste("amir_", ".png",sep="")
+filenameimage <- paste("ami-robot_", ".png",sep="")
 ggsave(filename = filenameimage,
         dpi = dpi,
         width = width.calc,
@@ -577,7 +575,7 @@ width.calc <- width / dpi
 height.calc <- height / dpi
 
 
-filenameimage <- paste("htimelags_", ".png",sep="")
+filenameimage <- paste("human-timelags_", ".png",sep="")
 ggsave(filename = filenameimage,
         dpi = dpi,
         width = width.calc,
@@ -588,7 +586,7 @@ ggsave(filename = filenameimage,
 	htlp)
 
 
-filenameimage <- paste("rtimelags_", ".png",sep="")
+filenameimage <- paste("robot-timelags_", ".png",sep="")
 ggsave(filename = filenameimage,
         dpi = dpi,
         width = width.calc,

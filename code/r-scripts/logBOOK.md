@@ -3,6 +3,11 @@ logBOOK
 
 # TODO
 
+
+* [ ]  defining too many datapaths get me dizzy. Use few variables to define these
+	(added29march2018, sorted???)
+
+
 * [ ] For razor and openface timeseries create :
 	* compute m and tau for the time-delay embeddging theorem
 		* implement cao and ami algorithms for embedding parameter estimations plotting (1march2018: sorted:2march2018)
@@ -36,6 +41,10 @@ logBOOK
 * [ ] save preprocessed.datatable at `~/data/razor_imu`	(created:22feb2018 sorted:)
 * [ ] plot 2d plots with x/y points using pose_tx and pose_ty (created:21february2018, sorted: )
 * [ ] plot 3d plots with x/y/z points using xyz values (created:21february2018, sorted: )
+
+
+
+
 
 
 

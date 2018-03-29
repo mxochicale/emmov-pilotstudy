@@ -22,10 +22,11 @@
 		# (4.1) Zero Mean Unit Variance
 		# (4.2) Savitzky-Golay Filter
 	
-	# (5) Plotting Time Series
+	# (5) Plotting Time Series  ## (PLOTTINGTIMESERIES <- TRUE)
 		# (5.1) Creating  and Changing to PlotPath
 		# (5.2) Plotting data
-	# (6) TIME_DELAY EMBEDDING
+
+	# (6) TIME_DELAY EMBEDDING   ##  (UTDE <- FALSE)
 		# (6.1) Embedding Creating Preprossede Data Path
 		# (6.2) buildTakens
 		# (6.3) Create and save plots for euclidean distances of PC1 and PC2
@@ -312,8 +313,8 @@ xdata[,c(
 #
 
 
-##PLOTTINGTIMESERIES <- FALSE
-PLOTTINGTIMESERIES <- TRUE
+PLOTTINGTIMESERIES <- FALSE
+## PLOTTINGTIMESERIES <- TRUE
 
 
 if (PLOTTINGTIMESERIES == TRUE) 
@@ -1442,7 +1443,9 @@ dev.off()
 ################################################################################
 
 
-UTDE <- FALSE
+#UTDE <- FALSE
+UTDE <- TRUE
+
 
 if (UTDE == TRUE) {
 
@@ -1463,11 +1466,21 @@ setwd(file.path(embedding_path))
 
 
 
-
 pNN <- c('p01', 'p02', 'p03', 'p04', 'p05', 'p06')
-axis <- c('zmuvconfidence', 'zmuvsuccess', 'sgzmuvconfidence', 'sgzmuvsuccess', 'zmuvpose_Rx', 'zmuvpose_Ry', 'zmuvpose_Rz', 'sgzmuvpose_Rx', 'sgzmuvpose_Ry', 'sgzmuvpose_Rz', 'zmuvpose_Tx', 'zmuvpose_Ty', 'zmuvpose_Tz', 'sgzmuvpose_Tx', 'sgzmuvpose_Ty', 'sgzmuvpose_Tz')
+axis <- c('zmuvconfidence', 'zmuvsuccess', 'sgzmuvconfidence', 'sgzmuvsuccess', 
+	'zmuvpose_Rx', 'zmuvpose_Ry', 'zmuvpose_Rz', 'sgzmuvpose_Rx', 'sgzmuvpose_Ry', 'sgzmuvpose_Rz', 
+	'zmuvpose_Tx', 'zmuvpose_Ty', 'zmuvpose_Tz', 'sgzmuvpose_Tx', 'sgzmuvpose_Ty', 'sgzmuvpose_Tz',
+	'zmuvx_0', 'zmuvx_67', 'sgzmuvx_0', 'sgzmuvx_67',
+	'zmuvy_0', 'zmuvy_67', 'sgzmuvy_0', 'sgzmuvy_67'
+	)
 
-xd <- xdata[,.(zmuvconfidence, zmuvsuccess, sgzmuvconfidence, sgzmuvsuccess, zmuvpose_Rx, zmuvpose_Ry, zmuvpose_Rz, sgzmuvpose_Rx, sgzmuvpose_Ry, sgzmuvpose_Rz, zmuvpose_Tx, zmuvpose_Ty, zmuvpose_Tz, sgzmuvpose_Tx, sgzmuvpose_Ty, sgzmuvpose_Tz), by=. (participant,trial,frame)]
+xd <- xdata[,.(zmuvconfidence, zmuvsuccess, sgzmuvconfidence, sgzmuvsuccess, 
+	zmuvpose_Rx, zmuvpose_Ry, zmuvpose_Rz, sgzmuvpose_Rx, sgzmuvpose_Ry, sgzmuvpose_Rz, 
+	zmuvpose_Tx, zmuvpose_Ty, zmuvpose_Tz, sgzmuvpose_Tx, sgzmuvpose_Ty, sgzmuvpose_Tz,
+	zmuvx_0, zmuvx_67, sgzmuvx_0, sgzmuvx_67,
+	zmuvy_0, zmuvy_67, sgzmuvy_0, sgzmuvy_67
+	), 
+		by=. (participant,trial,frame)]
 
 
 ED <- NULL # Euclidean Distances data.table object!
@@ -1719,7 +1732,7 @@ pbox <- ggplot(dED, aes(x=participant, y=EuclideanDistances) )+
 ## Setting up plots_path
 
 ### Save Picture
-width = 2000
+width = 3000
 height = 1000
 text.factor = 1
 dpi <- text.factor * 100
