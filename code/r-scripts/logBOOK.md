@@ -3,9 +3,6 @@ logBOOK
 
 
 # TODO
-* [ ] rename plotting to `datatables_plottimeseries`
-	(added:31marhc2018 1547 sorted:)
-
 * [ ]  defining too many datapaths get me dizzy. Use few variables to define these
 	(added29march2018, sorted???)
 
@@ -58,6 +55,10 @@ logBOOK
 
 
 # SORTED 
+
+* [x] rename plotting to `datatables_plottimeseries`
+	(added:31marhc2018 1547 sorted:31march2018 16:06)
+
 
 * [x] create r script to install package dependencies 
 	(added:29march2018 2118, sorted:31march2018 1527)
