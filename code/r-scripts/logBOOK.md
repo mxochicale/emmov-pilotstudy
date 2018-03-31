@@ -1,8 +1,10 @@
 logBOOK
 ---
 
-# TODO
 
+# TODO
+* [ ] rename plotting to `datatables_plottimeseries`
+	(added:31marhc2018 1547 sorted:)
 
 * [ ]  defining too many datapaths get me dizzy. Use few variables to define these
 	(added29march2018, sorted???)
@@ -16,20 +18,25 @@ logBOOK
 	
 	* in  ami-razor and cao-razor, For outcomes paht for utde use `outcomes/emmov/utde/razor/...` (created:6mach2018,1h22m sorted:9march1458)
 
-	* in utde-razor,  similarly to `plotRSS3D2D(a_rss)` plot PC components plotRSS transformedsignals `plotRSS2D_rotateddata()`  (created: 6march2018,4h08, sorted:6march2018,14h00m)
+	* in utde-razor,  similarly to `plotRSS3D2D(a_rss)` plot PC components plotRSS transformedsignals `plotRSS2D_rotateddata()`  
+		(created: 6march2018,4h08, sorted:6march2018,14h00m)
 
-	* in utde-razor, ED data.table object is created to compute the euclideian distances for different axis, sensors, participants, and embedding parameters (created and sorted: 6march2018, 16h57)
+	* in utde-razor, ED data.table object is created to compute the euclideian distances for 
+		different axis, sensors, participants, and embedding parameters 
+		(created and sorted: 6march2018, 16h57)
 
-	* create error plots of the ED of utde-razor for different dim values (created:6march2018,17h00m; sorted: 6march2018,21h34)
+	* create error plots of the ED of utde-razor for different dim values 
+		(created:6march2018,17h00m; sorted: 6march2018,21h34)
 
-	* cp utde-razor as utde-openface and compute error bars of ED for different embedding values (created:6march2018,17h00; sorted:7march2018,02h02m)
+	* cp utde-razor as utde-openface and compute error bars of ED for different embedding values 
+		(created:6march2018,17h00; sorted:7march2018,02h02m)
 
  
 
 	* state space reconstruction 
 	* recurrence plots 
 	* recurrence qunatification analysis parameters
-	(created:28feb2018, sorted: )	
+			(created:28feb2018, sorted: )	
 
 
 * [ ] for postprocessing, try different parameters for savitzky-golay filter as the
@@ -39,7 +46,9 @@ logBOOK
 
 
 * [ ] save preprocessed.datatable at `~/data/razor_imu`	(created:22feb2018 sorted:)
+
 * [ ] plot 2d plots with x/y points using pose_tx and pose_ty (created:21february2018, sorted: )
+
 * [ ] plot 3d plots with x/y/z points using xyz values (created:21february2018, sorted: )
 
 
@@ -49,6 +58,40 @@ logBOOK
 
 
 # SORTED 
+
+* [x] create r script to install package dependencies 
+	(added:29march2018 2118, sorted:31march2018 1527)
+
+
+* [x] Updating the paths for libraries and 
+
+```
+source('../../../../tavand/functions/ollin_cencah.R')
+load_all( paste(github_path,'/nonlinearTseries',sep='') )
+source(paste(github_path,'/tavand/functions/embedding_parameters/withCao1997/cao97_functions.R', sep=''))
+```
+
+Specific and previous changes:
+
+* in `postprocessing-razor.R`: 
+`source('~/mxochicale/github/r-code_repository/functions/ollin_cencah.R')`
+to 
+`source('~/mxochicale/github/R/functions/ollin_cencah.R')`
+(added: 29march2018 2100)
+
+* update the following library paths
+for ami-razor.R
+	`source('~/mxochicale/github/tavand/ollin_cencah.R')`
+
+for cao-razor.R
+source('~/mxochicale/github/R/functions/embedding_parameters/withCao1997/cao97_functions.R')
+
+for ami-razor.R
+	`load_all('~/mxochicale/github/nonlinearTseries')``
+
+
+
+
 
 
 * [x] time series for utde-razor.tex and utde-openface.tex have been created to do 

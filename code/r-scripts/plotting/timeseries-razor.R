@@ -9,7 +9,6 @@
 # Written by Miguel P Xochicale [http://mxochicale.github.io]
 # email:@gmail.com
 # please email me directly if you see any errors or have any questions
-# last update: 21 February 2018
 #
 ###############################################################################	
 	# OUTLINE:
@@ -18,7 +17,7 @@
 	# (2) Data Filtering
 		# (2.1) Windowing
 		# (2.2) Shifting Data
-	# (3) Plotting
+	# (3) Plotting (PLOTTING_TIMESERIES = TRUE)
 		# (3.1) Creating and changing plotting paths
 		# (3.2) Plots features
 		# (3.3) Plots data 
@@ -286,6 +285,10 @@ setnames(xdata, old=anscols, new=cols )
 # (3) Plotting
 #
 
+#PLOTTING_TIMESERIES = TRUE
+PLOTTING_TIMESERIES = TRUE
+
+if (PLOTTING_TIMESERIES == TRUE) {
 
 ################################################################################
 # (3.1) Creating  and Changing to PlotPath
@@ -323,7 +326,8 @@ plot <- ggplot(xdata, aes(x=sample))+
 	geom_line( aes(y=AccZ, col='AccZ'), size=plotlinewidth)+
 	facet_grid(participant~sensor)+
 	scale_y_continuous()+
-	coord_cartesian(xlim=NULL, ylim=c(-500,500))
+	coord_cartesian(xlim=NULL, ylim=c(-500,500))+
+	theme_bw(20)
 
 png(filename= paste(tag,"_AccXYZ.png",sep=''),
    width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
@@ -338,7 +342,8 @@ plot <- ggplot(xdata, aes(x=sample))+
 	geom_line( aes(y=GyroZ, col='GyroZ'), size=plotlinewidth)+
 	facet_grid(participant~sensor)+
 	scale_y_continuous()+
-	coord_cartesian(xlim=NULL, ylim=c(-3,3))
+	coord_cartesian(xlim=NULL, ylim=c(-3,3))+
+	theme_bw(20)
 
 png(filename= paste(tag,"_GyroXYZ.png",sep=''),
    width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
@@ -382,6 +387,11 @@ dev.off()
 #	scale_y_continuous()+
 #	coord_cartesian(xlim=NULL, ylim=c(-200,200))
 #plot
+
+
+} ## if (PLOTTING_TIMESERIES == TRUE) {
+
+
 
 
 ################################################################################

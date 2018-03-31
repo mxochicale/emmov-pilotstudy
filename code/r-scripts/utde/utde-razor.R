@@ -361,6 +361,7 @@ plot <- ggplot(xdata, aes(x=sample))+
 	geom_line( aes(y=zmuvAccX, col='zmuvAccX'), size=plotlinewidth_z,alpha=alpha_z)+
 	geom_line( aes(y=sgzmuvAccX, col='sgzmuvAccX'), size=plotlinewidth_sg, alpha=alpha_sg)+
 	facet_grid(participant~sensor)+
+	theme_bw(20)+
 	scale_y_continuous()+
 	coord_cartesian(xlim=NULL, ylim=c(-5,5)  )+
 	ylab('ZeroMeanUnitVariance and Satikzky-Golay zmuv') + 
@@ -377,6 +378,7 @@ plot <- ggplot(xdata, aes(x=sample))+
 	geom_line( aes(y=zmuvAccY, col='zmuvAccY'), size=plotlinewidth_z,alpha=alpha_z)+
 	geom_line( aes(y=sgzmuvAccY, col='sgzmuvAccY'), size=plotlinewidth_sg, alpha=alpha_sg)+
 	facet_grid(participant~sensor)+
+	theme_bw(20)+
 	scale_y_continuous()+
 	coord_cartesian(xlim=NULL, ylim=c(-5,5)  )+
 	ylab('ZeroMeanUnitVariance and Satikzky-Golay zmuv') + 
@@ -393,6 +395,7 @@ plot <- ggplot(xdata, aes(x=sample))+
 	geom_line( aes(y=zmuvAccZ, col='zmuvAccZ'), size=plotlinewidth_z,alpha=alpha_z)+
 	geom_line( aes(y=sgzmuvAccZ, col='sgzmuvAccZ'), size=plotlinewidth_sg, alpha=alpha_sg)+
 	facet_grid(participant~sensor)+
+	theme_bw(20)+
 	scale_y_continuous()+
 	coord_cartesian(xlim=NULL, ylim=c(-5,5)  )+
 	ylab('ZeroMeanUnitVariance and Satikzky-Golay zmuv') + 
@@ -411,6 +414,7 @@ plot <- ggplot(xdata, aes(x=sample))+
 	geom_line( aes(y=zmuvGyroX, col='zmuvGyroX'), size=plotlinewidth_z,alpha=alpha_z)+
 	geom_line( aes(y=sgzmuvGyroX, col='sgzmuvGyroX'), size=plotlinewidth_sg, alpha=alpha_sg)+
 	facet_grid(participant~sensor)+
+	theme_bw(20)+
 	scale_y_continuous()+
 	coord_cartesian(xlim=NULL, ylim=c(-5,5)  )+
 	ylab('ZeroMeanUnitVariance and Satikzky-Golay zmuv') + 
@@ -427,6 +431,7 @@ plot <- ggplot(xdata, aes(x=sample))+
 	geom_line( aes(y=zmuvGyroY, col='zmuvGyroY'), size=plotlinewidth_z,alpha=alpha_z)+
 	geom_line( aes(y=sgzmuvGyroY, col='sgzmuvGyroY'), size=plotlinewidth_sg, alpha=alpha_sg)+
 	facet_grid(participant~sensor)+
+	theme_bw(20)+
 	scale_y_continuous()+
 	coord_cartesian(xlim=NULL, ylim=c(-5,5)  )+
 	ylab('ZeroMeanUnitVariance and Satikzky-Golay zmuv') + 
@@ -443,6 +448,7 @@ plot <- ggplot(xdata, aes(x=sample))+
 	geom_line( aes(y=zmuvGyroZ, col='zmuvGyroZ'), size=plotlinewidth_z,alpha=alpha_z)+
 	geom_line( aes(y=sgzmuvGyroZ, col='sgzmuvGyroZ'), size=plotlinewidth_sg, alpha=alpha_sg)+
 	facet_grid(participant~sensor)+
+	theme_bw(20)+
 	scale_y_continuous()+
 	coord_cartesian(xlim=NULL, ylim=c(-5,5)  )+
 	ylab('ZeroMeanUnitVariance and Satikzky-Golay zmuv') + 
@@ -805,8 +811,8 @@ if (file.exists(plot_path)){
 
 
 
-
-
+#########
+message('plotting euclidean distances')
 
 
 

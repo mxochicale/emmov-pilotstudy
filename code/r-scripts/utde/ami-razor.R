@@ -40,8 +40,7 @@ library(data.table) # for manipulating data
 library(ggplot2) # for plotting 
 
 library(signal)# for butterworth filter and sgolay
-source('~/mxochicale/github/R/functions/ollin_cencah.R')
-
+source('../../../../tavand/functions/ollin_cencah.R')
 
 
 
@@ -57,7 +56,6 @@ github_path <- getwd()
 
 main_data_path <- paste( main_repository_path, '/data/razor_imu',sep="")
 outcomes_path <- paste(github_path,"/DataSets/emmov",sep="")
-#relativeplotpath <- "/plots_timeseries/razor/utde"
 relativeplotpathforEmbeddingValues <- "/utde/razor/minimum-embedding-values"
 relativeodatapath <- "/datatables"
 
@@ -282,7 +280,7 @@ xdata[,c(
 # (4) Average Mutual Information
 
 library(devtools)
-load_all('~/mxochicale/github/nonlinearTseries')
+load_all( paste(github_path,'/nonlinearTseries',sep='') )
 
 
 

@@ -25,8 +25,7 @@
 		# (3.4) Creating High Frequency Components
 		# (3.5) Smoothing data with hf sg zmuv
 	# (4) CAO's Algoring
-	# (5) Plot E1 and E2 values
-
+	# (5) Plot E1 and E2 values (print_EVALUES_flag <- TRUE)
 
 
 
@@ -41,7 +40,8 @@ library(data.table) # for manipulating data
 library(ggplot2) # for plotting 
 
 library(signal)# for butterworth filter and sgolay
-source('~/mxochicale/github/R/functions/ollin_cencah.R')
+source('../../../../tavand/functions/ollin_cencah.R')
+
 
 
 
@@ -283,7 +283,9 @@ xdata[,c(
 ################################################################################
 ## (4) CAO's Algorithm
 ##
-source('~/mxochicale/github/R/functions/embedding_parameters/withCao1997/cao97_functions.R')
+source(paste(github_path,'/tavand/functions/embedding_parameters/withCao1997/cao97_functions.R', sep=''))
+
+
 
 
 maxtau <- 20
@@ -294,12 +296,14 @@ maxdim <- 21
 
 xcao <- xdata[,.(zmuvAccX,zmuvAccY,zmuvAccZ,sgzmuvAccX,sgzmuvAccY,sgzmuvAccZ,zmuvGyroX,zmuvGyroY,zmuvGyroZ,sgzmuvGyroX,sgzmuvGyroY,sgzmuvGyroZ), by=. (participant,trial,sensor,sample)]
 
-pNN <- c('p01', 'p02', 'p03', 'p04', 'p05', 'p06')
-axis <- c("zmuvAccX","zmuvAccY","zmuvAccZ","sgzmuvAccX","sgzmuvAccY","sgzmuvAccZ","zmuvGyroX","zmuvGyroY","zmuvGyroZ","sgzmuvGyroX","sgzmuvGyroY","sgzmuvGyroZ")
+pNN <- c('p01')
+#pNN <- c('p01', 'p02', 'p03', 'p04', 'p05', 'p06')
 
+axis <- c("zmuvAccX","sgzmuvAccX")
+#axis <- c("zmuvAccX","zmuvAccY","zmuvAccZ","sgzmuvAccX","sgzmuvAccY","sgzmuvAccZ","zmuvGyroX","zmuvGyroY","zmuvGyroZ","sgzmuvGyroX","sgzmuvGyroY","sgzmuvGyroZ")
 
 EE <- NULL
-for (participants_k in c(1:6)) {#for (pNN_k in c(1:1)) {
+for (participants_k in c( 1:(length(pNN))  )) {#for (pNN_k in c(1:1)) {
 
 setkey(xcao, participant)
 xcao1 <- xcao[.( pNN[participants_k] )]
@@ -314,7 +318,7 @@ rxcao1 <- xcao1[sensor=='imu-robot', .SDcols=cols  ]
 Ep <- NULL
 
 
-for (axis_k in c(1:12)){ #for (axis_k in c(1:12)){
+for (axis_k in c(1:(length(axis)) )){ #for (axis_k in c(1:12)){
 
 message('#### axis:' , axis[axis_k])
 
@@ -463,12 +467,37 @@ plotlinewidth <- 0.9
 
 
 hEE <- EE[sensor=='imu-human', .SDcols=cols  ]
-he1 <- ggplot(hEE, aes(x=dim) ) + geom_line( aes(y=E1, colour=factor(tau) ),lwd = plotlinewidth, alpha=0.5 ) + facet_grid(participant~axis) + ylab('E1') + xlab('Dimension, m')+ labs(colour = 'tau')
-he2 <- ggplot(hEE, aes(x=dim) ) + geom_line( aes(y=E2, colour=factor(tau) ),lwd = plotlinewidth, alpha=0.5 ) + facet_grid(participant~axis) + ylab('E2') + xlab('Dimension, m')+ labs(colour = 'tau')
+he1 <- ggplot(hEE, aes(x=dim) ) + 
+	geom_line( aes(y=E1, colour=factor(tau) ),lwd = plotlinewidth, alpha=0.5 ) + 
+	facet_grid(participant~axis) + 
+	theme_bw(20)+	
+	ylab('E1') + 
+	xlab('Dimension, m')+ 
+	labs(colour = 'tau')
+
+he2 <- ggplot(hEE, aes(x=dim) ) + 
+	geom_line( aes(y=E2, colour=factor(tau) ),lwd = plotlinewidth, alpha=0.5 ) + 
+	facet_grid(participant~axis) + 
+	theme_bw(20)+	
+	ylab('E2') + 
+	xlab('Dimension, m')+ 
+	labs(colour = 'tau')
 
 rEE <- EE[sensor=='imu-robot', .SDcols=cols  ]
-re1 <- ggplot(rEE, aes(x=dim) ) + geom_line( aes(y=E1, colour=factor(tau) ),lwd = plotlinewidth, alpha=0.5 ) + facet_grid(participant~axis) + ylab('E1') + xlab('Dimension, m')+ labs(colour = 'tau')
-re2 <- ggplot(rEE, aes(x=dim) ) + geom_line( aes(y=E2, colour=factor(tau) ),lwd = plotlinewidth, alpha=0.5 ) + facet_grid(participant~axis) + ylab('E2') + xlab('Dimension, m')+ labs(colour = 'tau')
+re1 <- ggplot(rEE, aes(x=dim) ) + 
+	geom_line( aes(y=E1, colour=factor(tau) ),lwd = plotlinewidth, alpha=0.5 ) + 
+	facet_grid(participant~axis) + 
+	theme_bw(20)+	
+	ylab('E1') + 
+	xlab('Dimension, m')+ 
+	labs(colour = 'tau')
+
+re2 <- ggplot(rEE, aes(x=dim) ) + 
+	geom_line( aes(y=E2, colour=factor(tau) ),lwd = plotlinewidth, alpha=0.5 ) + 
+	facet_grid(participant~axis) + 
+	ylab('E2') + 
+	xlab('Dimension, m')+ 
+	labs(colour = 'tau')
 
 
 #    geom_point( aes(x=dim,y=E1, shape=factor(tau), colour=factor(tau)), size=5, stroke =1 )+
@@ -541,31 +570,6 @@ ggsave(filename = filenameimage,
 }
 
 
-
-
-#
-#################################################################################
-## (X) Creating Preprossed Data Path and Writing Data
-#
-#odata_path <- paste(outcomes_path,relativeodatapath,sep="")
-#if (file.exists(odata_path)){
-#    setwd(file.path(odata_path))
-#} else {
-#  dir.create(odata_path, recursive=TRUE)
-#  setwd(file.path(odata_path))
-#}
-#
-#
-#
-#
-#################################################################################
-#####  (5)  Writing Data
-#write.table(xdata, "rawimudata-v00.datatable", row.name=FALSE)
-#
-#message('datatable file has been created at '  )
-#message (odata_path)
-#
-#
 
 
 #################

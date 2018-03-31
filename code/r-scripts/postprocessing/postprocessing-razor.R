@@ -9,7 +9,6 @@
 # Written by Miguel P Xochicale [http://mxochicale.github.io]
 # email: @gmail.com
 # please email me directly if you see any errors or have any questions
-# last update: 21 February 2018
 #
 ###############################################################################	
 	# OUTLINE:
@@ -24,7 +23,7 @@
 		# (3.3) Creating Low Frequency Components
 		# (3.4) Creating High Frequency Components
 		# (3.5) Smoothing data with hf sg zmuv
-	# (4) Plotting
+	# (4) Plotting (PLOTTING_TIMESERIES = TRUE/FALSE)
 		# (4.0) Plot features
 		# (4.1) Creating and changing plot path
 	# (5) Creating path to write postprocessed data
@@ -43,7 +42,7 @@ library(data.table) # for manipulating data
 library(ggplot2) # for plotting 
 
 library(signal)# for butterworth filter and sgolay
-source('~/mxochicale/github/r-code_repository/functions/ollin_cencah.R')
+source('~/mxochicale/github/R/functions/ollin_cencah.R')
 
 
 
@@ -279,6 +278,12 @@ xdata[,c(
 # (4) plotting
 #
 
+#PLOTTING_TIMESERIES = FALSE
+PLOTTING_TIMESERIES = TRUE
+
+if (PLOTTING_TIMESERIES == TRUE) {
+
+
 #################
 # (4.0) plots features
 tag <- 'razor-timeseries'
@@ -311,6 +316,7 @@ plot <- ggplot(xdata, aes(x=sample))+
 	geom_line( aes(y=pc2_Acc, col='pc2_Acc'), size=plotlinewidth)+
 	geom_line( aes(y=pc3_Acc, col='pc3_Acc'), size=plotlinewidth)+
 	facet_grid(participant~sensor)+
+	theme_bw(20)+
 	scale_y_continuous()+
 	coord_cartesian(xlim=NULL, ylim=NULL  )+
 	ylab('principal components for Acc') + 
@@ -331,6 +337,7 @@ plot <- ggplot(xdata, aes(x=sample))+
 	geom_line( aes(y=pc2_Gyro, col='pc2_Gyro'), size=plotlinewidth)+
 	geom_line( aes(y=pc3_Gyro, col='pc3_Gyro'), size=plotlinewidth)+
 	facet_grid(participant~sensor)+
+	theme_bw(20)+
 	scale_y_continuous()+
 	coord_cartesian(xlim=NULL, ylim=NULL  )+
 	ylab('principal components for Gyro') + 
@@ -350,6 +357,7 @@ plot <- ggplot(xdata, aes(x=sample))+
 	geom_line( aes(y=pc2_AG, col='pc2_AG'), size=plotlinewidth)+
 	geom_line( aes(y=pc3_AG, col='pc3_AG'), size=plotlinewidth)+
 	facet_grid(participant~sensor)+
+	theme_bw(20)+
 	scale_y_continuous()+
 	coord_cartesian(xlim=NULL, ylim=NULL  )+
 	ylab('principal components for Acc and Gyro') + 
@@ -369,6 +377,7 @@ plot <- ggplot(xdata, aes(x=sample))+
 	geom_line( aes(y=sgpc2_AG, col='sgpc2_AG'), size=plotlinewidth)+
 	geom_line( aes(y=sgpc3_AG, col='sgpc3_AG'), size=plotlinewidth)+
 	facet_grid(participant~sensor)+
+	theme_bw(20)+
 	scale_y_continuous()+
 	coord_cartesian(xlim=NULL, ylim=NULL  )+
 	ylab('Savitzky-Golay filtering for principal components for Acc and Gyro') + 
@@ -390,6 +399,7 @@ plot <- ggplot(xdata, aes(x=sample))+
 	geom_line( aes(y=zmuvAccY, col='zmuvAccY'), size=plotlinewidth)+
 	geom_line( aes(y=zmuvAccZ, col='zmuvAccZ'), size=plotlinewidth)+
 	facet_grid(participant~sensor)+
+	theme_bw(20)+
 	scale_y_continuous()+
 	coord_cartesian(xlim=NULL, ylim=c(-5,5)  )+
 	ylab('ZeroMeanUnitVariance') + 
@@ -409,6 +419,7 @@ plot <- ggplot(xdata, aes(x=sample))+
 	geom_line( aes(y=sgAccY, col='sgAccY'), size=plotlinewidth)+
 	geom_line( aes(y=sgAccZ, col='sgAccZ'), size=plotlinewidth)+
 	facet_grid(participant~sensor)+
+	theme_bw(20)+
 	scale_y_continuous()+
 	coord_cartesian(xlim=NULL, ylim=NULL  )+
 	ylab('Savitzky-Golay') + 
@@ -427,6 +438,7 @@ plot <- ggplot(xdata, aes(x=sample))+
 	geom_line( aes(y=sgzmuvAccY, col='sgzmuvAccY'), size=plotlinewidth)+
 	geom_line( aes(y=sgzmuvAccZ, col='sgzmuvAccZ'), size=plotlinewidth)+
 	facet_grid(participant~sensor)+
+	theme_bw(20)+
 	scale_y_continuous()+
 	coord_cartesian(xlim=NULL, ylim=NULL  )+
 	ylab('Savitzky-Golay and ZeroMeanUnitVariance') + 
@@ -446,6 +458,7 @@ plot <- ggplot(xdata, aes(x=sample))+
 	geom_line( aes(y=sgGyroY, col='sgGyroY'), size=plotlinewidth)+
 	geom_line( aes(y=sgGyroZ, col='sgGyroZ'), size=plotlinewidth)+
 	facet_grid(participant~sensor)+
+	theme_bw(20)+
 	scale_y_continuous()+
 	coord_cartesian(xlim=NULL, ylim=NULL  )+
 	ylab('Savitzky-Golay') + 
@@ -464,6 +477,7 @@ plot <- ggplot(xdata, aes(x=sample))+
 	geom_line( aes(y=zmuvGyroY, col='zmuvGyroY'), size=plotlinewidth)+
 	geom_line( aes(y=zmuvGyroZ, col='zmuvGyroZ'), size=plotlinewidth)+
 	facet_grid(participant~sensor)+
+	theme_bw(20)+
 	scale_y_continuous()+
 	coord_cartesian(xlim=NULL, ylim=NULL  )+
 	ylab('Savitzky-Golay and ZeroMeanUnitVariance') + 
@@ -485,6 +499,7 @@ plot <- ggplot(xdata, aes(x=sample))+
 	geom_line( aes(y=sgzmuvGyroY, col='sgzmuvGyroY'), size=plotlinewidth)+
 	geom_line( aes(y=sgzmuvGyroZ, col='sgzmuvGyroZ'), size=plotlinewidth)+
 	facet_grid(participant~sensor)+
+	theme_bw(20)+
 	scale_y_continuous()+
 	coord_cartesian(xlim=NULL, ylim=NULL  )+
 	ylab('Savitzky-Golay and ZeroMeanUnitVariance') + 
@@ -503,6 +518,7 @@ plot <- ggplot(xdata, aes(x=sample))+
 	geom_line( aes(y=hfsgzmuvAccY, col='hfsgzmuvAccY'), size=plotlinewidth)+
 	geom_line( aes(y=hfsgzmuvAccZ, col='hfsgzmuvAccZ'), size=plotlinewidth)+
 	facet_grid(participant~sensor)+
+	theme_bw(20)+
 	scale_y_continuous()+
 	coord_cartesian(xlim=NULL, ylim=c(-0.05,0.05)  )+
 	ylab('High Frequency Savitzky-Golay and ZeroMeanUnitVariance') + 
@@ -522,6 +538,7 @@ plot <- ggplot(xdata, aes(x=sample))+
 	geom_line( aes(y=hfsgzmuvGyroY, col='hfsgzmuvGyroY'), size=plotlinewidth)+
 	geom_line( aes(y=hfsgzmuvGyroZ, col='hfsgzmuvGyroZ'), size=plotlinewidth)+
 	facet_grid(participant~sensor)+
+	theme_bw(20)+
 	scale_y_continuous()+
 	coord_cartesian(xlim=NULL, ylim=c(-0.05,0.05)  )+
 	ylab('High Frequency Savitzky-Golay and ZeroMeanUnitVariance') + 
@@ -541,6 +558,7 @@ plot <- ggplot(xdata, aes(x=sample))+
 	geom_line( aes(y=sghfsgzmuvAccY, col='sghfsgzmuvAccY'), size=plotlinewidth)+
 	geom_line( aes(y=sghfsgzmuvAccZ, col='sghfsgzmuvAccZ'), size=plotlinewidth)+
 	facet_grid(participant~sensor)+
+	theme_bw(20)+
 	scale_y_continuous()+
 	coord_cartesian(xlim=NULL, ylim=c(-0.0001,0.0001)  )+
 	ylab('Savitzky-Golay High Frequency Savitzky-Golay and ZeroMeanUnitVariance') + 
@@ -558,6 +576,7 @@ plot <- ggplot(xdata, aes(x=sample))+
 	geom_line( aes(y=sghfsgzmuvGyroY, col='sghfsgzmuvGyroY'), size=plotlinewidth)+
 	geom_line( aes(y=sghfsgzmuvGyroZ, col='sghfsgzmuvGyroZ'), size=plotlinewidth)+
 	facet_grid(participant~sensor)+
+	theme_bw(20)+
 	scale_y_continuous()+
 	coord_cartesian(xlim=NULL, ylim=c(-0.0001,0.0001)  )+
 	ylab('Savitzky-Golay High Frequency Savitzky-Golay and ZeroMeanUnitVariance') + 
@@ -568,15 +587,6 @@ png(filename= paste(tag,"_sghfsgzmuvGyroXYZ.png",sep=''),
    width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
 print(plot)
 dev.off()
-
-
-
-
-
-
-
-
-
 
 
 
@@ -592,30 +602,7 @@ dev.off()
 
 
 
-
-#
-#################################################################################
-## (5) Creating Preprossed Data Path and Writing Data
-#
-#odata_path <- paste(outcomes_path,relativeodatapath,sep="")
-#if (file.exists(odata_path)){
-#    setwd(file.path(odata_path))
-#} else {
-#  dir.create(odata_path, recursive=TRUE)
-#  setwd(file.path(odata_path))
-#}
-#
-#
-#
-#
-#################################################################################
-#####  (5)  Writing Data
-#write.table(xdata, "rawimudata-v00.datatable", row.name=FALSE)
-#
-#message('datatable file has been created at '  )
-#message (odata_path)
-#
-#
+} ## if (PLOTTING_TIMESERIES == TRUE) {
 
 
 #################

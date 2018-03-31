@@ -9,7 +9,6 @@
 # Written by Miguel P Xochicale [http://mxochicale.github.io]
 # email: @gmail.com
 # please email me directly if you see any errors or have any questions
-# last update: 17 February 2018
 #
 ###############################################################################	
 	# OUTLINE:
@@ -17,7 +16,7 @@
  	# (1) Definifing paths and Reading data
 	# (2) Data Filtering
 		# (2.1) Windowing
-	# (3) Plotting
+	# (3) Plotting (PLOTTING_TIMESERIES = TRUE/FALSE)
 		# (3.1) Creating and changing plotting paths
 		# (3.2) Plots features
 		# (3.3) Plots data from openface
@@ -162,6 +161,11 @@ xdata <- datatable[,.SD[windowframe],by=.(participant,trial)];
 # (3) Plotting
 #
 
+#PLOTTING_TIMESERIES = FALSE
+PLOTTING_TIMESERIES = TRUE
+
+if (PLOTTING_TIMESERIES == TRUE) {
+
 
 ################################################################################
 # (3.1) Creating  and Changing to PlotPath
@@ -194,12 +198,13 @@ plotlinewidth <- 1
 
 
 
- ##Confidence and success
+#Confidence and success
 plot <- ggplot(xdata, aes(x=frame) ) +	
 	geom_line( aes(y=confidence, col='confidence'), size=plotlinewidth )+
-	geom_line( aes(y=success, col='success'), size=plotlinewidth )+
-
+	geom_line( aes(y=as.numeric(success), col='success'), size=plotlinewidth )+
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
+	
 	ylab('Raw Values') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -215,10 +220,11 @@ dev.off()
 
 # Gaze 0
 plot <- ggplot(xdata, aes(x=frame) ) +	
-  geom_line( aes(y=gaze_0_x, color='gaze_0_x'), size=plotlinewidth)+
-  geom_line( aes(y=gaze_0_y, color='gaze_0_y'), size=plotlinewidth)+
-  geom_line( aes(y=gaze_0_z, color='gaze_0_z'), size=plotlinewidth)+
-  facet_grid(participant~.)+
+  	geom_line( aes(y=gaze_0_x, color='gaze_0_x'), size=plotlinewidth)+
+  	geom_line( aes(y=gaze_0_y, color='gaze_0_y'), size=plotlinewidth)+
+  	geom_line( aes(y=gaze_0_z, color='gaze_0_z'), size=plotlinewidth)+
+  	facet_grid(participant~.)+
+  	theme_bw(20) +
 
 	ylab('Raw Values') + 
 	xlab('Sample')+
@@ -239,6 +245,7 @@ plot <- ggplot(xdata, aes(x=frame) ) +
   geom_line( aes(y=gaze_1_y, color='gaze_1_y'), size=plotlinewidth)+
   geom_line( aes(y=gaze_1_z, color='gaze_1_z'), size=plotlinewidth)+
   facet_grid(participant~.)+
+	theme_bw(20) +
 
 	ylab('Raw Values') + 
 	xlab('Sample')+
@@ -260,8 +267,10 @@ plot <- ggplot(xdata, aes(x=frame) ) +
    geom_line( aes(y=pose_Tx, col='pose_Tx'), size=plotlinewidth)+
    geom_line( aes(y=pose_Ty, col='pose_Ty'), size=plotlinewidth)+
 
-	coord_cartesian(xlim=NULL, ylim=c(-150,150))+
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
+
+	coord_cartesian(xlim=NULL, ylim=c(-150,150))+
 	ylab('Location of the head with respect to the camera [millimetre]') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -277,8 +286,10 @@ dev.off()
 plot <- ggplot(xdata, aes(x=frame) ) +	
    geom_line( aes(y=pose_Tz, col='pose_Tz'), size=plotlinewidth)+
 
-	coord_cartesian(xlim=NULL, ylim=c(800,1200))+
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
+
+	coord_cartesian(xlim=NULL, ylim=c(800,1200))+
 	ylab('Location of the head with respect to the camera [millimetre]') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -296,8 +307,10 @@ plot <- ggplot(xdata, aes(x=frame) ) +
    geom_line( aes(y=pose_Ry, col='pose_Ry'), size=plotlinewidth)+
    geom_line( aes(y=pose_Rz, col='pose_Rz'), size=plotlinewidth)+
 
-	coord_cartesian(xlim=NULL, ylim=c(-0.5,0.5))+
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
+
+	coord_cartesian(xlim=NULL, ylim=c(-0.5,0.5))+
 	ylab('Rotation of the head [Radians]') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -335,8 +348,10 @@ plot <-	ggplot(xdata, aes(x=frame) ) +
  	geom_line( aes(y=x_67, col='x_67'), size=plotlinewidth)+
 
 
-	coord_cartesian(xlim=NULL, ylim=NULL)+
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
+
+	coord_cartesian(xlim=NULL, ylim=NULL)+
 	ylab('Landmarks Location in 2D [Pixels]') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -372,9 +387,10 @@ plot <-	ggplot(xdata, aes(x=frame) ) +
  	geom_line( aes(y=y_66, col='y_66'), size=plotlinewidth)+
  	geom_line( aes(y=y_67, col='y_67'), size=plotlinewidth)+
 
+	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 
 	coord_cartesian(xlim=NULL, ylim=NULL)+
-	facet_grid(participant ~ . )+
 	ylab('Landmarks Location in 2D [Pixels]') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -410,9 +426,10 @@ plot <-	ggplot(xdata, aes(x=frame) ) +
  	geom_line( aes(y=x_15, col='x_15'), size=plotlinewidth)+
  	geom_line( aes(y=x_16, col='x_16'), size=plotlinewidth)+
 
+	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 
 	coord_cartesian(xlim=NULL, ylim=NULL)+
-	facet_grid(participant ~ . )+
 	ylab('Landmarks Location in 2D [Pixels]') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -446,9 +463,10 @@ plot <-	ggplot(xdata, aes(x=frame) ) +
  	geom_line( aes(y=y_15, col='y_15'), size=plotlinewidth)+
  	geom_line( aes(y=y_16, col='y_16'), size=plotlinewidth)+
 
+	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 
 	coord_cartesian(xlim=NULL, ylim=NULL)+
-	facet_grid(participant ~ . )+
 	ylab('Landmarks Location in 2D [Pixels]') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -474,9 +492,10 @@ plot <-	ggplot(xdata, aes(x=frame) ) +
  	geom_line( aes(y=x_25, col='x_25'), size=plotlinewidth)+
  	geom_line( aes(y=x_26, col='x_26'), size=plotlinewidth)+
 
+	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 
 	coord_cartesian(xlim=NULL, ylim=NULL)+
-	facet_grid(participant ~ . )+
 	ylab('Landmarks Location in 2D [Pixels]') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -505,9 +524,10 @@ plot <-	ggplot(xdata, aes(x=frame) ) +
  	geom_line( aes(y=y_25, col='y_25'), size=plotlinewidth)+
  	geom_line( aes(y=y_26, col='y_26'), size=plotlinewidth)+
 
-
-	coord_cartesian(xlim=NULL, ylim=NULL)+
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
+	
+	coord_cartesian(xlim=NULL, ylim=NULL)+
 	ylab('Landmarks Location in 2D [Pixels]') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -606,6 +626,7 @@ plot <-	ggplot(xdata, aes(x=frame) ) +
 
 	coord_cartesian(xlim=NULL, ylim=NULL)+
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 	ylab('Landmarks Location in 2D [Pixels]') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -698,6 +719,7 @@ plot <-	ggplot(xdata, aes(x=frame) ) +
 
 	coord_cartesian(xlim=NULL, ylim=NULL)+
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 	ylab('Landmarks Location in 2D [Pixels]') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -791,6 +813,7 @@ plot <-	ggplot(xdata, aes(x=frame) ) +
 
 	coord_cartesian(xlim=NULL, ylim=NULL)+
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 	ylab('Landmarks Location in 3D [Milimetres]') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -877,6 +900,7 @@ plot <-	ggplot(xdata, aes(x=frame) ) +
 
 	coord_cartesian(xlim=NULL, ylim=NULL)+
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 	ylab('Landmarks Location in 3D [Milimetres]') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -964,6 +988,7 @@ plot <-	ggplot(xdata, aes(x=frame) ) +
 
 	coord_cartesian(xlim=NULL, ylim=NULL)+
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 	ylab('Landmarks Location in 3D [Milimetres]') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -999,6 +1024,7 @@ plot <-	ggplot(xdata, aes(x=frame) ) +
 
 	coord_cartesian(xlim=NULL, ylim=NULL)+
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 	ylab('non-rigid shape parameters') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -1033,6 +1059,7 @@ plot <-	ggplot(xdata, aes(x=frame) ) +
  
 	coord_cartesian(xlim=NULL, ylim=NULL)+
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 	ylab('non-rigid shape parameters') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -1085,6 +1112,7 @@ plot <-	ggplot(xdata, aes(x=frame) ) +
  
 	coord_cartesian(xlim=NULL, ylim=NULL)+
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 	ylab('non-rigid shape parameters') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -1104,6 +1132,7 @@ plot <-	ggplot(xdata, aes(x=frame) ) +
  
 	coord_cartesian(xlim=NULL, ylim=NULL)+
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 	ylab('Translation terms of the Point Distrubution Model') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -1124,6 +1153,7 @@ plot <-	ggplot(xdata, aes(x=frame) ) +
  
 	coord_cartesian(xlim=NULL, ylim=NULL)+
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 	ylab('scale and rotation terms of the Point Distrubution Model') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -1142,28 +1172,29 @@ dev.off()
 # The presense (0 absent, 1 present) of 18 AUs:
 # `AU01_c, AU02_c, AU04_c, AU05_c, AU06_c, AU07_c, AU09_c, AU10_c, AU12_c, AU14_c, AU15_c, AU17_c, AU20_c, AU23_c, AU25_c, AU26_c, AU28_c, AU45_c`
 plot <-	ggplot(xdata, aes(x=frame) ) +	
-  geom_line( aes(y=AU01_c, col='AU01'), size=plotlinewidth)+
-  geom_line( aes(y=AU02_c, col='AU02'), size=plotlinewidth)+
-  geom_line( aes(y=AU04_c, col='AU04'), size=plotlinewidth)+
-  geom_line( aes(y=AU05_c, col='AU05'), size=plotlinewidth)+
-  geom_line( aes(y=AU06_c, col='AU06'), size=plotlinewidth)+
-  geom_line( aes(y=AU07_c, col='AU07'), size=plotlinewidth)+
-  geom_line( aes(y=AU09_c, col='AU09'), size=plotlinewidth)+
-  geom_line( aes(y=AU10_c, col='AU10'), size=plotlinewidth)+
-  geom_line( aes(y=AU12_c, col='AU12'), size=plotlinewidth)+
-  geom_line( aes(y=AU14_c, col='AU14'), size=plotlinewidth)+
-  geom_line( aes(y=AU15_c, col='AU15'), size=plotlinewidth)+
-  geom_line( aes(y=AU17_c, col='AU17'), size=plotlinewidth)+
-  geom_line( aes(y=AU20_c, col='AU20'), size=plotlinewidth)+
-  geom_line( aes(y=AU23_c, col='AU23'), size=plotlinewidth)+
-  geom_line( aes(y=AU25_c, col='AU25'), size=plotlinewidth)+
-  geom_line( aes(y=AU26_c, col='AU26'), size=plotlinewidth)+ 
-  geom_line( aes(y=AU28_c, col='AU28'), size=plotlinewidth)+
-  geom_line( aes(y=AU45_c, col='AU45'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU01_c), col='AU01'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU02_c), col='AU02'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU04_c), col='AU04'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU05_c), col='AU05'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU06_c), col='AU06'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU07_c), col='AU07'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU09_c), col='AU09'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU10_c), col='AU10'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU12_c), col='AU12'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU14_c), col='AU14'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU15_c), col='AU15'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU17_c), col='AU17'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU20_c), col='AU20'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU23_c), col='AU23'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU25_c), col='AU25'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU26_c), col='AU26'), size=plotlinewidth)+ 
+  geom_line( aes(y=as.numeric(AU28_c), col='AU28'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU45_c), col='AU45'), size=plotlinewidth)+
   
 
 	coord_cartesian(xlim=NULL, ylim=c(-0.5,1.5))+ 
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 	ylab('AU presence (0 absent, 1 present)') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -1202,6 +1233,7 @@ plot <-	ggplot(xdata, aes(x=frame) ) +
 
 	coord_cartesian(xlim=NULL, ylim=NULL )+ 
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 	ylab('AU intensity (from 0 to 5)') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -1217,15 +1249,15 @@ dev.off()
 
 
 
-
 ######################################
 plot <-	ggplot(xdata, aes(x=frame) ) +	
-  geom_line( aes(y=AU01_c, col='AU01_c'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU01_c), col='AU01_c'), size=plotlinewidth)+
   geom_line( aes(y=AU01_r, col='AU01_r'), size=plotlinewidth)+
   
 
 	coord_cartesian(xlim=NULL, ylim=NULL )+ 
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -1241,12 +1273,13 @@ dev.off()
 
 ######################################
 plot <-	ggplot(xdata, aes(x=frame) ) +	
-  geom_line( aes(y=AU02_c, col='AU02_c'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU02_c), col='AU02_c'), size=plotlinewidth)+
   geom_line( aes(y=AU02_r, col='AU02_r'), size=plotlinewidth)+
   
 
 	coord_cartesian(xlim=NULL, ylim=NULL )+ 
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -1260,12 +1293,13 @@ dev.off()
 
 ######################################
 plot <-	ggplot(xdata, aes(x=frame) ) +	
-  geom_line( aes(y=AU04_c, col='AU04_c'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU04_c), col='AU04_c'), size=plotlinewidth)+
   geom_line( aes(y=AU04_r, col='AU04_r'), size=plotlinewidth)+
   
 
 	coord_cartesian(xlim=NULL, ylim=NULL )+ 
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -1279,12 +1313,13 @@ dev.off()
 
 ######################################
 plot <-	ggplot(xdata, aes(x=frame) ) +	
-  geom_line( aes(y=AU05_c, col='AU05_c'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU05_c), col='AU05_c'), size=plotlinewidth)+
   geom_line( aes(y=AU05_r, col='AU05_r'), size=plotlinewidth)+
   
 
 	coord_cartesian(xlim=NULL, ylim=NULL )+ 
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -1299,12 +1334,13 @@ dev.off()
 
 ######################################
 plot <-	ggplot(xdata, aes(x=frame) ) +	
-  geom_line( aes(y=AU06_c, col='AU06_c'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU06_c), col='AU06_c'), size=plotlinewidth)+
   geom_line( aes(y=AU06_r, col='AU06_r'), size=plotlinewidth)+
   
 
 	coord_cartesian(xlim=NULL, ylim=NULL )+ 
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -1318,12 +1354,13 @@ dev.off()
 
 ######################################
 plot <-	ggplot(xdata, aes(x=frame) ) +	
-  geom_line( aes(y=AU07_c, col='AU07_c'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU07_c), col='AU07_c'), size=plotlinewidth)+
   geom_line( aes(y=AU07_r, col='AU07_r'), size=plotlinewidth)+
   
 
 	coord_cartesian(xlim=NULL, ylim=NULL )+ 
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -1337,12 +1374,13 @@ dev.off()
 
 ######################################
 plot <-	ggplot(xdata, aes(x=frame) ) +	
-  geom_line( aes(y=AU09_c, col='AU09_c'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU09_c), col='AU09_c'), size=plotlinewidth)+
   geom_line( aes(y=AU09_r, col='AU09_r'), size=plotlinewidth)+
   
 
 	coord_cartesian(xlim=NULL, ylim=NULL )+ 
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -1357,12 +1395,13 @@ dev.off()
 
 ######################################
 plot <-	ggplot(xdata, aes(x=frame) ) +	
-  geom_line( aes(y=AU10_c, col='AU10_c'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU10_c), col='AU10_c'), size=plotlinewidth)+
   geom_line( aes(y=AU10_r, col='AU10_r'), size=plotlinewidth)+
   
 
 	coord_cartesian(xlim=NULL, ylim=NULL )+ 
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -1377,12 +1416,13 @@ dev.off()
 
 ######################################
 plot <-	ggplot(xdata, aes(x=frame) ) +	
-  geom_line( aes(y=AU12_c, col='AU12_c'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU12_c), col='AU12_c'), size=plotlinewidth)+
   geom_line( aes(y=AU12_r, col='AU12_r'), size=plotlinewidth)+
   
 
 	coord_cartesian(xlim=NULL, ylim=NULL )+ 
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -1398,12 +1438,13 @@ dev.off()
 
 ######################################
 plot <-	ggplot(xdata, aes(x=frame) ) +	
-  geom_line( aes(y=AU14_c, col='AU14_c'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU14_c), col='AU14_c'), size=plotlinewidth)+
   geom_line( aes(y=AU14_r, col='AU14_r'), size=plotlinewidth)+
   
 
 	coord_cartesian(xlim=NULL, ylim=NULL )+ 
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -1418,12 +1459,13 @@ dev.off()
 
 ######################################
 plot <-	ggplot(xdata, aes(x=frame) ) +	
-  geom_line( aes(y=AU15_c, col='AU15_c'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU15_c), col='AU15_c'), size=plotlinewidth)+
   geom_line( aes(y=AU15_r, col='AU15_r'), size=plotlinewidth)+
   
 
 	coord_cartesian(xlim=NULL, ylim=NULL )+ 
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -1437,12 +1479,13 @@ dev.off()
 
 ######################################
 plot <-	ggplot(xdata, aes(x=frame) ) +	
-  geom_line( aes(y=AU17_c, col='AU17_c'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU17_c), col='AU17_c'), size=plotlinewidth)+
   geom_line( aes(y=AU17_r, col='AU17_r'), size=plotlinewidth)+
   
 
 	coord_cartesian(xlim=NULL, ylim=NULL )+ 
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -1456,12 +1499,13 @@ dev.off()
 
 ######################################
 plot <-	ggplot(xdata, aes(x=frame) ) +	
-  geom_line( aes(y=AU20_c, col='AU20_c'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU20_c), col='AU20_c'), size=plotlinewidth)+
   geom_line( aes(y=AU20_r, col='AU20_r'), size=plotlinewidth)+
   
 
 	coord_cartesian(xlim=NULL, ylim=NULL )+ 
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -1475,12 +1519,13 @@ dev.off()
 
 ######################################
 plot <-	ggplot(xdata, aes(x=frame) ) +	
-  geom_line( aes(y=AU23_c, col='AU23_c'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU23_c), col='AU23_c'), size=plotlinewidth)+
   geom_line( aes(y=AU23_r, col='AU23_r'), size=plotlinewidth)+
   
 
 	coord_cartesian(xlim=NULL, ylim=NULL )+ 
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -1495,12 +1540,13 @@ dev.off()
 
 ######################################
 plot <-	ggplot(xdata, aes(x=frame) ) +	
-  geom_line( aes(y=AU25_c, col='AU25_c'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU25_c), col='AU25_c'), size=plotlinewidth)+
   geom_line( aes(y=AU25_r, col='AU25_r'), size=plotlinewidth)+
   
 
 	coord_cartesian(xlim=NULL, ylim=NULL )+ 
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -1514,12 +1560,13 @@ dev.off()
 
 ######################################
 plot <-	ggplot(xdata, aes(x=frame) ) +	
-  geom_line( aes(y=AU26_c, col='AU26_c'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU26_c), col='AU26_c'), size=plotlinewidth)+
   geom_line( aes(y=AU26_r, col='AU26_r'), size=plotlinewidth)+
   
 
 	coord_cartesian(xlim=NULL, ylim=NULL )+ 
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -1533,12 +1580,13 @@ dev.off()
 
 ######################################
 plot <-	ggplot(xdata, aes(x=frame) ) +	
-  geom_line( aes(y=AU45_c, col='AU45_c'), size=plotlinewidth)+
+  geom_line( aes(y=as.numeric(AU45_c), col='AU45_c'), size=plotlinewidth)+
   geom_line( aes(y=AU45_r, col='AU45_r'), size=plotlinewidth)+
   
 
 	coord_cartesian(xlim=NULL, ylim=NULL )+ 
 	facet_grid(participant ~ . )+
+  	theme_bw(20) +
 	ylab('AU_c presence (0 absent, 1 present); AU_r intensity (from 0 to 5)') + 
 	xlab('Sample')+
 	labs(colour = 'Feature')
@@ -1549,6 +1597,9 @@ png(filename= paste(tag,"_AU45_cr.png",sep=''),
    width=image_width, height=image_height, units="px", res=image_dpi, bg=image_bg)
 print(plot)
 dev.off()
+
+
+} ## if (PLOTTING_TIMESERIES == TRUE) {
 
 
 ################################################################################
