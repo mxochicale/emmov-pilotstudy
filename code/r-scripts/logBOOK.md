@@ -11,7 +11,7 @@ logBOOK
 	* compute m and tau for the time-delay embeddging theorem
 		* implement cao and ami algorithms for embedding parameter estimations plotting (1march2018: sorted:2march2018)
 		* create datatable for minumum tau embedding parameters (created:2march2018, sorted:4march2018,01h25m)
-		* create datatable for minumum dim embedding parameters (created:2march2018, sorted:)
+		* create datatable for minumum dim embedding parameters (created:2march2018, sorted:1april2018, 2359)
 	
 	* in  ami-razor and cao-razor, For outcomes paht for utde use `outcomes/emmov/utde/razor/...` (created:6mach2018,1h22m sorted:9march1458)
 

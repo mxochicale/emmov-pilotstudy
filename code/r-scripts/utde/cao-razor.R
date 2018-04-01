@@ -9,7 +9,6 @@
 # Written by Miguel P Xochicale [http://mxochicale.github.io]
 # email:@gmail.com
 # please email me directly if you see any errors or have any questions
-# last update: 21 February 2018
 #
 ###############################################################################	
 	# OUTLINE:
@@ -288,22 +287,27 @@ source(paste(github_path,'/tavand/functions/embedding_parameters/withCao1997/cao
 
 
 
-maxtau <- 20
-maxdim <- 21
-
-
-
-
+maxdim <- 20
+maxtau <- 2
+delta_ee <- 0.01
 xcao <- xdata[,.(zmuvAccX,zmuvAccY,zmuvAccZ,sgzmuvAccX,sgzmuvAccY,sgzmuvAccZ,zmuvGyroX,zmuvGyroY,zmuvGyroZ,sgzmuvGyroX,sgzmuvGyroY,sgzmuvGyroZ), by=. (participant,trial,sensor,sample)]
 
-pNN <- c('p01')
+#pNN <- c('p01')
+pNN <- c('p01', 'p02')
 #pNN <- c('p01', 'p02', 'p03', 'p04', 'p05', 'p06')
 
+#axis <- c("zmuvAccX")
 axis <- c("zmuvAccX","sgzmuvAccX")
 #axis <- c("zmuvAccX","zmuvAccY","zmuvAccZ","sgzmuvAccX","sgzmuvAccY","sgzmuvAccZ","zmuvGyroX","zmuvGyroY","zmuvGyroZ","sgzmuvGyroX","sgzmuvGyroY","sgzmuvGyroZ")
 
 EE <- NULL
+EEminp <- NULL
+MINEmdDimp <- NULL
+
+
 for (participants_k in c( 1:(length(pNN))  )) {#for (pNN_k in c(1:1)) {
+
+message('Participant: ',  pNN[participants_k] )
 
 setkey(xcao, participant)
 xcao1 <- xcao[.( pNN[participants_k] )]
@@ -317,17 +321,69 @@ rxcao1 <- xcao1[sensor=='imu-robot', .SDcols=cols  ]
 
 Ep <- NULL
 
+eeminp <- NULL
+MinEmdDimp <- NULL
 
 for (axis_k in c(1:(length(axis)) )){ #for (axis_k in c(1:12)){
 
 message('#### axis:' , axis[axis_k])
 
+#######################
+#######################
 message('     #human')
 inputtimeseries <- hxcao1[,  get(axis[axis_k]) ]
 E <- data.table()
+eemin_h <- data.table()
+MinEmdDim_h <- data.table()
+
 for (tau_i in 1:maxtau){
     message( 'tau: ', tau_i )
     Et<- as.data.table(cao97sub(inputtimeseries,maxdim,tau_i) )
+
+
+	########################################    	
+	########################################    	
+	## Minimum Embedding Dimension
+	e <- Et	
+	ee <- data.table()
+	
+	#message(e)
+
+	fi <- 0
+	for (di in 1:(maxdim-2) ){
+	#message( 'dim: ', (di+1), 'diff:', (abs(e$V1[di+1] - e$V1[di]) <= delta_ee)    )
+	
+	if (  ( abs( e$V1[di+1]-e$V1[di]) )<=delta_ee  )
+	{
+		fi <- fi+1
+		if (fi == 1)
+		{
+		minEmdDim_h <- as.data.table(di+1)	
+		}
+	}
+	
+	
+
+	ee <- rbind(ee,  cbind( abs( e$V1[di+1] - e$V1[di] )  , (abs( e$V1[di+1]-e$V1[di]))<=delta_ee )  )
+	
+	}
+	ee[,dim:=seq(2,(maxdim-1))]
+	names(ee) <- gsub("V1", "diff", names(ee))
+	names(ee) <- gsub("V2", "mindim", names(ee))
+
+	func <-function(x) {list( tau_i )}
+    	ee[,c("tau"):=func(), ]
+ 	setcolorder(ee, c(3,4,1,2))
+    	eemin_h<- rbind(eemin_h, ee )
+
+    	minEmdDim_h[,c("tau"):=func(), ]
+	MinEmdDim_h <- rbind(MinEmdDim_h, minEmdDim_h)
+
+	########################################    	
+	########################################    	
+
+
+
     func <-function(x) {list( tau_i )}
     Et[,c("tau"):=func(), ]
     Et[,dim:=seq(.N)]
@@ -341,103 +397,196 @@ ftag <-function(x) {list("imu-human")}
 E[,c("sensor"):=ftag(), ]
 Eh <- E
 
+
+eemin_h[,c("sensor"):=ftag(), ]
+MinEmdDim_h[,c("sensor"):=ftag(), ]
+
+
 E <- NULL
 
+#######################
+#######################
 message('    #robot')
+
 
 inputtimeseries <- rxcao1[,  get(axis[axis_k]) ]
 E <- data.table()
-for (tau_i in 1:maxtau){
-    message( 'tau: ', tau_i )
-    Et<- as.data.table(cao97sub(inputtimeseries,maxdim,tau_i) )
-    func <-function(x) {list( tau_i )}
-    Et[,c("tau"):=func(), ]
-    Et[,dim:=seq(.N)]
-    setcolorder(Et, c(3,4,1:2))
-    E <- rbind(E, Et )
-}
+eemin_r <- data.table()
+MinEmdDim_r <- data.table()
+
+
+	for (tau_i in 1:maxtau){
+		message( 'tau: ', tau_i )
+			Et<- as.data.table(cao97sub(inputtimeseries,maxdim,tau_i) )
+			
+
+
+	########################################    	
+	########################################    	
+	## Minimum Embedding Dimension
+	e <- Et	
+	ee <- data.table()
+	
+	#message(e)
+
+	fi <- 0
+	for (di in 1:(maxdim-2) ){
+	#message( 'dim: ', (di+1), 'diff:', (abs(e$V1[di+1] - e$V1[di]) <= delta_ee)    )
+	
+	if (  ( abs( e$V1[di+1]-e$V1[di]) )<=delta_ee  )
+	{
+		fi <- fi+1
+		if (fi == 1)
+		{
+		minEmdDim_r <- as.data.table(di+1)	
+		}
+	}
+	
+	
+
+	ee <- rbind(ee,  cbind( abs( e$V1[di+1] - e$V1[di] )  , (abs( e$V1[di+1]-e$V1[di]))<=delta_ee )  )
+	
+	}
+	ee[,dim:=seq(2,(maxdim-1))]
+	names(ee) <- gsub("V1", "diff", names(ee))
+	names(ee) <- gsub("V2", "mindim", names(ee))
+
+	func <-function(x) {list( tau_i )}
+    	ee[,c("tau"):=func(), ]
+ 	setcolorder(ee, c(3,4,1,2))
+    	eemin_r<- rbind(eemin_r, ee )
+
+    	minEmdDim_r[,c("tau"):=func(), ]
+	MinEmdDim_r <- rbind(MinEmdDim_r, minEmdDim_r)
+
+	########################################    	
+	########################################    	
+
+
+
+
+
+
+func <-function(x) {list( tau_i )}
+		Et[,c("tau"):=func(), ]
+			Et[,dim:=seq(.N)]
+			setcolorder(Et, c(3,4,1:2))
+			E <- rbind(E, Et )
+	}
 names(E) <- gsub("V1", "E1", names(E))
 names(E) <- gsub("V2", "E2", names(E))
 
 ftag <-function(x) {list("imu-robot")}
 E[,c("sensor"):=ftag(), ]
 Er <-E
+
+
+
+eemin_r[,c("sensor"):=ftag(), ]
+MinEmdDim_r[,c("sensor"):=ftag(), ]
+
+
+
+
 E<-NULL
 
 
 
+
 Ea <- rbind(Eh,Er)
+eemin <- rbind(eemin_h,eemin_r)
+MinEmdDim <- rbind(MinEmdDim_h,MinEmdDim_r)
+
+
 
 	if (axis_k == 1){
-    	ftag <-function(x) {list("zmuvAccX")}
-    	} else if (axis_k == 2){
-	ftag <-function(x) {list("zmuvAccY")}
-    	} else if (axis_k == 3){
-    	ftag <-function(x) {list("zmuvAccZ")}
-       	} else if (axis_k == 4){
-	ftag <-function(x) {list("sgzmuvAccX")}
-    	} else if (axis_k == 5){
-    	ftag <-function(x) {list("sgzmuvAccY")}
-    	} else if (axis_k == 6){
-	ftag <-function(x) {list("sgzmuvAccZ")}
-    	} else if (axis_k == 7){
-    	ftag <-function(x) {list("zmuvGyroX")}
-    	} else if (axis_k == 8){
-	ftag <-function(x) {list("zmuvGyroY")}
-    	} else if (axis_k == 9){
-    	ftag <-function(x) {list("zmuvGyroZ")}
-    	} else if (axis_k == 10){
-	ftag <-function(x) {list("sgzmuvGyroX")}
-    	} else if (axis_k == 11){
-    	ftag <-function(x) {list("sgzmuvGyroY")}
-     	} else if (axis_k == 12){
-    	ftag <-function(x) {list("sgzmuvGyroZ")}
-    	} 
+		ftag <-function(x) {list("zmuvAccX")}
+	} else if (axis_k == 2){
+		ftag <-function(x) {list("sgzmuvAccX")}
+	} 
 
 
+#	if (axis_k == 1){
+#    	ftag <-function(x) {list("zmuvAccX")}
+#    	} else if (axis_k == 2){
+#	ftag <-function(x) {list("zmuvAccY")}
+#    	} else if (axis_k == 3){
+#    	ftag <-function(x) {list("zmuvAccZ")}
+#       	} else if (axis_k == 4){
+#	ftag <-function(x) {list("sgzmuvAccX")}
+#    	} else if (axis_k == 5){
+#    	ftag <-function(x) {list("sgzmuvAccY")}
+#    	} else if (axis_k == 6){
+#	ftag <-function(x) {list("sgzmuvAccZ")}
+#    	} else if (axis_k == 7){
+#    	ftag <-function(x) {list("zmuvGyroX")}
+#    	} else if (axis_k == 8){
+#	ftag <-function(x) {list("zmuvGyroY")}
+#    	} else if (axis_k == 9){
+#    	ftag <-function(x) {list("zmuvGyroZ")}
+#    	} else if (axis_k == 10){
+#	ftag <-function(x) {list("sgzmuvGyroX")}
+#    	} else if (axis_k == 11){
+#    	ftag <-function(x) {list("sgzmuvGyroY")}
+#     	} else if (axis_k == 12){
+#    	ftag <-function(x) {list("sgzmuvGyroZ")}
+#    	} 
+#
+#
 
-	
+
 Ea[,c("axis"):=ftag(), ]
+eemin[,c("axis"):=ftag(), ]
+MinEmdDim[,c("axis"):=ftag(), ]
+
 
 Ep <- rbind(Ep,Ea)
+eeminp <- rbind(eeminp,eemin)	
+MinEmdDimp <- rbind(MinEmdDimp, MinEmdDim)
 }# for (axis_k in c(1:12)){ 
 
 
 
 
-   	# Particpant Number
+# Particpant Number
 
 
-	if (participants_k == 1){
-    	fsNNtmp <-function(x) {list("p01")}
-    	} else if (participants_k == 2){
-	fsNNtmp <-function(x) {list("p02")}
-    	} else if (participants_k == 3){
-    	fsNNtmp <-function(x) {list("p03")}
-    	} else if (participants_k == 4){
-	fsNNtmp <-function(x) {list("p04")}
-	} else if (participants_k == 5){
-	fsNNtmp <-function(x) {list("p05")}
-	} else if (participants_k == 6){
-	fsNNtmp <-function(x) {list("p06")}
-	} else if (participants_k == 7){
-	fsNNtmp <-function(x) {list("p07")}
-	} 
+		if (participants_k == 1){
+			fsNNtmp <-function(x) {list("p01")}
+		} else if (participants_k == 2){
+			fsNNtmp <-function(x) {list("p02")}
+		} else if (participants_k == 3){
+			fsNNtmp <-function(x) {list("p03")}
+		} else if (participants_k == 4){
+			fsNNtmp <-function(x) {list("p04")}
+		} else if (participants_k == 5){
+			fsNNtmp <-function(x) {list("p05")}
+		} else if (participants_k == 6){
+			fsNNtmp <-function(x) {list("p06")}
+		} else if (participants_k == 7){
+			fsNNtmp <-function(x) {list("p07")}
+		} 
 
-Ep[,c("participant"):=fsNNtmp(), ]
-
-EE <- rbind(EE,Ep)
-
-
+		Ep[,c("participant"):=fsNNtmp(), ]
+		eeminp[,c("participant"):=fsNNtmp(), ]
+		MinEmdDimp[,c("participant"):=fsNNtmp(), ]
+		
+		EE <- rbind(EE,Ep)
+		EEminp <- rbind(EEminp,eeminp)
+		MINEmdDimp <- rbind(MINEmdDimp,MinEmdDimp)
 
 }#for (pNN_k in c(1:1)) {
+
 
 
 setcolorder(EE,c(7,5,6,1:4) )
 
 
+setcolorder(EEminp,c(7,5,6,2,1,3,4) )
 
 
+setcolorder(MINEmdDimp,c(5,3,4,2,1) )
+names(MINEmdDimp) <- gsub("V1", "mindim", names(MINEmdDimp))
 
 
 ################################################################################
@@ -449,7 +598,7 @@ print_EVALUES_flag <- TRUE
 #print_EVALUES_flag <- FALSE
 
 
-if (print_EVALUES_flag == TRUE) {
+if (print_EVALUES_flag == TRUE) { ##if (print_EVALUES_flag == TRUE) {
 
 ### Save Picture
 width = 2000
@@ -460,50 +609,69 @@ width.calc <- width / dpi
 height.calc <- height / dpi
 
 
-plotlinewidth <- 0.9
-#filenameimage <- paste("Evalues", t, ".png",sep="")
-
+plotlinewidth <- 3
+ylim_max <- 1.5
 
 
 
 hEE <- EE[sensor=='imu-human', .SDcols=cols  ]
 he1 <- ggplot(hEE, aes(x=dim) ) + 
-	geom_line( aes(y=E1, colour=factor(tau) ),lwd = plotlinewidth, alpha=0.5 ) + 
+	geom_line( aes(y=E1, colour=factor(tau) ),lwd = plotlinewidth, alpha=0.5 ) + 	
+    	geom_point( aes(y=E1, shape=factor(tau), colour=factor(tau)  ), size=5, stroke =1 )+
+
+    	scale_color_manual(values = colorRampPalette(brewer.pal(n = 9, name="Blues"))(2*maxtau)[(maxtau+1):(2*maxtau)]  ) +
+    	scale_shape_manual(values= 1:(maxtau))+
+
+    	coord_cartesian(xlim = c(0, (maxdim-1) ), ylim = c(0, ylim_max ) )+
 	facet_grid(participant~axis) + 
 	theme_bw(20)+	
 	ylab('E1') + 
-	xlab('Dimension, m')+ 
-	labs(colour = 'tau')
+	xlab('Dimension, m') 
+	#theme(legend.position = c(0.9, 0.3) )
+
 
 he2 <- ggplot(hEE, aes(x=dim) ) + 
 	geom_line( aes(y=E2, colour=factor(tau) ),lwd = plotlinewidth, alpha=0.5 ) + 
+    	geom_point( aes(y=E2, shape=factor(tau), colour=factor(tau)  ), size=5, stroke =1 )+
+
+    	scale_color_manual(values = colorRampPalette(brewer.pal(n = 9, name="Blues"))(2*maxtau)[(maxtau+1):(2*maxtau)]  ) +
+    	scale_shape_manual(values= 1:(maxtau))+
+
+    	coord_cartesian(xlim = c(0, (maxdim-1) ), ylim = c(0, ylim_max ) )+
 	facet_grid(participant~axis) + 
 	theme_bw(20)+	
 	ylab('E2') + 
-	xlab('Dimension, m')+ 
-	labs(colour = 'tau')
+	xlab('Dimension, m')
+	#theme(legend.position = c(0.9, 0.3) )
 
 rEE <- EE[sensor=='imu-robot', .SDcols=cols  ]
 re1 <- ggplot(rEE, aes(x=dim) ) + 
 	geom_line( aes(y=E1, colour=factor(tau) ),lwd = plotlinewidth, alpha=0.5 ) + 
+    	geom_point( aes(y=E1, shape=factor(tau), colour=factor(tau)  ), size=5, stroke =1 )+
+
+    	scale_color_manual(values = colorRampPalette(brewer.pal(n = 9, name="Blues"))(2*maxtau)[(maxtau+1):(2*maxtau)]  ) +
+    	scale_shape_manual(values= 1:(maxtau))+
+
+    	coord_cartesian(xlim = c(0, (maxdim-1) ), ylim = c(0, ylim_max ) )+
 	facet_grid(participant~axis) + 
 	theme_bw(20)+	
 	ylab('E1') + 
-	xlab('Dimension, m')+ 
-	labs(colour = 'tau')
+	xlab('Dimension, m')
+	#theme(legend.position = c(0.9, 0.3) )
 
 re2 <- ggplot(rEE, aes(x=dim) ) + 
 	geom_line( aes(y=E2, colour=factor(tau) ),lwd = plotlinewidth, alpha=0.5 ) + 
+    	geom_point( aes(y=E2, shape=factor(tau), colour=factor(tau)  ), size=5, stroke =1 )+
+
+    	scale_color_manual(values = colorRampPalette(brewer.pal(n = 9, name="Blues"))(2*maxtau)[(maxtau+1):(2*maxtau)]  ) +
+    	scale_shape_manual(values= 1:(maxtau))+
+
+    	coord_cartesian(xlim = c(0, (maxdim-1) ), ylim = c(0, ylim_max ) )+
 	facet_grid(participant~axis) + 
+	theme_bw(20)+	
 	ylab('E2') + 
-	xlab('Dimension, m')+ 
-	labs(colour = 'tau')
-
-
-#    geom_point( aes(x=dim,y=E1, shape=factor(tau), colour=factor(tau)), size=5, stroke =1 )+
-#    scale_color_manual(values = colorRampPalette(brewer.pal(n = 8, name="Greens"))(maxtau) ) +
-#    scale_shape_manual(values= 1:(maxtau))+
-#    labs(x='Embedding dimension, m', y='E1(m)' )+
+	xlab('Dimension, m')
+	#theme(legend.position = c(0.9, 0.3) )
 
 
 
@@ -521,7 +689,7 @@ if (file.exists(plot_path)){
 
 
 
-filenameimage <- paste("e1h_", ".png",sep="")
+filenameimage <- paste("e1-human", ".png",sep="")
 ggsave(filename = filenameimage,
         dpi = dpi,
         width = width.calc,
@@ -532,7 +700,7 @@ ggsave(filename = filenameimage,
 	he1)
 
 
-filenameimage <- paste("e2h_", ".png",sep="")
+filenameimage <- paste("e2-human", ".png",sep="")
 ggsave(filename = filenameimage,
         dpi = dpi,
         width = width.calc,
@@ -543,7 +711,7 @@ ggsave(filename = filenameimage,
 	he2)
 
 
-filenameimage <- paste("e1r_", ".png",sep="")
+filenameimage <- paste("e1-robot", ".png",sep="")
 ggsave(filename = filenameimage,
         dpi = dpi,
         width = width.calc,
@@ -554,7 +722,7 @@ ggsave(filename = filenameimage,
 	re1)
 
 
-filenameimage <- paste("e2r_", ".png",sep="")
+filenameimage <- paste("e2-robot", ".png",sep="")
 ggsave(filename = filenameimage,
         dpi = dpi,
         width = width.calc,
@@ -567,10 +735,59 @@ ggsave(filename = filenameimage,
 
 
 
-}
+
+
+val_tau <- '2'
+hmin <- MINEmdDimp[sensor=='imu-human', .SDcols=cols  ]
+htmin <- hmin[tau==val_tau, .SDcols=cols  ]
+
+phtmin <- ggplot(htmin, aes(x=participant, y=mindim) ) + 
+	geom_point( aes(fill=participant, colour=participant, shape=participant), size=5 ) + 
+	facet_grid(.~axis) + ylab("Minimum Embedding Dimensions") + 
+	coord_cartesian(xlim=NULL, ylim=c(0,35)  ) +
+	theme_bw(20) +	
+        theme(axis.text.x = element_text(colour="grey20",size=16,angle=90,hjust=.5,vjust=.5,face="plain")  )
+
+rmin <- MINEmdDimp[sensor=='imu-robot', .SDcols=cols  ]
+rtmin <- rmin[tau==val_tau, .SDcols=cols  ]
+
+prtmin <- ggplot(rtmin, aes(x=participant, y=mindim) ) + 
+	geom_point( aes(fill=participant, colour=participant, shape=participant), size=5 ) + 
+	facet_grid(.~axis) + ylab("Minimum Embedding Dimensions") + 
+	coord_cartesian(xlim=NULL, ylim=c(0,35)  ) +
+	theme_bw(20) +	
+        theme(axis.text.x = element_text(colour="grey20",size=16,angle=90,hjust=.5,vjust=.5,face="plain")  )
 
 
 
+
+
+filenameimage <- paste("mind-human", ".png",sep="")
+ggsave(filename = filenameimage,
+        dpi = dpi,
+        width = width.calc,
+        height = height.calc,
+        units = 'in',
+        bg = "transparent",
+        device = "png",
+	phtmin)
+
+
+filenameimage <- paste("mind-robot", ".png",sep="")
+ggsave(filename = filenameimage,
+        dpi = dpi,
+        width = width.calc,
+        height = height.calc,
+        units = 'in',
+        bg = "transparent",
+        device = "png",
+	prtmin)
+
+
+
+
+
+} ##if (print_EVALUES_flag == TRUE) {
 
 #################
 # Stop the clock!
