@@ -44,8 +44,7 @@ library(data.table) # for manipulating data
 library(ggplot2) # for plotting 
 
 library(signal)# for butterworth filter and sgolay
-source('~/mxochicale/github/R/functions/ollin_cencah.R')
-
+source('../../../../tavand/functions/ollin_cencah.R')
 
 
 
@@ -59,9 +58,8 @@ setwd("../")
 github_path <- getwd()
 
 
-main_data_path <- paste( main_repository_path, '/data/razor_imu',sep="")
 outcomes_path <- paste(github_path,"/DataSets/emmov",sep="")
-relativeplotpathtimeseries <- "/utde/openface/timeseries"
+ relativeplotpathtimeseries <- "/utde/openface/timeseries"
 relativeodatapath <- "/datatables"
 
 relativeplotpath4utde_openface_ed <- "/utde/openface/euclideandistances"
@@ -314,7 +312,7 @@ xdata[,c(
 
 
 PLOTTINGTIMESERIES <- FALSE
-## PLOTTINGTIMESERIES <- TRUE
+##PLOTTINGTIMESERIES <- TRUE
 
 
 if (PLOTTINGTIMESERIES == TRUE) 
@@ -1463,7 +1461,10 @@ setwd(file.path(embedding_path))
 }
 
 
-
+#pNN <- c('p01', 'p02')
+#axis <- c(
+#	'zmuvpose_Tx', 'sgzmuvpose_Tx'
+#	)
 
 
 pNN <- c('p01', 'p02', 'p03', 'p04', 'p05', 'p06')
@@ -1473,6 +1474,8 @@ axis <- c('zmuvconfidence', 'zmuvsuccess', 'sgzmuvconfidence', 'sgzmuvsuccess',
 	'zmuvx_0', 'zmuvx_67', 'sgzmuvx_0', 'sgzmuvx_67',
 	'zmuvy_0', 'zmuvy_67', 'sgzmuvy_0', 'sgzmuvy_67'
 	)
+
+
 
 xd <- xdata[,.(zmuvconfidence, zmuvsuccess, sgzmuvconfidence, sgzmuvsuccess, 
 	zmuvpose_Rx, zmuvpose_Ry, zmuvpose_Rz, sgzmuvpose_Rx, sgzmuvpose_Ry, sgzmuvpose_Rz, 
@@ -1484,7 +1487,7 @@ xd <- xdata[,.(zmuvconfidence, zmuvsuccess, sgzmuvconfidence, sgzmuvsuccess,
 
 
 ED <- NULL # Euclidean Distances data.table object!
-for (participants_k in c(1:6)) {#for (pNN_k in c(1:1)) {
+for (participants_k in c(1: (length(pNN)) ) ) {#for (pNN_k in c(1:1)) {
 
 message('####################')
 message('# PARTICIPANT: ', participants_k)
@@ -1531,7 +1534,7 @@ for (axis_k in c(1:length(axis))){ #for (axis_k in c(1:12)){
 
 #delays <- c(2)
 #dimensions <- c(10)
-
+#
 #delays <- c(2,8)
 #dimensions <- c(10, 100)
 
@@ -1772,5 +1775,3 @@ end.time - start.time
 
 ################################################################################
 setwd(r_scripts_path) ## go back to the r-script source path
-
-

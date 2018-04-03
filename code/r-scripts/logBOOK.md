@@ -3,11 +3,41 @@ logBOOK
 
 
 # TODO
+
+* [ ]
+	* state space reconstruction 
+	* recurrence plots 
+	* recurrence qunatification analysis parameters
+			(created:28feb2018, sorted: )	
+
+
+* [ ] for postprocessing, try different parameters for savitzky-golay filter as the
+	current ones `SavitzkyGolayCoeffs <- sgolay(p=5,n=155 ,m=0)`, 
+	smoothed the openface time series to the point that no osicllations are 
+	presented in the head pose estimation time series.
+
+
+* [ ] save preprocessed.datatable at `~/data/razor_imu`	(created:22feb2018 sorted:)
+
+* [ ] plot 2d plots with x/y points using pose_tx and pose_ty (created:21february2018, sorted: )
+
+* [ ] plot 3d plots with x/y/z points using xyz values (created:21february2018, sorted: )
+
+
+
 * [ ]  defining too many datapaths get me dizzy. Use few variables to define these
 	(added29march2018, sorted???)
 
 
-* [ ] For razor and openface timeseries create :
+
+
+
+# SORTED 
+
+* [ ] Clean rscripts  (cao,ami,utde - razor,openface)  and use data from all participants and axis sensors
+	(added:3april2018 0023, sorted:)
+
+* [x] For razor and openface timeseries create :
 	* compute m and tau for the time-delay embeddging theorem
 		* implement cao and ami algorithms for embedding parameter estimations plotting (1march2018: sorted:2march2018)
 		* create datatable for minumum tau embedding parameters (created:2march2018, sorted:4march2018,01h25m)
@@ -30,31 +60,7 @@ logBOOK
 
  
 
-	* state space reconstruction 
-	* recurrence plots 
-	* recurrence qunatification analysis parameters
-			(created:28feb2018, sorted: )	
 
-
-* [ ] for postprocessing, try different parameters for savitzky-golay filter as the
-	current ones `SavitzkyGolayCoeffs <- sgolay(p=5,n=155 ,m=0)`, 
-	smoothed the openface time series to the point that no osicllations are 
-	presented in the head pose estimation time series.
-
-
-* [ ] save preprocessed.datatable at `~/data/razor_imu`	(created:22feb2018 sorted:)
-
-* [ ] plot 2d plots with x/y points using pose_tx and pose_ty (created:21february2018, sorted: )
-
-* [ ] plot 3d plots with x/y/z points using xyz values (created:21february2018, sorted: )
-
-
-
-
-
-
-
-# SORTED 
 
 * [x] rename plotting to `datatables_plottimeseries`
 	(added:31marhc2018 1547 sorted:31march2018 16:06)

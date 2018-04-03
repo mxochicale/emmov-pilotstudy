@@ -48,8 +48,7 @@ library(data.table) # for manipulating data
 library(ggplot2) # for plotting 
 
 library(signal)# for butterworth filter and sgolay
-source('~/mxochicale/github/R/functions/ollin_cencah.R')
-
+source('../../../../tavand/functions/ollin_cencah.R')
 
 
 

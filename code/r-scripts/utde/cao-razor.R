@@ -23,7 +23,7 @@
 		# (3.3) Creating Low Frequency Components
 		# (3.4) Creating High Frequency Components
 		# (3.5) Smoothing data with hf sg zmuv
-	# (4) CAO's Algoring
+	# (4) CAO's Algorithm
 	# (5) Plot E1 and E2 values (print_EVALUES_flag <- TRUE)
 
 
@@ -290,7 +290,6 @@ source(paste(github_path,'/tavand/functions/embedding_parameters/withCao1997/cao
 maxdim <- 20
 maxtau <- 2
 delta_ee <- 0.01
-xcao <- xdata[,.(zmuvAccX,zmuvAccY,zmuvAccZ,sgzmuvAccX,sgzmuvAccY,sgzmuvAccZ,zmuvGyroX,zmuvGyroY,zmuvGyroZ,sgzmuvGyroX,sgzmuvGyroY,sgzmuvGyroZ), by=. (participant,trial,sensor,sample)]
 
 #pNN <- c('p01')
 pNN <- c('p01', 'p02')
@@ -299,6 +298,20 @@ pNN <- c('p01', 'p02')
 #axis <- c("zmuvAccX")
 axis <- c("zmuvAccX","sgzmuvAccX")
 #axis <- c("zmuvAccX","zmuvAccY","zmuvAccZ","sgzmuvAccX","sgzmuvAccY","sgzmuvAccZ","zmuvGyroX","zmuvGyroY","zmuvGyroZ","sgzmuvGyroX","sgzmuvGyroY","sgzmuvGyroZ")
+
+
+
+
+xcao <- xdata[,
+	.(
+	zmuvAccX,zmuvAccY,zmuvAccZ,sgzmuvAccX,sgzmuvAccY,sgzmuvAccZ,
+	zmuvGyroX,zmuvGyroY,zmuvGyroZ,sgzmuvGyroX,sgzmuvGyroY,sgzmuvGyroZ
+	), 
+	by=. (participant,trial,sensor,sample)]
+
+
+
+
 
 EE <- NULL
 EEminp <- NULL
@@ -389,7 +402,8 @@ for (tau_i in 1:maxtau){
     Et[,dim:=seq(.N)]
     setcolorder(Et, c(3,4,1:2))
     E <- rbind(E, Et )
-}
+}### for (tau_i in 1:maxtau){
+
 names(E) <- gsub("V1", "E1", names(E))
 names(E) <- gsub("V2", "E2", names(E))
 
@@ -463,16 +477,13 @@ MinEmdDim_r <- data.table()
 	########################################    	
 
 
-
-
-
-
-func <-function(x) {list( tau_i )}
+		func <-function(x) {list( tau_i )}
 		Et[,c("tau"):=func(), ]
 			Et[,dim:=seq(.N)]
 			setcolorder(Et, c(3,4,1:2))
 			E <- rbind(E, Et )
-	}
+	} ### for (tau_i in 1:maxtau){
+
 names(E) <- gsub("V1", "E1", names(E))
 names(E) <- gsub("V2", "E2", names(E))
 
@@ -618,7 +629,9 @@ hEE <- EE[sensor=='imu-human', .SDcols=cols  ]
 he1 <- ggplot(hEE, aes(x=dim) ) + 
 	geom_line( aes(y=E1, colour=factor(tau) ),lwd = plotlinewidth, alpha=0.5 ) + 	
     	geom_point( aes(y=E1, shape=factor(tau), colour=factor(tau)  ), size=5, stroke =1 )+
-
+	geom_hline(yintercept = 1+delta_ee) + 
+	geom_hline(yintercept = 1-delta_ee) +
+ 
     	scale_color_manual(values = colorRampPalette(brewer.pal(n = 9, name="Blues"))(2*maxtau)[(maxtau+1):(2*maxtau)]  ) +
     	scale_shape_manual(values= 1:(maxtau))+
 
@@ -648,7 +661,9 @@ rEE <- EE[sensor=='imu-robot', .SDcols=cols  ]
 re1 <- ggplot(rEE, aes(x=dim) ) + 
 	geom_line( aes(y=E1, colour=factor(tau) ),lwd = plotlinewidth, alpha=0.5 ) + 
     	geom_point( aes(y=E1, shape=factor(tau), colour=factor(tau)  ), size=5, stroke =1 )+
-
+	geom_hline(yintercept = 1+delta_ee) + 
+	geom_hline(yintercept = 1-delta_ee) +
+ 
     	scale_color_manual(values = colorRampPalette(brewer.pal(n = 9, name="Blues"))(2*maxtau)[(maxtau+1):(2*maxtau)]  ) +
     	scale_shape_manual(values= 1:(maxtau))+
 
@@ -689,7 +704,7 @@ if (file.exists(plot_path)){
 
 
 
-filenameimage <- paste("e1-human", ".png",sep="")
+filenameimage <- paste("cao-human-e1", ".png",sep="")
 ggsave(filename = filenameimage,
         dpi = dpi,
         width = width.calc,
@@ -700,7 +715,7 @@ ggsave(filename = filenameimage,
 	he1)
 
 
-filenameimage <- paste("e2-human", ".png",sep="")
+filenameimage <- paste("cao-human-e2", ".png",sep="")
 ggsave(filename = filenameimage,
         dpi = dpi,
         width = width.calc,
@@ -711,7 +726,7 @@ ggsave(filename = filenameimage,
 	he2)
 
 
-filenameimage <- paste("e1-robot", ".png",sep="")
+filenameimage <- paste("cao-robot-e1", ".png",sep="")
 ggsave(filename = filenameimage,
         dpi = dpi,
         width = width.calc,
@@ -722,7 +737,7 @@ ggsave(filename = filenameimage,
 	re1)
 
 
-filenameimage <- paste("e2-robot", ".png",sep="")
+filenameimage <- paste("cao-robot-e2", ".png",sep="")
 ggsave(filename = filenameimage,
         dpi = dpi,
         width = width.calc,
@@ -735,7 +750,9 @@ ggsave(filename = filenameimage,
 
 
 
-
+######################################
+######################################
+### Minimum Embedding Dimensions Plots
 
 val_tau <- '2'
 hmin <- MINEmdDimp[sensor=='imu-human', .SDcols=cols  ]
@@ -762,7 +779,7 @@ prtmin <- ggplot(rtmin, aes(x=participant, y=mindim) ) +
 
 
 
-filenameimage <- paste("mind-human", ".png",sep="")
+filenameimage <- paste("cao-human-mindim", '-tau', val_tau, ".png",sep="")
 ggsave(filename = filenameimage,
         dpi = dpi,
         width = width.calc,
@@ -773,7 +790,7 @@ ggsave(filename = filenameimage,
 	phtmin)
 
 
-filenameimage <- paste("mind-robot", ".png",sep="")
+filenameimage <- paste("cao-robot-mindim", '-tau', val_tau, ".png",sep="")
 ggsave(filename = filenameimage,
         dpi = dpi,
         width = width.calc,
@@ -796,5 +813,3 @@ end.time - start.time
 
 ################################################################################
 setwd(r_scripts_path) ## go back to the r-script source path
-
-

@@ -298,10 +298,14 @@ ami_numeric_value <- 1/exp(0)
 
 
 #
-xd <- xdata[,.(zmuvAccX,zmuvAccY,zmuvAccZ,sgzmuvAccX,sgzmuvAccY,sgzmuvAccZ,zmuvGyroX,zmuvGyroY,zmuvGyroZ,sgzmuvGyroX,sgzmuvGyroY,sgzmuvGyroZ), by=. (participant,trial,sensor,sample)]
+xd <- xdata[,.(
+	zmuvAccX,zmuvAccY,zmuvAccZ,sgzmuvAccX,sgzmuvAccY,sgzmuvAccZ,
+	zmuvGyroX,zmuvGyroY,zmuvGyroZ,sgzmuvGyroX,sgzmuvGyroY,sgzmuvGyroZ), 
+	by=. (participant,trial,sensor,sample)]
 
 pNN <- c('p01', 'p02', 'p03', 'p04', 'p05', 'p06')
-axis <- c("zmuvAccX","zmuvAccY","zmuvAccZ","sgzmuvAccX","sgzmuvAccY","sgzmuvAccZ","zmuvGyroX","zmuvGyroY","zmuvGyroZ","sgzmuvGyroX","sgzmuvGyroY","sgzmuvGyroZ")
+axis <- c("zmuvAccX","zmuvAccY","zmuvAccZ","sgzmuvAccX","sgzmuvAccY","sgzmuvAccZ",
+	"zmuvGyroX","zmuvGyroY","zmuvGyroZ","sgzmuvGyroX","sgzmuvGyroY","sgzmuvGyroZ")
 
 
 
@@ -460,6 +464,7 @@ names(time_lags)[4] <- 'timelags'
 ### (5) Plot Avarage Mutual Information 
 
 
+#print_AMI_flag <- FALSE
 print_AMI_flag <- TRUE
 
 
@@ -541,7 +546,7 @@ height.calc <- height / dpi
 
 
 
-filenameimage <- paste("ami-human_", ".png",sep="")
+filenameimage <- paste("ami-human", ".png",sep="")
 ggsave(filename = filenameimage,
         dpi = dpi,
         width = width.calc,
@@ -552,7 +557,7 @@ ggsave(filename = filenameimage,
 	hami)
 
 
-filenameimage <- paste("ami-robot_", ".png",sep="")
+filenameimage <- paste("ami-robot", ".png",sep="")
 ggsave(filename = filenameimage,
         dpi = dpi,
         width = width.calc,
@@ -573,7 +578,7 @@ width.calc <- width / dpi
 height.calc <- height / dpi
 
 
-filenameimage <- paste("human-timelags_", ".png",sep="")
+filenameimage <- paste("ami-human-mintau", ".png",sep="")
 ggsave(filename = filenameimage,
         dpi = dpi,
         width = width.calc,
@@ -584,7 +589,7 @@ ggsave(filename = filenameimage,
 	htlp)
 
 
-filenameimage <- paste("robot-timelags_", ".png",sep="")
+filenameimage <- paste("ami-robot-mintau", ".png",sep="")
 ggsave(filename = filenameimage,
         dpi = dpi,
         width = width.calc,
