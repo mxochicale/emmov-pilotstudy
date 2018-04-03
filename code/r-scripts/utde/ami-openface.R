@@ -330,30 +330,46 @@ ami_numeric_value <- 1/exp(0)
 
 
 
-
-pNN <- c('p01', 'p02')
-axis <- c(
-	'zmuvpose_Tx', 'sgzmuvpose_Tx'
-	)
-
-
-#pNN <- c('p01', 'p02', 'p03', 'p04', 'p05', 'p06')
-#axis <- c('zmuvconfidence', 'zmuvsuccess', 'sgzmuvconfidence', 'sgzmuvsuccess', 
-#	'zmuvpose_Rx', 'zmuvpose_Ry', 'zmuvpose_Rz', 'sgzmuvpose_Rx', 'sgzmuvpose_Ry', 'sgzmuvpose_Rz', 
-#	'zmuvpose_Tx', 'zmuvpose_Ty', 'zmuvpose_Tz', 'sgzmuvpose_Tx', 'sgzmuvpose_Ty', 'sgzmuvpose_Tz',
-#	'zmuvx_0', 'zmuvx_67', 'sgzmuvx_0', 'sgzmuvx_67',
-#	'zmuvy_0', 'zmuvy_67', 'sgzmuvy_0', 'sgzmuvy_67'
-#	)
+#pNN <- c('p01', 'p02')
+#axis <- c(
+#	'zmuvpose_Tx', 'sgzmuvpose_Tx'
+#)
 #
 
 
-xd <- xdata[,.(zmuvconfidence, zmuvsuccess, sgzmuvconfidence, sgzmuvsuccess, 
+#MEMORY ERROR USING THESE AXIS
+#pNN <- c('p01', 'p02')
+#axis <- c(
+#	'zmuvsuccess', 
+#	'sgzmuvsuccess'
+#	)
+
+#pNN <- c('p01', 'p02')
+#axis <- c(
+#	'zmuvconfidence', 
+#	'sgzmuvconfidence' 
+#	)
+#
+
+pNN <- c('p01', 'p02', 'p03', 'p04', 'p05', 'p06')
+axis <- c('zmuvconfidence', 'sgzmuvconfidence', 
+	'zmuvpose_Rx', 'zmuvpose_Ry', 'zmuvpose_Rz', 'sgzmuvpose_Rx', 'sgzmuvpose_Ry', 'sgzmuvpose_Rz', 
+	'zmuvpose_Tx', 'zmuvpose_Ty', 'zmuvpose_Tz', 'sgzmuvpose_Tx', 'sgzmuvpose_Ty', 'sgzmuvpose_Tz',
+	'zmuvx_0', 'zmuvx_67', 'sgzmuvx_0', 'sgzmuvx_67',
+	'zmuvy_0', 'zmuvy_67', 'sgzmuvy_0', 'sgzmuvy_67'
+	)
+
+
+
+xd <- xdata[,.(zmuvconfidence, sgzmuvconfidence, 
 	zmuvpose_Rx, zmuvpose_Ry, zmuvpose_Rz, sgzmuvpose_Rx, sgzmuvpose_Ry, sgzmuvpose_Rz, 
 	zmuvpose_Tx, zmuvpose_Ty, zmuvpose_Tz, sgzmuvpose_Tx, sgzmuvpose_Ty, sgzmuvpose_Tz,
 	zmuvx_0, zmuvx_67, sgzmuvx_0, sgzmuvx_67,
 	zmuvy_0, zmuvy_67, sgzmuvy_0, sgzmuvy_67
 	), 
 		by=. (participant,trial,frame)]
+
+
 
 
 
@@ -449,7 +465,7 @@ plotlinewidth <- 0.9
 ptl <- ggplot(TAUlags, aes(x=participant,y=timelags) ) + 
 	geom_point( aes(fill=participant, colour=participant, shape=participant), size=5 ) + 
 	facet_grid(.~axis) + ylab("First Minimum AMI") + 
-	coord_cartesian(xlim=NULL, ylim=c(0,35)  ) +
+	coord_cartesian(xlim=NULL, ylim=c(0,30)  ) +
 	theme_bw(20) +	
         theme(axis.text.x = element_text(colour="grey20",size=16,angle=90,hjust=.5,vjust=.5,face="plain")  )
 
@@ -479,8 +495,8 @@ if (file.exists(plot_path)){
 
 
 ### Save Picture
-width = 2100
-height = 400
+width = 4500
+height = 500
 text.factor = 1
 dpi <- text.factor * 100
 width.calc <- width / dpi
@@ -498,7 +514,7 @@ ggsave(filename = filenameimage,
 	ptl)
 
 ### Save Picture
-width = 2000
+width = 4500
 height = 1000
 text.factor = 1
 dpi <- text.factor * 100

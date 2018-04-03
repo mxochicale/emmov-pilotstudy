@@ -24,8 +24,10 @@ once `R` is loaded, explore the history with the up/down arrows and hit enter to
 
 1. `timeseries-razor.R` reads raw data, shift the data and creates data.tables objects.
 2. `postprocessing-razor.R`
-3. `utde-razor.R`
-4.  `cao-razor.R`
+3. `cao-razor.R`
+4. `ami-razor.R`
+5. `utde-razor.R`
+
 
 
 

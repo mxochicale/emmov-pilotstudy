@@ -4,11 +4,18 @@ logBOOK
 
 # TODO
 
-* [ ]
-	* state space reconstruction 
-	* recurrence plots 
-	* recurrence qunatification analysis parameters
-			(created:28feb2018, sorted: )	
+* [ ] state space reconstruction (utde-razor.R utde-openface.R).
+	Fix the scripts with:
+	```
+	fa <-function(x) {  axis[axis_k]  }
+	fp <-function(x) {  pNN[participants_k]   }
+	```
+	(created:28feb2018, sorted:? )
+
+
+* [ ] recurrence plots and  recurrence qunatification analysis parameters
+	(created:28feb2018, sorted:? )	
+
 
 
 * [ ] for postprocessing, try different parameters for savitzky-golay filter as the
@@ -34,8 +41,10 @@ logBOOK
 
 # SORTED 
 
-* [ ] Clean rscripts  (cao,ami,utde - razor,openface)  and use data from all participants and axis sensors
-	(added:3april2018 0023, sorted:)
+* [x] Clean rscripts  (cao-razor,ami-razor, cao-openface, ami-openface)  and use data from all participants and axis sensors
+	(added:3april2018 0023, sorted:3april2018 0331)
+
+
 
 * [x] For razor and openface timeseries create :
 	* compute m and tau for the time-delay embeddging theorem

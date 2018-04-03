@@ -298,25 +298,42 @@ source(paste(github_path,'/tavand/functions/embedding_parameters/withCao1997/cao
 
 
 maxdim <- 20
-maxtau <- 2
+maxtau <- 10
 delta_ee <- 0.01
 
 
-pNN <- c('p01', 'p02')
-axis <- c(
-	'zmuvpose_Tx', 'sgzmuvpose_Tx'
+#pNN <- c('p01', 'p02')
+#axis <- c(
+#	'zmuvpose_Tx', 'sgzmuvpose_Tx'
+#)
+#
+
+
+#MEMORY ERROR USING THESE AXIS
+#pNN <- c('p01', 'p02')
+#axis <- c(
+#	'zmuvsuccess', 
+#	'sgzmuvsuccess'
+#	)
+
+#pNN <- c('p01', 'p02')
+#axis <- c(
+#	'zmuvconfidence', 
+#	'sgzmuvconfidence' 
+#	)
+#
+
+pNN <- c('p01', 'p02', 'p03', 'p04', 'p05', 'p06')
+axis <- c('zmuvconfidence', 'sgzmuvconfidence', 
+	'zmuvpose_Rx', 'zmuvpose_Ry', 'zmuvpose_Rz', 'sgzmuvpose_Rx', 'sgzmuvpose_Ry', 'sgzmuvpose_Rz', 
+	'zmuvpose_Tx', 'zmuvpose_Ty', 'zmuvpose_Tz', 'sgzmuvpose_Tx', 'sgzmuvpose_Ty', 'sgzmuvpose_Tz',
+	'zmuvx_0', 'zmuvx_67', 'sgzmuvx_0', 'sgzmuvx_67',
+	'zmuvy_0', 'zmuvy_67', 'sgzmuvy_0', 'sgzmuvy_67'
 	)
 
 
-#pNN <- c('p01', 'p02', 'p03', 'p04', 'p05', 'p06')
-#axis <- c('zmuvconfidence', 'zmuvsuccess', 'sgzmuvconfidence', 'sgzmuvsuccess', 
-#	'zmuvpose_Rx', 'zmuvpose_Ry', 'zmuvpose_Rz', 'sgzmuvpose_Rx', 'sgzmuvpose_Ry', 'sgzmuvpose_Rz', 
-#	'zmuvpose_Tx', 'zmuvpose_Ty', 'zmuvpose_Tz', 'sgzmuvpose_Tx', 'sgzmuvpose_Ty', 'sgzmuvpose_Tz',
-#	'zmuvx_0', 'zmuvx_67', 'sgzmuvx_0', 'sgzmuvx_67',
-#	'zmuvy_0', 'zmuvy_67', 'sgzmuvy_0', 'sgzmuvy_67'
-#	)
-#
-xd <- xdata[,.(zmuvconfidence, zmuvsuccess, sgzmuvconfidence, sgzmuvsuccess, 
+
+xd <- xdata[,.(zmuvconfidence, sgzmuvconfidence, 
 	zmuvpose_Rx, zmuvpose_Ry, zmuvpose_Rz, sgzmuvpose_Rx, sgzmuvpose_Ry, sgzmuvpose_Rz, 
 	zmuvpose_Tx, zmuvpose_Ty, zmuvpose_Tz, sgzmuvpose_Tx, sgzmuvpose_Ty, sgzmuvpose_Tz,
 	zmuvx_0, zmuvx_67, sgzmuvx_0, sgzmuvx_67,
@@ -467,7 +484,7 @@ print_EVALUES_flag <- TRUE
 if (print_EVALUES_flag == TRUE) { ##if (print_EVALUES_flag == TRUE) {
 
 ### Save Picture
-width = 2000
+width = 4500
 height = 1000
 text.factor = 1
 dpi <- text.factor * 100
@@ -485,6 +502,7 @@ e1 <- ggplot(EE, aes(x=dim) ) +
     	geom_point( aes(y=E1, shape=factor(tau), colour=factor(tau)  ), size=5, stroke =1 )+
 	geom_hline(yintercept = 1+delta_ee) + 
 	geom_hline(yintercept = 1-delta_ee) +
+	annotate("text", 0, 1, vjust = -1, label = paste( '1 +/- ', delta_ee, sep='') )+
  
     	scale_color_manual(values = colorRampPalette(brewer.pal(n = 9, name="Blues"))(2*maxtau)[(maxtau+1):(2*maxtau)]  ) +
     	scale_shape_manual(values= 1:(maxtau))+
@@ -554,13 +572,24 @@ ggsave(filename = filenameimage,
 ######################################
 ### Minimum Embedding Dimensions Plots
 
+### Save Picture
+width = 4500
+height = 400
+text.factor = 1
+dpi <- text.factor * 100
+width.calc <- width / dpi
+height.calc <- height / dpi
+
+
+
+
 val_tau <- '2'
 tmin <- MINEmdDimp[tau==val_tau, .SDcols=cols  ]
 
 ptmin <- ggplot(tmin, aes(x=participant, y=mindim) ) + 
 	geom_point( aes(fill=participant, colour=participant, shape=participant), size=5 ) + 
 	facet_grid(.~axis) + ylab("Minimum Embedding Dimensions") + 
-	coord_cartesian(xlim=NULL, ylim=c(0,35)  ) +
+	coord_cartesian(xlim=NULL, ylim=c(0,20)  ) +
 	theme_bw(20) +	
         theme(axis.text.x = element_text(colour="grey20",size=16,angle=90,hjust=.5,vjust=.5,face="plain")  )
 

@@ -1,7 +1,6 @@
 ###############################################################################	
 #
 #  preprocessed data for razor IMU sensors 
-#  it takes around 30 minutes 29march2018 
 #
 #
 #
@@ -288,16 +287,16 @@ source(paste(github_path,'/tavand/functions/embedding_parameters/withCao1997/cao
 
 
 maxdim <- 20
-maxtau <- 2
+maxtau <- 10
 delta_ee <- 0.01
 
 #pNN <- c('p01')
-pNN <- c('p01', 'p02')
-#pNN <- c('p01', 'p02', 'p03', 'p04', 'p05', 'p06')
+#pNN <- c('p01', 'p02')
+pNN <- c('p01', 'p02', 'p03', 'p04', 'p05', 'p06')
 
 #axis <- c("zmuvAccX")
-axis <- c("zmuvAccX","sgzmuvAccX")
-#axis <- c("zmuvAccX","zmuvAccY","zmuvAccZ","sgzmuvAccX","sgzmuvAccY","sgzmuvAccZ","zmuvGyroX","zmuvGyroY","zmuvGyroZ","sgzmuvGyroX","sgzmuvGyroY","sgzmuvGyroZ")
+#axis <- c("zmuvAccX","sgzmuvAccX")
+axis <- c("zmuvAccX","zmuvAccY","zmuvAccZ","sgzmuvAccX","sgzmuvAccY","sgzmuvAccZ","zmuvGyroX","zmuvGyroY","zmuvGyroZ","sgzmuvGyroX","sgzmuvGyroY","sgzmuvGyroZ")
 
 
 
@@ -510,45 +509,12 @@ MinEmdDim <- rbind(MinEmdDim_h,MinEmdDim_r)
 
 
 
-	if (axis_k == 1){
-		ftag <-function(x) {list("zmuvAccX")}
-	} else if (axis_k == 2){
-		ftag <-function(x) {list("sgzmuvAccX")}
-	} 
+## function for axis
+fa <-function(x) {  axis[axis_k]  }
 
-
-#	if (axis_k == 1){
-#    	ftag <-function(x) {list("zmuvAccX")}
-#    	} else if (axis_k == 2){
-#	ftag <-function(x) {list("zmuvAccY")}
-#    	} else if (axis_k == 3){
-#    	ftag <-function(x) {list("zmuvAccZ")}
-#       	} else if (axis_k == 4){
-#	ftag <-function(x) {list("sgzmuvAccX")}
-#    	} else if (axis_k == 5){
-#    	ftag <-function(x) {list("sgzmuvAccY")}
-#    	} else if (axis_k == 6){
-#	ftag <-function(x) {list("sgzmuvAccZ")}
-#    	} else if (axis_k == 7){
-#    	ftag <-function(x) {list("zmuvGyroX")}
-#    	} else if (axis_k == 8){
-#	ftag <-function(x) {list("zmuvGyroY")}
-#    	} else if (axis_k == 9){
-#    	ftag <-function(x) {list("zmuvGyroZ")}
-#    	} else if (axis_k == 10){
-#	ftag <-function(x) {list("sgzmuvGyroX")}
-#    	} else if (axis_k == 11){
-#    	ftag <-function(x) {list("sgzmuvGyroY")}
-#     	} else if (axis_k == 12){
-#    	ftag <-function(x) {list("sgzmuvGyroZ")}
-#    	} 
-#
-#
-
-
-Ea[,c("axis"):=ftag(), ]
-eemin[,c("axis"):=ftag(), ]
-MinEmdDim[,c("axis"):=ftag(), ]
+Ea[,c("axis"):=fa(), ]
+eemin[,c("axis"):=fa(), ]
+MinEmdDim[,c("axis"):=fa(), ]
 
 
 Ep <- rbind(Ep,Ea)
@@ -559,28 +525,13 @@ MinEmdDimp <- rbind(MinEmdDimp, MinEmdDim)
 
 
 
-# Particpant Number
+# function for Particpant Number
+fp <-function(x) {  pNN[participants_k]   }
 
 
-		if (participants_k == 1){
-			fsNNtmp <-function(x) {list("p01")}
-		} else if (participants_k == 2){
-			fsNNtmp <-function(x) {list("p02")}
-		} else if (participants_k == 3){
-			fsNNtmp <-function(x) {list("p03")}
-		} else if (participants_k == 4){
-			fsNNtmp <-function(x) {list("p04")}
-		} else if (participants_k == 5){
-			fsNNtmp <-function(x) {list("p05")}
-		} else if (participants_k == 6){
-			fsNNtmp <-function(x) {list("p06")}
-		} else if (participants_k == 7){
-			fsNNtmp <-function(x) {list("p07")}
-		} 
-
-		Ep[,c("participant"):=fsNNtmp(), ]
-		eeminp[,c("participant"):=fsNNtmp(), ]
-		MinEmdDimp[,c("participant"):=fsNNtmp(), ]
+		Ep[,c("participant"):=fp(), ]
+		eeminp[,c("participant"):=fp(), ]
+		MinEmdDimp[,c("participant"):=fp(), ]
 		
 		EE <- rbind(EE,Ep)
 		EEminp <- rbind(EEminp,eeminp)
@@ -612,7 +563,7 @@ print_EVALUES_flag <- TRUE
 if (print_EVALUES_flag == TRUE) { ##if (print_EVALUES_flag == TRUE) {
 
 ### Save Picture
-width = 2000
+width = 2500
 height = 1000
 text.factor = 1
 dpi <- text.factor * 100
@@ -631,6 +582,8 @@ he1 <- ggplot(hEE, aes(x=dim) ) +
     	geom_point( aes(y=E1, shape=factor(tau), colour=factor(tau)  ), size=5, stroke =1 )+
 	geom_hline(yintercept = 1+delta_ee) + 
 	geom_hline(yintercept = 1-delta_ee) +
+	annotate("text", 0, 1, vjust = -1, label = paste( '1 +/- ', delta_ee, sep='') )+
+
  
     	scale_color_manual(values = colorRampPalette(brewer.pal(n = 9, name="Blues"))(2*maxtau)[(maxtau+1):(2*maxtau)]  ) +
     	scale_shape_manual(values= 1:(maxtau))+
@@ -663,8 +616,9 @@ re1 <- ggplot(rEE, aes(x=dim) ) +
     	geom_point( aes(y=E1, shape=factor(tau), colour=factor(tau)  ), size=5, stroke =1 )+
 	geom_hline(yintercept = 1+delta_ee) + 
 	geom_hline(yintercept = 1-delta_ee) +
- 
-    	scale_color_manual(values = colorRampPalette(brewer.pal(n = 9, name="Blues"))(2*maxtau)[(maxtau+1):(2*maxtau)]  ) +
+ 	annotate("text", 0, 1, vjust = -1, label = paste( '1 +/- ', delta_ee, sep='') )+
+    	
+	scale_color_manual(values = colorRampPalette(brewer.pal(n = 9, name="Blues"))(2*maxtau)[(maxtau+1):(2*maxtau)]  ) +
     	scale_shape_manual(values= 1:(maxtau))+
 
     	coord_cartesian(xlim = c(0, (maxdim-1) ), ylim = c(0, ylim_max ) )+
@@ -761,7 +715,7 @@ htmin <- hmin[tau==val_tau, .SDcols=cols  ]
 phtmin <- ggplot(htmin, aes(x=participant, y=mindim) ) + 
 	geom_point( aes(fill=participant, colour=participant, shape=participant), size=5 ) + 
 	facet_grid(.~axis) + ylab("Minimum Embedding Dimensions") + 
-	coord_cartesian(xlim=NULL, ylim=c(0,35)  ) +
+	coord_cartesian(xlim=NULL, ylim=c(0,20)  ) +
 	theme_bw(20) +	
         theme(axis.text.x = element_text(colour="grey20",size=16,angle=90,hjust=.5,vjust=.5,face="plain")  )
 
@@ -771,9 +725,21 @@ rtmin <- rmin[tau==val_tau, .SDcols=cols  ]
 prtmin <- ggplot(rtmin, aes(x=participant, y=mindim) ) + 
 	geom_point( aes(fill=participant, colour=participant, shape=participant), size=5 ) + 
 	facet_grid(.~axis) + ylab("Minimum Embedding Dimensions") + 
-	coord_cartesian(xlim=NULL, ylim=c(0,35)  ) +
+	coord_cartesian(xlim=NULL, ylim=c(0,20)  ) +
 	theme_bw(20) +	
         theme(axis.text.x = element_text(colour="grey20",size=16,angle=90,hjust=.5,vjust=.5,face="plain")  )
+
+
+
+### Save Picture
+width = 2100
+height = 400
+text.factor = 1
+dpi <- text.factor * 100
+width.calc <- width / dpi
+height.calc <- height / dpi
+
+
 
 
 

@@ -384,68 +384,29 @@ for (axis_k in c(1:12)){ #for (axis_k in c(1:12)){
 	amis<-rbind(amih,amir)
 
 	
-	if (axis_k == 1){
-    	ftag <-function(x) {list("zmuvAccX")}
-    	} else if (axis_k == 2){
-	ftag <-function(x) {list("zmuvAccY")}
-    	} else if (axis_k == 3){
-    	ftag <-function(x) {list("zmuvAccZ")}
-       	} else if (axis_k == 4){
-	ftag <-function(x) {list("sgzmuvAccX")}
-    	} else if (axis_k == 5){
-    	ftag <-function(x) {list("sgzmuvAccY")}
-    	} else if (axis_k == 6){
-	ftag <-function(x) {list("sgzmuvAccZ")}
-    	} else if (axis_k == 7){
-    	ftag <-function(x) {list("zmuvGyroX")}
-    	} else if (axis_k == 8){
-	ftag <-function(x) {list("zmuvGyroY")}
-    	} else if (axis_k == 9){
-    	ftag <-function(x) {list("zmuvGyroZ")}
-    	} else if (axis_k == 10){
-	ftag <-function(x) {list("sgzmuvGyroX")}
-    	} else if (axis_k == 11){
-    	ftag <-function(x) {list("sgzmuvGyroY")}
-     	} else if (axis_k == 12){
-    	ftag <-function(x) {list("sgzmuvGyroZ")}
-    	} 
+	## function for axis
+	fa <-function(x) {  axis[axis_k]  }
 
-	
-
-	time_lags_a[,c("axis"):=ftag(), ]
+	time_lags_a[,c("axis"):=fa(), ]
 	time_lags_p <- rbind(time_lags_p,time_lags_a)
 
 
-	amis[,c("axis"):=ftag(), ]
+	amis[,c("axis"):=fa(), ]
 	amip <- rbind(amip,amis)
 
 
 	}#for (axis_k in c(1:12)){
 
 
- # Particpant Number
+# function for Particpant Number
+fp <-function(x) {  pNN[participants_k]   }
 
-if (participants_k == 1){
-fsNNtmp <-function(x) {list("p01")}
-} else if (participants_k == 2){
-fsNNtmp <-function(x) {list("p02")}
-} else if (participants_k == 3){
-fsNNtmp <-function(x) {list("p03")}
-} else if (participants_k == 4){
-fsNNtmp <-function(x) {list("p04")}
-} else if (participants_k == 5){
-fsNNtmp <-function(x) {list("p05")}
-} else if (participants_k == 6){
-fsNNtmp <-function(x) {list("p06")}
-} else if (participants_k == 7){
-fsNNtmp <-function(x) {list("p07")}
-} 
 
-amip[,c("participant"):=fsNNtmp(), ]
+amip[,c("participant"):=fp(), ]
 AMI <- rbind(AMI, amip)
 
 
-time_lags_p[,c("participant"):=fsNNtmp(), ]
+time_lags_p[,c("participant"):=fp(), ]
 time_lags <- rbind(time_lags,time_lags_p)
 
 
