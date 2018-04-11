@@ -310,6 +310,7 @@ PLOTTING_TIME_SERIES = FALSE
 
 
 
+
 if ( PLOTTING_TIME_SERIES == TRUE ) {
 
 
@@ -487,8 +488,8 @@ dev.off()
 
 
 
-#TIME_DELAY_EMBEDDING_COMPUTATIONS = FALSE
-TIME_DELAY_EMBEDDING_COMPUTATIONS = TRUE
+TIME_DELAY_EMBEDDING_COMPUTATIONS = FALSE
+#TIME_DELAY_EMBEDDING_COMPUTATIONS = TRUE
 
 
 
@@ -758,24 +759,8 @@ ED_sa <- rbind(ED_sa, ED_a)
 
 
  # Particpant Number
-
-if (participants_k == 1){
-fsNNtmp <-function(x) {list("p01")}
-} else if (participants_k == 2){
-fsNNtmp <-function(x) {list("p02")}
-} else if (participants_k == 3){
-fsNNtmp <-function(x) {list("p03")}
-} else if (participants_k == 4){
-fsNNtmp <-function(x) {list("p04")}
-} else if (participants_k == 5){
-fsNNtmp <-function(x) {list("p05")}
-} else if (participants_k == 6){
-fsNNtmp <-function(x) {list("p06")}
-} else if (participants_k == 7){
-fsNNtmp <-function(x) {list("p07")}
-} 
-
-ED_sa[,c("participant"):=fsNNtmp(), ]
+fp <-function(x) {  pNN[participants_k]   }
+ED_sa[,c("participant"):=fp(), ]
 ED <- rbind(ED, ED_sa)
 
 

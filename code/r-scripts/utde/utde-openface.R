@@ -22,11 +22,11 @@
 		# (4.1) Zero Mean Unit Variance
 		# (4.2) Savitzky-Golay Filter
 	
-	# (5) Plotting Time Series  ## (PLOTTINGTIMESERIES <- TRUE)
+	# (5) Plotting Time Series  ## (PLOTTINGTIMESERIES <- FALSE/TRUE)
 		# (5.1) Creating  and Changing to PlotPath
 		# (5.2) Plotting data
 
-	# (6) TIME_DELAY EMBEDDING   ##  (UTDE <- FALSE)
+	# (6) TIME_DELAY EMBEDDING   ##  (UTDE <- FALSE/TRUE)
 		# (6.1) Embedding Creating Preprossede Data Path
 		# (6.2) buildTakens
 		# (6.3) Create and save plots for euclidean distances of PC1 and PC2
@@ -312,7 +312,7 @@ xdata[,c(
 
 
 PLOTTINGTIMESERIES <- FALSE
-##PLOTTINGTIMESERIES <- TRUE
+#PLOTTINGTIMESERIES <- TRUE
 
 
 if (PLOTTINGTIMESERIES == TRUE) 
@@ -1441,8 +1441,9 @@ dev.off()
 ################################################################################
 
 
-#UTDE <- FALSE
-UTDE <- TRUE
+UTDE <- FALSE
+#UTDE <- TRUE
+
 
 
 if (UTDE == TRUE) {
@@ -1468,7 +1469,7 @@ setwd(file.path(embedding_path))
 
 
 pNN <- c('p01', 'p02', 'p03', 'p04', 'p05', 'p06')
-axis <- c('zmuvconfidence', 'zmuvsuccess', 'sgzmuvconfidence', 'sgzmuvsuccess', 
+axis <- c('zmuvconfidence', 'sgzmuvconfidence', 
 	'zmuvpose_Rx', 'zmuvpose_Ry', 'zmuvpose_Rz', 'sgzmuvpose_Rx', 'sgzmuvpose_Ry', 'sgzmuvpose_Rz', 
 	'zmuvpose_Tx', 'zmuvpose_Ty', 'zmuvpose_Tz', 'sgzmuvpose_Tx', 'sgzmuvpose_Ty', 'sgzmuvpose_Tz',
 	'zmuvx_0', 'zmuvx_67', 'sgzmuvx_0', 'sgzmuvx_67',
@@ -1477,7 +1478,7 @@ axis <- c('zmuvconfidence', 'zmuvsuccess', 'sgzmuvconfidence', 'sgzmuvsuccess',
 
 
 
-xd <- xdata[,.(zmuvconfidence, zmuvsuccess, sgzmuvconfidence, sgzmuvsuccess, 
+xd <- xdata[,.(zmuvconfidence, sgzmuvconfidence, 
 	zmuvpose_Rx, zmuvpose_Ry, zmuvpose_Rz, sgzmuvpose_Rx, sgzmuvpose_Ry, sgzmuvpose_Rz, 
 	zmuvpose_Tx, zmuvpose_Ty, zmuvpose_Tz, sgzmuvpose_Tx, sgzmuvpose_Ty, sgzmuvpose_Tz,
 	zmuvx_0, zmuvx_67, sgzmuvx_0, sgzmuvx_67,
@@ -1654,24 +1655,8 @@ ED_a <- rbind(ED_a, ed_dimtau_dta)
 
 
  # Particpant Number
-
-if (participants_k == 1){
-fsNNtmp <-function(x) {list("p01")}
-} else if (participants_k == 2){
-fsNNtmp <-function(x) {list("p02")}
-} else if (participants_k == 3){
-fsNNtmp <-function(x) {list("p03")}
-} else if (participants_k == 4){
-fsNNtmp <-function(x) {list("p04")}
-} else if (participants_k == 5){
-fsNNtmp <-function(x) {list("p05")}
-} else if (participants_k == 6){
-fsNNtmp <-function(x) {list("p06")}
-} else if (participants_k == 7){
-fsNNtmp <-function(x) {list("p07")}
-} 
-
-ED_a[,c("participant"):=fsNNtmp(), ]
+fp <-function(x) {  pNN[participants_k]   }
+ED_a[,c("participant"):=fp(), ]
 ED <- rbind(ED, ED_a)
 
 
